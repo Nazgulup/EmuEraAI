@@ -60,7 +60,7 @@
     <Compile Include="AI\*.cs" />
     <Compile Include="..\..\portable\Dialogue\StoryTemplateCatalog.cs"><Link>AI\StoryTemplateCatalog.cs</Link></Compile>
     <Compile Include="..\..\portable\Dialogue\StoryFunctionDocument.cs"><Link>AI\StoryFunctionDocument.cs</Link></Compile>
-    <EmbeddedResource Include="..\..\portable\era-core\EraCore.Maui\Resources\Raw\story-templates.zip"><LogicalName>EraAI.StoryTemplates.zip</LogicalName></EmbeddedResource>
+
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web.Extensions" />

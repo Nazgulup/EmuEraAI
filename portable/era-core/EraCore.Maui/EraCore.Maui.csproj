@@ -30,8 +30,8 @@
 
 		<ApplicationTitle>ERA AI 加载器</ApplicationTitle>
 		<ApplicationId>com.eraai.loader</ApplicationId>
-		<ApplicationDisplayVersion>0.11</ApplicationDisplayVersion>
-		<ApplicationVersion>16</ApplicationVersion>
+		<ApplicationDisplayVersion>0.12</ApplicationDisplayVersion>
+		<ApplicationVersion>17</ApplicationVersion>
 
 		<!-- Windows 桌面 unpackaged 模式（开发期直接 dotnet run 启动，不需要 MSIX 打包）。
 		     Phase 2 评估 MSIX 打包发布。-->
@@ -105,7 +105,7 @@
 	<ItemGroup>
 		<!-- Vue 构建产物（VueBuild.targets 的 CopyVueFrontendToWwwroot target 复制到 wwwroot\） -->
 		<MauiAsset Include="wwwroot\**\*" />
-		<MauiAsset Include="Resources\Raw\story-templates.zip" Link="story-templates.zip" />
+
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net10.0-android'">
 	  <PackageReference Include="Xamarin.AndroidX.WebKit" Version="1.9.0" />

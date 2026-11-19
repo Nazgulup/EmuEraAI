@@ -1,4 +1,4 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { postInput } from '../lib/mauiBridge';
 import { gameTranslation } from '../lib/translation';
@@ -15,9 +15,8 @@ const open = ref(false), editing = ref(false), notice = ref(''), preview = ref('
 const generationLog = ref(''), logVisible = ref(false), probing = ref(false);
 const gameStyle = ref('');
 const storyReason = ref('正在等待游戏文本'), storyLocation = ref('');
-const storyTemplateName = ref(''), storyTemplateReason = ref('正在匹配内置模板');
 interface FunctionRow { key: string; file: string; function: string; line: number; classification: string; reason: string; action: string; note: string }
-const docVisible = ref(false), docId = ref(''), docState = ref('idle'), docReason = ref('未匹配模板时会自动建立函数清单');
+const docVisible = ref(false), docId = ref(''), docState = ref('idle'), docReason = ref('加载游戏时自动建立函数清单，默认全部开启 AI');
 const docDone = ref(0), docTotal = ref(0), docCount = ref(0), docPage = ref(0), docQuery = ref(''), docKind = ref('');
 const docRows = ref<FunctionRow[]>([]), docEdits = ref<Record<string, {key: string; action: string; note: string}>>({});
 function loadDocument(page = 0) { docVisible.value = true; send('aiStoryDocument', { query: docQuery.value, kind: docKind.value, page }); }
@@ -29,7 +28,7 @@ const storyEventId = ref(''), storyTurn = ref(0);
 function setStoryRule(scope: string, action: string) { send('aiStoryRule', { scope, action, eventId: storyEventId.value, storyTurn: storyTurn.value }); }
 const text = ref(''), status = ref('等待游戏口上'), character = ref('');
 const busy = ref(false), hasEvent = ref(false), hasOriginal = ref(true), hasKey = ref(false), clearKey = ref(false);
-const settings = ref<Settings>({ Enabled: false, AutoGenerate: true, GenerateWithoutOriginal: false, TranslationEnabled: false, TranslationLanguage: 'zh-CN', TranslationTokens: 2048, Endpoint: 'https://api.openai.com/v1', Model: '', ApiKey: '', TimeoutSeconds: 20, OutputTokens: 400, PresetJson: '', CharacterDescription: '', Personality: '', World: '', UseGameStyle: true, UsePresetOutputTokens: false, ThinkingMode: 'auto' });
+const settings = ref<Settings>({ Enabled: true, AutoGenerate: true, GenerateWithoutOriginal: false, TranslationEnabled: false, TranslationLanguage: 'zh-CN', TranslationTokens: 2048, Endpoint: 'https://api.openai.com/v1', Model: '', ApiKey: '', TimeoutSeconds: 20, OutputTokens: 400, PresetJson: '', CharacterDescription: '', Personality: '',World: '', UseGameStyle: true, UsePresetOutputTokens: false, ThinkingMode: 'auto' });
 const models = ref<string[]>([]), modelsBusy = ref(false), modelsStatus = ref(''), modelRequest = ref('');
 let modelSequence = 0;
 const selectedEntry = ref(0), rawVisible = ref(false);
@@ -62,10 +61,9 @@ function receive(event: Event) {
     busy.value = msg.busy; hasEvent.value = msg.hasEvent;
     hasOriginal.value = msg.hasOriginal ?? true;
     canGenerate.value = msg.canGenerate === true; storyReady.value = msg.storyReady === true;
-    storyReason.value = msg.storyReason || '尚未确认是否为日常口上，保留原文'; storyLocation.value = msg.storyLocation || '';
+    storyReason.value = msg.storyReason || '默认开启 AI，正在核对手动关闭记录'; storyLocation.value = msg.storyLocation || '';
     canSetFunctionRule.value = msg.canSetFunctionRule === true;
     storyEventId.value = msg.eventId || ''; storyTurn.value = msg.storyTurn || 0;
-    storyTemplateName.value = msg.storyTemplateName || ''; storyTemplateReason.value = msg.storyTemplateReason || '尚未匹配内置模板';
   } else if (msg.type === 'aiStoryDocument') {
     if (docId.value && docId.value !== msg.documentId) docEdits.value = {};
     docId.value = msg.documentId; docState.value = msg.state; docReason.value = msg.reason;
@@ -96,8 +94,7 @@ function resetGame() {
   open.value = false; text.value = ''; character.value = ''; status.value = '等待游戏口上';
   busy.value = false; hasEvent.value = false; preview.value = ''; gameStyle.value = '';
   canGenerate.value = false; storyReady.value = false; canSetFunctionRule.value = false; storyReason.value = '正在等待游戏文本'; storyLocation.value = '';
-  storyTemplateName.value = ''; storyTemplateReason.value = '正在匹配内置模板';
-  docVisible.value = false; docId.value = ''; docState.value = 'idle'; docReason.value = '未匹配模板时会自动建立函数清单'; docRows.value = []; docEdits.value = {}; docQuery.value = ''; docKind.value = ''; docPage.value = 0; docCount.value = 0; docDone.value = 0; docTotal.value = 0;
+  docVisible.value = false; docId.value = ''; docState.value = 'idle'; docReason.value = '加载游戏时自动建立函数清单，默认全部开启 AI'; docRows.value = []; docEdits.value = {}; docQuery.value = ''; docKind.value = ''; docPage.value = 0; docCount.value = 0; docDone.value = 0; docTotal.value = 0;
   generationLog.value = ''; logVisible.value = false; probing.value = false; notice.value = '';
   modelRequest.value = ''; modelsBusy.value = false;
 }
@@ -119,20 +116,20 @@ onUnmounted(() => { window.removeEventListener('era-ai-message', receive); windo
         <div class="ai-buttons"><button @click="gameTranslation.toggleOriginal()">{{ gameTranslation.state.translated ? '显示原文' : '显示译文' }}</button><button @click="gameTranslation.retry()">重试翻译</button></div>
       </div>
       <div class="ai-buttons"><button :disabled="!hasEvent || busy || !canGenerate" @click="send('aiGenerate')">重新生成</button><button @click="send('aiRestore')">恢复原口上 / 取消</button><button @click="send('aiPreview')">查看请求</button></div>
-      <h3>剧情保护</h3>
-      <p aria-label="内置剧情模板">{{ storyTemplateName ? '内置模板：' + storyTemplateName : '内置模板：未套用' }}<br>{{ storyTemplateReason }}</p>
+      <h3>剧情 / 函数开关</h3>
+      <p aria-label="AI 默认模式">默认开启 AI，可手动关闭指定剧情/函数。</p>
       <button @click="docVisible ? docVisible = false : loadDocument()">{{ docVisible ? '收起函数清单' : '函数清单 / 编辑选择' }}</button>
       <p class="ai-hint" aria-label="函数扫描进度">{{ docReason }}<span v-if="docState === 'scanning'"> · {{ docDone }}/{{ docTotal }} 个脚本</span></p>
       <section v-if="docVisible" aria-label="可编辑函数清单">
-        <p class="ai-hint">勾选表示优先 AI；取消勾选表示保留原文。自动模式只允许明确日常，剧情调用仍保护。保存后对当前允许的段落自动生成，不执行游戏指令。备注仅用于整理。</p>
+        <p class="ai-hint">勾选表示优先 AI；取消勾选表示保留原文。默认全部开启，可手动关闭指定剧情/函数。保存后对当前允许的段落自动生成，不执行游戏指令。备注仅用于整理。</p>
         <input v-model="docQuery" aria-label="搜索函数或文件" placeholder="搜索函数名或文件名" maxlength="200" />
         <div class="ai-buttons"><select v-model="docKind" aria-label="函数分类"><option value="">全部函数</option><option value="routine">明确日常</option><option value="story">剧情</option><option value="unknown">不确定</option></select><button @click="loadDocument()">搜索函数</button><button :disabled="docState !== 'ready'" @click="send('aiStoryDocumentExport')">导出函数文档</button></div>
         <div class="ai-buttons"><button :disabled="docPage === 0" @click="loadDocument(docPage - 1)">上一页</button><span>第 {{ docPage + 1 }} 页 · {{ docCount }} 个函数</span><button :disabled="(docPage + 1) * 30 >= docCount" @click="loadDocument(docPage + 1)">下一页</button></div>
         <article v-for="row in docRows" :key="row.key" class="ai-function">
-          <label><input type="checkbox" :aria-label="'优先 AI ' + row.function" :checked="functionAction(row) === 'allow' || (functionAction(row) === 'auto' && row.classification === 'routine')" :disabled="docState !== 'ready'" @change="editFunction(row, ($event.target as HTMLInputElement).checked ? 'allow' : 'deny')" /> {{ row.function }}</label>
-          <small>{{ row.file }}:{{ row.line }} · {{ row.classification === 'routine' ? '日常候选' : row.classification === 'story' ? '剧情保护' : '不确定' }}</small>
+          <label><input type="checkbox" :aria-label="'优先 AI ' + row.function" :checked="functionAction(row) !== 'deny'" :disabled="docState !== 'ready'" @change="editFunction(row, ($event.target as HTMLInputElement).checked ? 'allow' : 'deny')" /> {{ row.function }}</label>
+          <small>{{ row.file }}:{{ row.line }} · {{ row.classification === 'routine' ? '日常候选' : row.classification === 'story' ? '剧情候选' : '不确定' }}</small>
           <p class="ai-hint">{{ row.reason }}</p>
-          <select :value="functionAction(row)" :aria-label="'规则 ' + row.function" @change="editFunction(row, ($event.target as HTMLSelectElement).value)"><option value="auto">自动判断（日常优先 AI）</option><option value="allow">手动优先 AI（剧情保护仍生效）</option><option value="deny">保留原文 / 禁止 AI</option></select>
+          <select :value="functionAction(row)" :aria-label="'规则 ' + row.function" @change="editFunction(row, ($event.target as HTMLSelectElement).value)"><option value="auto">默认开启 AI</option><option value="allow">手动开启 AI</option><option value="deny">保留原文 / 禁止 AI</option></select>
           <input :value="docEdits[row.key]?.note ?? row.note" :aria-label="'备注 ' + row.function" placeholder="可编辑备注" maxlength="1000" @input="editFunction(row, functionAction(row), ($event.target as HTMLInputElement).value)" />
         </article>
         <button class="ai-save" :disabled="docState !== 'ready' || Object.keys(docEdits).length === 0" @click="saveDocument">保存函数选择（{{ Object.keys(docEdits).length }}）</button>
@@ -140,17 +137,17 @@ onUnmounted(() => { window.removeEventListener('era-ai-message', receive); windo
       <p role="status" aria-label="剧情判断">{{ canGenerate ? '允许生成：' : '保留原文：' }}{{ storyReason }}</p>
       <p v-if="storyLocation" class="ai-hint">{{ storyLocation }}</p>
       <div class="ai-buttons">
-        <button :disabled="!hasEvent || !storyReady" @click="setStoryRule('event', 'allow')">仅本段允许</button>
-        <button :disabled="!hasEvent || !storyReady" @click="setStoryRule('event', 'deny')">仅本段禁止</button>
-        <button :disabled="!hasEvent || !storyReady" @click="setStoryRule('event', 'auto')">本段恢复自动判断</button>
+        <button :disabled="!hasEvent || !storyReady" @click="setStoryRule('event', 'allow')">仅本段开启 AI</button>
+        <button :disabled="!hasEvent || !storyReady" @click="setStoryRule('event', 'deny')">仅本段关闭 AI</button>
+        <button :disabled="!hasEvent || !storyReady" @click="setStoryRule('event', 'auto')">本段恢复默认</button>
       </div>
       <div class="ai-buttons">
-        <button :disabled="!canSetFunctionRule" @click="setStoryRule('function', 'allow')">本游戏此函数允许</button>
-        <button :disabled="!canSetFunctionRule" @click="setStoryRule('function', 'deny')">本游戏此函数禁止</button>
-        <button :disabled="!canSetFunctionRule" @click="setStoryRule('function', 'auto')">清除此函数规则</button>
+        <button :disabled="!canSetFunctionRule" @click="setStoryRule('function', 'allow')">此函数开启 AI</button>
+        <button :disabled="!canSetFunctionRule" @click="setStoryRule('function', 'deny')">此函数关闭 AI</button>
+        <button :disabled="!canSetFunctionRule" @click="setStoryRule('function', 'auto')">此函数恢复默认</button>
       </div>
-      <p class="ai-hint">默认只生成明确的日常口上；剧情和不确定文本保留原文，无原口上补写也遵守此规则。允许后点击“重新生成”。函数规则只属于当前游戏和脚本版本，剧情调用仍优先保护；本段允许可临时放行剧情，但不会覆盖已保存的禁止规则。</p>
-      <div class="ai-buttons"><button @click="send('aiStoryImport')">导入剧情规则模板</button><button @click="send('aiStoryExport')">导出本游戏规则</button></div>
+      <p class="ai-hint">默认开启 AI，不再匹配模板或按分类拦截。关闭本段仅影响当前事件；关闭函数会在本游戏中持续保留原文，也会关闭其调用的口上。无原口上补写同样遵守手动关闭记录。重新开启后可点击“重新生成”，不重复结算数值。</p>
+      <div class="ai-buttons"><button @click="send('aiStoryImport')">导入函数开关</button><button @click="send('aiStoryExport')">导出函数开关</button></div>
       <div class="ai-buttons"><button @click="send('aiLog')">生成日志</button><button @click="send('aiExportLog')">导出日志</button><button :disabled="probing" @click="probing = true; send('aiProbe')">测试已保存 API</button><button @click="send('aiStyle')">游戏风格</button></div>
       <label v-if="gameStyle">当前游戏风格<textarea :value="gameStyle" readonly rows="7" aria-label="当前游戏风格" /></label>
       <label v-if="logVisible">生成日志（密钥已脱敏）<textarea :value="generationLog" readonly rows="12" aria-label="生成日志" /></label>

@@ -10,22 +10,20 @@ describe('AI dialogue stays separate from game input', () => {
     await wrapper.findAll('button').find(b => b.text() === '函数清单 / 编辑选择')!.trigger('click');
     expect(JSON.parse(vi.mocked(postInput).mock.calls.at(-1)![0]).type).toBe('aiStoryDocument');
     window.dispatchEvent(new CustomEvent('era-ai-message', { detail: { type: 'aiStoryDocument', documentId: 'doc-a', state: 'ready', reason: '已建立', done: 1, total: 1, count: 1, page: 0, rows: [{ key: 'key-a', file: 'ERB/a.erb', function: 'KOJO_MISC', line: 3, classification: 'unknown', reason: '来源不确定', action: 'auto', note: '' }] } }));
-    await wrapper.vm.$nextTick(); expect((wrapper.get('input[aria-label="优先 AI KOJO_MISC"]').element as HTMLInputElement).checked).toBe(false);
-    await wrapper.get('input[aria-label="优先 AI KOJO_MISC"]').setValue(true);
+    await wrapper.vm.$nextTick(); expect((wrapper.get('input[aria-label="优先 AI KOJO_MISC"]').element as HTMLInputElement).checked).toBe(true);
+    await wrapper.get('input[aria-label="优先 AI KOJO_MISC"]').setValue(false);
     await wrapper.get('input[aria-label="备注 KOJO_MISC"]').setValue('可重复日常');
     await wrapper.findAll('button').find(b => b.text().startsWith('保存函数选择'))!.trigger('click');
-    expect(JSON.parse(vi.mocked(postInput).mock.calls.at(-1)![0])).toEqual({ type: 'aiStoryDocumentSave', documentId: 'doc-a', edits: [{key: 'key-a', action: 'allow', note: '可重复日常'}] });
+    expect(JSON.parse(vi.mocked(postInput).mock.calls.at(-1)![0])).toEqual({ type: 'aiStoryDocumentSave', documentId: 'doc-a', edits: [{key: 'key-a', action: 'deny', note: '可重复日常'}] });
     expect(vi.mocked(postInput).mock.calls.some(c => JSON.parse(c[0]).type === 'input')).toBe(false);
     window.dispatchEvent(new CustomEvent('era-ai-reset')); await wrapper.vm.$nextTick(); await wrapper.get('.ai-launch').trigger('click');
     expect(wrapper.find('[aria-label="可编辑函数清单"]').exists()).toBe(false); wrapper.unmount();
   });
-  it('shows the automatically selected template and clears it when leaving the game', async () => {
+  it('shows default-on mode and has no template matching UI', async () => {
     const wrapper = mount(AiDialoguePanel); await wrapper.get('.ai-launch').trigger('click');
-    window.dispatchEvent(new CustomEvent('era-ai-message', { detail: { type: 'aiState', text: '原文', status: '保护', character: '旅人', busy: false, hasEvent: true, storyTemplateName: 'eraJourney0.92', storyTemplateReason: '名称关键词匹配；配置版本 0.92 一致' } }));
-    await wrapper.vm.$nextTick(); expect(wrapper.get('[aria-label="内置剧情模板"]').text()).toContain('eraJourney0.92');
-    expect(wrapper.get('[aria-label="内置剧情模板"]').text()).toContain('版本 0.92');
-    window.dispatchEvent(new CustomEvent('era-ai-reset')); await wrapper.vm.$nextTick(); await wrapper.get('.ai-launch').trigger('click');
-    expect(wrapper.get('[aria-label="内置剧情模板"]').text()).not.toContain('eraJourney0.92'); wrapper.unmount();
+    expect(wrapper.get('[aria-label="AI 默认模式"]').text()).toContain('默认开启 AI');
+    expect(wrapper.find('[aria-label="内置剧情模板"]').exists()).toBe(false);
+    wrapper.unmount();
   });
   it('blocks regenerate for story and sends scoped overrides bound to the displayed event', async () => {
     vi.mocked(postInput).mockClear(); const wrapper = mount(AiDialoguePanel);
@@ -34,24 +32,25 @@ describe('AI dialogue stays separate from game input', () => {
     await wrapper.vm.$nextTick();
     expect(wrapper.findAll('button').find(b => b.text() === '重新生成')!.attributes('disabled')).toBeDefined();
     expect(wrapper.get('[aria-label="剧情判断"]').text()).toContain('剧情父调用');
-    await wrapper.findAll('button').find(b => b.text() === '仅本段允许')!.trigger('click');
+    await wrapper.findAll('button').find(b => b.text() === '仅本段开启 AI')!.trigger('click');
     expect(JSON.parse(vi.mocked(postInput).mock.calls.at(-1)![0])).toEqual({ type: 'aiStoryRule', scope: 'event', action: 'allow', eventId: 'scene-1', storyTurn: 6 });
-    await wrapper.findAll('button').find(b => b.text() === '本游戏此函数禁止')!.trigger('click');
+    await wrapper.findAll('button').find(b => b.text() === '此函数关闭 AI')!.trigger('click');
     expect(JSON.parse(vi.mocked(postInput).mock.calls.at(-1)![0]).scope).toBe('function');
     expect(vi.mocked(postInput).mock.calls.some(c => JSON.parse(c[0]).type === 'input')).toBe(false);
     window.dispatchEvent(new CustomEvent('era-ai-reset')); await wrapper.vm.$nextTick(); await wrapper.get('.ai-launch').trigger('click');
-    expect(wrapper.findAll('button').find(b => b.text() === '仅本段允许')!.attributes('disabled')).toBeDefined(); wrapper.unmount();
+    expect(wrapper.findAll('button').find(b => b.text() === '仅本段开启 AI')!.attributes('disabled')).toBeDefined(); wrapper.unmount();
   });
   it('saves automatic body/option translation independently from AI dialogue', async () => {
     vi.mocked(postInput).mockClear(); const wrapper = mount(AiDialoguePanel);
     await wrapper.get('.ai-launch').trigger('click');
     await wrapper.findAll('button').find(b => b.text() === 'API 与酒馆预设')!.trigger('click');
+    expect((wrapper.get('input[aria-label="自动翻译正文和选项"]').element as HTMLInputElement).checked).toBe(false);
     await wrapper.get('input[aria-label="自动翻译正文和选项"]').setValue(true);
     await wrapper.get('select[aria-label="翻译目标语言"]').setValue('zh-CN');
     await wrapper.get('input[aria-label="翻译输出 tokens"]').setValue('4096');
     await wrapper.findAll('button').find(b => b.text() === '保存设置')!.trigger('click');
     const saved = JSON.parse(vi.mocked(postInput).mock.calls.at(-1)![0]);
-    expect(saved.type).toBe('aiSave'); expect(saved.settings.Enabled).toBe(false);
+    expect(saved.type).toBe('aiSave'); expect(saved.settings.Enabled).toBe(true);
     expect(saved.settings.TranslationEnabled).toBe(true); expect(saved.settings.TranslationLanguage).toBe('zh-CN'); expect(saved.settings.TranslationTokens).toBe(4096);
     vi.mocked(postInput).mockClear();
     await wrapper.get('input[aria-label="翻译输出 tokens"]').setValue('0');

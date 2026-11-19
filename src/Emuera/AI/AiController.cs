@@ -21,8 +21,8 @@ namespace MinorShift.Emuera.AI
         string storyOnce="";
         public StoryDecision Story { get; private set; }=new StoryDecision();
         public bool StoryReady { get; private set; }
-        public bool CanGenerate { get { return Current!=null && (!Settings.ProtectStory || (StoryReady && Story.Allowed)); } }
-        public void ConfigureStoryPolicy(StoryPolicy policy) { storyPolicy=policy; }
+        public bool CanGenerate { get { return Current!=null && StoryReady && Story.Allowed; } }
+        public void ConfigureStoryPolicy(StoryPolicy policy) { storyPolicy=policy; Log.Write("story.mode",null,"模板已取消；默认开启 AI，手动关闭优先","default","allow"); }
         public StoryTemplateData StoryTemplate { get { return storyPolicy==null ? new StoryTemplateData() : storyPolicy.Template; } }
         public async Task PrepareStoryTemplatesAsync()
         {
@@ -53,25 +53,24 @@ namespace MinorShift.Emuera.AI
         {
             var snapshot=Current; long ticket=revision; StoryReady=false;
             if(snapshot==null) { Story=new StoryDecision(); storyCheck=Task.FromResult(0); return; }
-            Story=new StoryDecision { Reason="正在本地检查调用链；确认前保留原文" };
+            Story=new StoryDecision { Reason="正在核对手动关闭记录" };
             storyCheck=CheckStoryAsync(snapshot,ticket);
             if(auto) { var pending=AutoAfterStoryAsync(snapshot,ticket,storyCheck); }
         }
         async Task CheckStoryAsync(DialogueSnapshot snapshot,long ticket)
         {
             StoryDecision result;
-            if(!Settings.ProtectStory) result=new StoryDecision { Allowed=true,Kind="disabled",Reason="剧情保护已关闭" };
-            else if(storyPolicy==null) result=new StoryDecision { Reason="缺少本游戏来源分析器，保守保留原文" };
+            if(storyPolicy==null) result=new StoryDecision { Allowed=true,Kind="default-allow",Reason="默认开启 AI；尚无函数关闭记录" };
             else result=await Task.Run(()=>storyPolicy.Evaluate(snapshot.StoryContext));
             if(disposed || Current!=snapshot || ticket!=revision) return;
             if(storyOnce=="deny") { result.Allowed=false; result.Kind="event-deny"; result.Reason="用户禁止本段生成"; }
             else if(storyOnce=="allow" && result.Kind!="manual-deny") { result.Allowed=true; result.Kind="event-allow"; result.Reason="用户仅允许当前事件；下一事件重新判断"; }
             Story=result; StoryReady=true;
-            bool legacyWaiting=Settings.Enabled && result.Allowed && !Settings.ProtectStory;
-            Text=legacyWaiting ? "" : snapshot.Original;
-            DisplayMode=legacyWaiting ? "waiting" : "original";
-            Status=(result.Allowed ? "允许 AI：" : "剧情保护：")+result.Reason;
-            Log.Write("story.decision",null,Status,"kind",result.Kind,"allowed",result.Allowed,"eventId",snapshot.EventId,"hook",snapshot.Hook,"location",result.Location,"ruleKey",result.RuleKey,"context",string.Join("\n",snapshot.StoryContext),"supplement",snapshot.Original.Length==0,"templateId",StoryTemplate.Id,"templateState",StoryTemplate.State,"templateRule",result.TemplateRule.Length>0 ? result.TemplateRule : "未命中当前函数指纹，使用本地判断");
+            bool waiting=Settings.Enabled && result.Allowed && DisplayMode=="waiting";
+            Text=waiting ? "" : snapshot.Original;
+            DisplayMode=waiting ? "waiting" : "original";
+            Status=(result.Allowed ? "允许 AI：" : "手动关闭：")+result.Reason;
+            Log.Write("story.decision",null,Status,"kind",result.Kind,"allowed",result.Allowed,"eventId",snapshot.EventId,"hook",snapshot.Hook,"location",result.Location,"ruleKey",result.RuleKey,"context",string.Join("\n",snapshot.StoryContext),"supplement",snapshot.Original.Length==0,"default","allow","templates","removed");
             Notify();
         }
         async Task AutoAfterStoryAsync(DialogueSnapshot snapshot,long ticket,Task check)
@@ -102,16 +101,15 @@ namespace MinorShift.Emuera.AI
         public void SetEvent(DialogueSnapshot snapshot)
         {
             suspended=false;
-            if(snapshot!=null && Current!=null && snapshot.EventId==Current.EventId && (!Settings.ProtectStory || snapshot.StoryTurn==Current.StoryTurn))
+            if(snapshot!=null && Current!=null && snapshot.EventId==Current.EventId && snapshot.StoryTurn==Current.StoryTurn)
             {
                 Notify();
                 return;
             }
-            Stop(); lastReply=lastRequestHash=null; regenerationAttempt=0; storyOnce=""; Current=snapshot; Text=snapshot==null || (Settings.Enabled && !Settings.ProtectStory) ? "" : snapshot.Original;
+            Stop(); lastReply=lastRequestHash=null; regenerationAttempt=0; storyOnce=""; Current=snapshot; Text=snapshot==null || Settings.Enabled ? "" : snapshot.Original;
             DisplayMode=snapshot==null ? "empty" : Settings.Enabled ? "waiting" : "original";
             Status=snapshot==null ? "没有捕获到口上；可查看生成日志" : Settings.Enabled ? "AI 优先；等待生成" : "AI 未启用，使用原口上";
             Log.Write(snapshot==null ? "event.empty" : "event.captured",null,Status,"hook",snapshot==null ? "" : snapshot.Hook,"originalChars",snapshot==null ? 0 : snapshot.Original.Length);
-            if(snapshot!=null && Settings.ProtectStory) { DisplayMode="original"; Status="剧情保护：正在检查，暂时保留原文"; }
             Notify(); StartStoryCheck(true);
         }
         public void SetSettings(AiSettings settings)
@@ -125,7 +123,7 @@ namespace MinorShift.Emuera.AI
             if(disposed || suspended || Current==null) { Log.Write("request.skipped",null,"未发出请求：没有当前口上或引擎正在执行","suspended",suspended,"hasEvent",Current!=null); return; }
             var expected=Current; long requestedRevision=revision; await storyCheck;
             if(disposed || suspended || Current!=expected || requestedRevision!=revision || Busy) return;
-            if(!CanGenerate) { Text=Current.Original; DisplayMode="original"; Status="剧情保护："+Story.Reason; Log.Write("request.protected",null,Status,"eventId",Current.EventId,"kind",Story.Kind); Notify(); return; }
+            if(!CanGenerate) { Text=Current.Original; DisplayMode="original"; Status="手动关闭："+Story.Reason; Log.Write("request.protected",null,Status,"eventId",Current.EventId,"kind",Story.Kind); Notify(); return; }
             Stop(); var snapshot=Current; long ticket=revision;
             string previous=lastReply; int attempt=regenerate ? ++regenerationAttempt : 0;
             var settings=Settings.Copy(); var source=new CancellationTokenSource(); request=source;

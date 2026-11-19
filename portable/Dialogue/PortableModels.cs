@@ -20,9 +20,9 @@ namespace MinorShift.Emuera.AI
     internal sealed class AiSettings
     {
         internal string TraceId;
-        public bool Enabled { get; set; }
+        public bool Enabled { get; set; }=true;
         public bool AutoGenerate { get; set; }=true;
-        public bool ProtectStory { get; set; }=true;
+        public bool ProtectStory { get; set; } // Legacy setting; automatic protection has been removed.
         public bool GenerateWithoutOriginal { get; set; }
         public bool TranslationEnabled { get; set; }
         public string TranslationLanguage { get; set; }="zh-CN";
@@ -52,7 +52,7 @@ namespace MinorShift.Emuera.AI
             if(d==null) throw new FormatException("设置格式不正确。");
             var supplement=Json.Bool(d,"GenerateWithoutOriginal");
             string language=Json.Text(d,"TranslationLanguage","zh-CN"); Translation.LanguageName(language);
-            return new AiSettings { ProtectStory=Json.Bool(d,"ProtectStory",true), TranslationEnabled=Json.Bool(d,"TranslationEnabled"), TranslationLanguage=language, TranslationTokens=Preset.ReadTokenLimit(Json.Get(d,"TranslationTokens",2048),"翻译输出上限 "), GenerateWithoutOriginal=supplement, Enabled=Json.Bool(d,"Enabled"), AutoGenerate=Json.Bool(d,"AutoGenerate",true), Endpoint=Json.Text(d,"Endpoint","https://api.openai.com/v1"),Model=Json.Text(d,"Model"),ApiKey=Json.Text(d,"ApiKey"),TimeoutSeconds=Math.Clamp(Json.Int(d,"TimeoutSeconds",20),2,180),OutputTokens=Preset.ReadTokenLimit(Json.Get(d,"OutputTokens",400),"设置中的输出上限 "),PresetJson=Json.Text(d,"PresetJson"),CharacterDescription=Json.Text(d,"CharacterDescription"),Personality=Json.Text(d,"Personality"),World=Json.Text(d,"World"),UseGameStyle=Json.Bool(d,"UseGameStyle",true),UsePresetOutputTokens=Json.Bool(d,"UsePresetOutputTokens"),ThinkingMode=Json.Text(d,"ThinkingMode","auto") };
+            return new AiSettings { ProtectStory=false, TranslationEnabled=Json.Bool(d,"TranslationEnabled"), TranslationLanguage=language, TranslationTokens=Preset.ReadTokenLimit(Json.Get(d,"TranslationTokens",2048),"翻译输出上限 "), GenerateWithoutOriginal=supplement, Enabled=Json.Bool(d,"Enabled",true), AutoGenerate=Json.Bool(d,"AutoGenerate",true), Endpoint=Json.Text(d,"Endpoint","https://api.openai.com/v1"),Model=Json.Text(d,"Model"),ApiKey=Json.Text(d,"ApiKey"),TimeoutSeconds=Math.Clamp(Json.Int(d,"TimeoutSeconds",20),2,180),OutputTokens=Preset.ReadTokenLimit(Json.Get(d,"OutputTokens",400),"设置中的输出上限 "),PresetJson=Json.Text(d,"PresetJson"),CharacterDescription=Json.Text(d,"CharacterDescription"),Personality=Json.Text(d,"Personality"),World=Json.Text(d,"World"),UseGameStyle=Json.Bool(d,"UseGameStyle",true),UsePresetOutputTokens=Json.Bool(d,"UsePresetOutputTokens"),ThinkingMode=Json.Text(d,"ThinkingMode","auto") };
         }
     }
     // Matches the desktop serializer's dictionaries/arrays. Explicit writing also supports trimming.

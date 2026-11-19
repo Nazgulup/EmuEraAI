@@ -24,11 +24,9 @@
 dotnet restore portable/Tests/EmueraAI.Portable.Tests.csproj --configfile portable/NuGet.Config
 dotnet build portable/Tests/EmueraAI.Portable.Tests.csproj --no-restore
 $projectRoot = (Get-Location).Path
-dotnet portable/Tests/bin/Debug/net10.0/EmueraAI.Portable.Tests.dll $projectRoot --templates
 dotnet portable/Tests/bin/Debug/net10.0/EmueraAI.Portable.Tests.dll $projectRoot --function-document
 dotnet portable/Tests/bin/Debug/net10.0/EmueraAI.Portable.Tests.dll $projectRoot --story
 ```
 
-`--templates` 的真实游戏目录匹配检查是可选的；仓库不包含游戏，缺少这些本地目录时明确跳过，其他中性检查继续执行。现成内置模板已在仓库，不需要这些游戏即可编译运行。`--scan-story`/`--bundle-story` 是本地维护工具，依赖维护者自己的游戏清单与扫描结果，不属于普通构建步骤。
 
 手机页面测试在 `portable/era-core/EraCore.Web` 运行 `npm ci` 和 `npx vitest run`。对应浏览器回放脚本位于 `scripts`，需要先生成相关中性宿主记录，并安装 Playwright 的浏览器依赖。本项目的浏览器回放不等于 Android 真机测试。

@@ -25,7 +25,7 @@ namespace MinorShift.Emuera.AI
         int page;
         bool loading,saving;
         string lastState="";
-        static readonly string[] Modes={"自动（日常优先 AI）","手动优先 AI","保留原文"};
+        static readonly string[] Modes={"默认开启 AI","手动优先 AI","保留原文"};
         internal DataGridView FunctionGrid { get { return grid; } }
         internal TextBox SearchBox { get { return query; } }
         public AiFunctionDocumentWindow(AiController controller,StoryFunctionDocument document)
@@ -53,10 +53,10 @@ namespace MinorShift.Emuera.AI
             previous.Click+=(s,e)=> { page--; RefreshRows(); }; next.Click+=(s,e)=> { page++; RefreshRows(); };
             save.Click+=async(s,e)=> { try { await SaveChangesAsync(); } catch(Exception ex) { MessageBox.Show(this,ex.Message,"保存函数选择"); } };
             export.Click+=async(s,e)=> {
-                using(var dialog=new SaveFileDialog { Filter="函数清单 JSON|*.json",FileName="era-function-template.json",RestoreDirectory=true })
+                using(var dialog=new SaveFileDialog { Filter="函数清单 JSON|*.json",FileName="era-function-switches.json",RestoreDirectory=true })
                     if(dialog.ShowDialog(this)==DialogResult.OK) try { string raw=await Task.Run(()=>document.Export()); File.WriteAllText(dialog.FileName,raw,new UTF8Encoding(false)); } catch(Exception ex) { MessageBox.Show(this,ex.Message,"导出失败"); }
             };
-            var hint=new Label { Dock=DockStyle.Bottom,Height=55,Padding=new Padding(10),Text="勾选后优先 AI；取消勾选保留原文。自动模式只允许明确日常，剧情调用仍保护。\n启用 AI 自动生成时，保存会生成当前允许的口上，不重复执行游戏。备注只用于整理。" };
+            var hint=new Label { Dock=DockStyle.Bottom,Height=55,Padding=new Padding(10),Text="勾选后优先 AI；取消勾选保留原文。默认全部开启；可手动关闭指定剧情/函数。\n启用 AI 自动生成时，保存会生成当前允许的口上，不重复执行游戏。备注只用于整理。" };
             Controls.Add(grid); Controls.Add(details); Controls.Add(hint); Controls.Add(actions); Controls.Add(search); Controls.Add(status);
             timer.Tick+=(s,e)=>RefreshStatus();
             Shown+=async(s,e)=> { timer.Start(); RefreshStatus(); await document.Start(); if(!IsDisposed) RefreshRows(); };
@@ -65,7 +65,7 @@ namespace MinorShift.Emuera.AI
         void RefreshStatus()
         {
             if(IsDisposed) return;
-            status.Text="内置模板："+(controller.StoryTemplate.Name.Length>0 ? controller.StoryTemplate.Name : "未套用")+"  ·  "+controller.StoryTemplate.Reason+"\n"+document.Reason+(document.State=="scanning" ? "  "+document.Done+"/"+document.Total : "");
+            status.Text="默认开启 AI · 可手动关闭剧情/函数\n"+document.Reason+(document.State=="scanning" ? "  "+document.Done+"/"+document.Total : "");
             if(document.State=="ready" && lastState!="ready") RefreshRows(); lastState=document.State;
             save.Enabled=document.State=="ready" && edits.Count>0 && !saving; export.Enabled=document.State=="ready" && !saving;
         }
@@ -82,7 +82,7 @@ namespace MinorShift.Emuera.AI
                 {
                     var source=Json.Object(item); string key=Json.Text(source,"key"); Dictionary<string,object> draft;
                     var values=edits.TryGetValue(key,out draft) ? draft : source; string action=Json.Text(values,"action"), classification=Json.Text(source,"classification");
-                    int i=grid.Rows.Add(action=="allow" || (action=="auto" && classification=="routine"),Json.Text(source,"function"),Modes[action=="allow" ? 1 : action=="deny" ? 2 : 0],classification=="routine" ? "日常候选" : classification=="story" ? "剧情保护" : "不确定",Json.Text(source,"file")+":"+Json.Int(source,"line"),Json.Text(values,"note"));
+                    int i=grid.Rows.Add(action!="deny",Json.Text(source,"function"),Modes[action=="allow" ? 1 : action=="deny" ? 2 : 0],classification=="routine" ? "日常候选" : classification=="story" ? "剧情候选" : "不确定",Json.Text(source,"file")+":"+Json.Int(source,"line"),Json.Text(values,"note"));
                     grid.Rows[i].Tag=source;
                 }
             }
@@ -99,7 +99,7 @@ namespace MinorShift.Emuera.AI
             else action=mode==1 ? "allow" : mode==2 ? "deny" : "auto";
             loading=true;
             row.Cells["Mode"].Value=Modes[action=="allow" ? 1 : action=="deny" ? 2 : 0];
-            row.Cells["Allow"].Value=action=="allow" || (action=="auto" && Json.Text(source,"classification")=="routine");
+            row.Cells["Allow"].Value=action!="deny";
             loading=false;
             string key=Json.Text(source,"key"); edits[key]=new Dictionary<string,object>{{"key",key},{"action",action},{"note",Convert.ToString(row.Cells["Note"].Value)}};
             save.Text="保存选择（"+edits.Count+"）"; save.Enabled=!saving;

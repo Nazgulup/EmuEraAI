@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json;
 using MinorShift.Emuera.AI;
 using MinorShift.Emuera.Output;
@@ -20,12 +20,6 @@ internal sealed partial class BridgeHost
     private int _translationVersion;
     private StoryFunctionDocument? _storyDocument;
 
-    private async Task PrepareTemplatesAndDocumentAsync()
-    {
-        var controller=_aiController; if(controller==null) return;
-        await controller.PrepareStoryTemplatesAsync();
-        if(!_disposed && controller.StoryTemplate.State!="matched") await BuildStoryDocumentAsync();
-    }
     private async Task BuildStoryDocumentAsync()
     {
         var document=_storyDocument; if(document==null || _disposed) return;
@@ -86,7 +80,7 @@ internal sealed partial class BridgeHost
             string? raw = await SecureStorage.Default.GetAsync(AiSettingsKey);
             if (!string.IsNullOrWhiteSpace(raw)) settings = AiSettings.Parse(raw);
         }
-        catch { warning = "AI 设置无法读取，已关闭 AI 并使用原口上。"; }
+        catch { settings.Enabled=false; warning = "AI 设置无法读取，已关闭 AI 并使用原口上。"; }
         if (_disposed) return;
         _aiController = new AiController(settings, CreateAiClient(), new AiLog(Path.Combine(FileSystem.AppDataDirectory, "ai", "logs", "generation.log")));
         _aiController.Changed += PushAiState;
@@ -105,18 +99,10 @@ internal sealed partial class BridgeHost
         var policy=new StoryPolicy(
             () => StoryPolicy.Enumerate(dir=>tree.ListDirectories(dir),dir=>tree.ListFiles(dir)),
             path => { using var stream=tree.OpenRead(path) ?? throw new FileNotFoundException("脚本不可读取",path); using var buffer=new MemoryStream(); stream.CopyTo(buffer); return string.Join("\n",MinorShift.Emuera.Runtime.Utils.EncodingHandler.ReadAllLinesFromBytes(buffer.ToArray())); },
-            Path.Combine(FileSystem.AppDataDirectory,"ai","story-rules",StoryPolicy.Digest(tree.Root)+".json"),
-            () => {
-                string csv="";
-                var csvDir=tree.ListDirectories("").FirstOrDefault(p=>p.Equals("CSV",StringComparison.OrdinalIgnoreCase));
-                var csvPath=csvDir==null ? null : tree.ListFiles(csvDir).FirstOrDefault(p=>p.Replace('\\','/').EndsWith("/GAMEBASE.CSV",StringComparison.OrdinalIgnoreCase));
-                if(csvPath!=null) { using var input=tree.OpenRead(csvPath) ?? throw new FileNotFoundException(); using var bytes=new MemoryStream(); input.CopyTo(bytes); csv=string.Join("\n",MinorShift.Emuera.Runtime.Utils.EncodingHandler.ReadAllLinesFromBytes(bytes.ToArray())); }
-                using var bundle=FileSystem.OpenAppPackageFileAsync("story-templates.zip").GetAwaiter().GetResult();
-                return StoryTemplateCatalog.Match(bundle,StoryGameIdentity.Parse(tree.Name,csv));
-            });
+            Path.Combine(FileSystem.AppDataDirectory,"ai","story-rules",StoryPolicy.Digest(tree.Root)+".json"));
         _aiController.ConfigureStoryPolicy(policy);
         _storyDocument=new StoryFunctionDocument(policy,Path.Combine(FileSystem.AppDataDirectory,"ai","story-documents",StoryPolicy.Digest(tree.Root)+".json"),PushStoryDocumentProgress);
-        _ = PrepareTemplatesAndDocumentAsync();
+        _ = BuildStoryDocumentAsync();
         _aiController.ConfigureGameStyle(
             () => GameStyleCorpus.Read(tree.Name,GameStyleCorpus.Enumerate(dir => tree.ListDirectories(dir),dir => tree.ListFiles(dir)),
                 path => tree.OpenRead(path), bytes => string.Join("\n",MinorShift.Emuera.Runtime.Utils.EncodingHandler.ReadAllLinesFromBytes(bytes))),
@@ -162,7 +148,6 @@ internal sealed partial class BridgeHost
             {"hasEvent", c.Current != null}, {"character", c.Current?.Character ?? ""}, {"hasOriginal", !string.IsNullOrEmpty(c.Current?.Original)},
             {"mode", c.DisplayMode}, {"enabled", c.Settings.Enabled}, {"supplementEnabled", c.Settings.GenerateWithoutOriginal}, {"eventId", c.Current?.EventId ?? ""},
             {"canGenerate",c.CanGenerate},{"storyReady",c.StoryReady},{"storyKind",c.Story.Kind},{"storyReason",c.Story.Reason},{"storyLocation",c.Story.Location},{"canSetFunctionRule",c.StoryReady && c.Story.RuleKey.Length>0},{"storyTurn",c.Current?.StoryTurn ?? 0},
-            {"storyTemplateName",c.StoryTemplate.Name},{"storyTemplateState",c.StoryTemplate.State},{"storyTemplateReason",c.StoryTemplate.Reason},
             {"lineIndices", _aiPendingFrame?.LineIndices ?? []}, {"insertBeforeLine", _aiPendingFrame?.InsertBeforeLine ?? -1}, {"displayRevision", _aiPendingRevision}
         });
     }
@@ -215,7 +200,7 @@ internal sealed partial class BridgeHost
                 case "aiStoryDocumentExport":
                     if(_storyDocument==null) throw new InvalidOperationException("函数清单尚未就绪");
                     string documentText=await Task.Run(()=>_storyDocument.Export());
-                    string documentPath=Path.Combine(FileSystem.CacheDirectory,"era-function-template.json");
+                    string documentPath=Path.Combine(FileSystem.CacheDirectory,"era-function-switches.json");
                     await File.WriteAllTextAsync(documentPath,documentText);
                     await Share.Default.RequestAsync(new ShareFileRequest { Title="导出可编辑函数清单",File=new ShareFile(documentPath,"application/json") }); break;
                 case "aiStoryRule":
@@ -223,12 +208,12 @@ internal sealed partial class BridgeHost
                     { c.Log.Write("story.command-rejected",null,"段落已经变化，忽略旧界面的规则请求"); throw new InvalidOperationException("段落已经变化，请核对当前判断后再操作。"); }
                     await c.SetStoryRuleAsync(root.GetProperty("action").GetString() ?? "",root.GetProperty("scope").GetString() ?? ""); break;
                 case "aiStoryImport":
-                    var ruleFile=await FilePicker.Default.PickAsync(new PickOptions { PickerTitle="导入本游戏剧情规则模板" });
-                    if(ruleFile!=null) { using var ruleStream=await ruleFile.OpenReadAsync(); string ruleText=Preset.ReadFile(ruleStream); await c.ImportStoryRulesAsync(ruleText); SendAi("aiNotice","text","已导入本游戏剧情规则；只对脚本指纹一致的函数生效。"); }
+                    var ruleFile=await FilePicker.Default.PickAsync(new PickOptions { PickerTitle="导入本游戏函数开关" });
+                    if(ruleFile!=null) { using var ruleStream=await ruleFile.OpenReadAsync(); string ruleText=Preset.ReadFile(ruleStream); await c.ImportStoryRulesAsync(ruleText); SendAi("aiNotice","text","已导入本游戏函数开关；关闭记录按文件与函数保存。"); }
                     break;
                 case "aiStoryExport":
                     string storyPath=Path.Combine(FileSystem.CacheDirectory,"era-story-rules.json"); File.WriteAllText(storyPath,c.ExportStoryRules());
-                    await Share.Default.RequestAsync(new ShareFileRequest { Title="导出本游戏剧情规则",File=new ShareFile(storyPath,"application/json") }); break;
+                    await Share.Default.RequestAsync(new ShareFileRequest { Title="导出本游戏函数开关",File=new ShareFile(storyPath,"application/json") }); break;
                 case "aiRestore": c.RestoreOriginal(); break;
                 case "aiLog": SendAi("aiLog", "text", c.Log.ReadRecent()); break;
                 case "aiStyle": SendAi("aiStyle", "text", c.StyleReport); break;

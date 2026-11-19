@@ -28,7 +28,6 @@ static class Tests
         EraCore.Maui.FileSystem.PackageDirectory=Path.GetDirectoryName(StoryBundle.BundlePath(root))!;
         if(args.Length > 1 && args[1] == "--bundle-story") { StoryBundle.Build(root); return; }
         if(args.Length > 1 && args[1] == "--match-story") { StoryBundle.VerifyMatches(root); return; }
-        if(args.Length > 1 && args[1] == "--templates") { await StoryTemplateTests.Run(root); return; }
         if(args.Length > 1 && args[1] == "--function-document") { await FunctionDocumentTests.Run(root); return; }
         if(args.Length > 1 && args[1] == "--scan-story") { StoryScan.Run(root); return; }
         if(args.Length > 1 && args[1] == "--story") { await StoryTests.Run(root); return; }

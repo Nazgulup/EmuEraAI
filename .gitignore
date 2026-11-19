@@ -25,7 +25,6 @@
 .env.*
 *.apk
 *.zip
-!portable/era-core/EraCore.Maui/Resources/Raw/story-templates.zip
 /tests/bin/
 /tests/game/
 /tests/encoding/

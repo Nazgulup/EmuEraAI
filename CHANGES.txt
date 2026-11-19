@@ -1,4 +1,14 @@
-﻿0.9 (Windows, file version 1.824.0.14), 2026-11-19:
+﻿0.10 Windows (1.824.0.15) / 0.12 Android (versionCode 17), 2026-11-19:
+Remove built-in story-template packaging/matching and automatic story/unknown gates.
+Default AI on for new settings. Honor existing global opt-out and manual disables.
+Always create an editable function document; automatic entries are checked by default.
+Manual event off expires on the next input. Per-game function off also covers parent
+calls, survives source updates, cancels in-flight requests and blocks supplementation.
+Restoring default clears old fingerprint disables for that same file/function.
+Preserve original fallback, game-state isolation, translation and pronoun validation.
+Update Windows/mobile controls, reason logs and GitHub source folder. No live API calls.
+
+0.9 (Windows, file version 1.824.0.14), 2026-11-19:
 Embed the same 182-template catalog used by Android. Share keyword/version/code
 matching and fingerprint verification across .NET Framework and portable .NET.
 Automatically build function documents for unmatched games. Add WinForms search,

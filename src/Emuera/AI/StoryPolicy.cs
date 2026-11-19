@@ -37,9 +37,8 @@ namespace MinorShift.Emuera.AI
         readonly Dictionary<string,StoryFunction[]> cache=new Dictionary<string,StoryFunction[]>(StringComparer.OrdinalIgnoreCase);
         readonly Dictionary<string,string> rules=new Dictionary<string,string>(StringComparer.Ordinal);
         string[] paths;
-        readonly Func<StoryTemplateData> templateLoader;
-        bool templatesLoaded;
-        public StoryTemplateData Template { get; private set; }=new StoryTemplateData();
+        
+        public StoryTemplateData Template { get; private set; }=new StoryTemplateData { State="removed", Reason="已取消模板；默认开启 AI，只按手动关闭记录保留原文" };
         public string Warning="";
         static readonly Regex Label=new Regex(@"^\s*@([^\s,;(]+)");
         static readonly Regex StoryName=new Regex(@"STORY|SCENARIO|SCENE|ENDING|EPILOG|PROLOG|CONFESS|FLASHBACK|FIRST(?:_|$)|EVENT_(?:FIRST|END|LOAD)|M_KOJO_EVENT|MESSAGE_SUB_EVENT|告白|结局|結局|回想|剧情|劇情|初対面|初登場|初次|初见|初見|エンディング|シナリオ|回忆|回憶|主线|主線",RegexOptions.IgnoreCase);
@@ -51,21 +50,11 @@ namespace MinorShift.Emuera.AI
         static readonly Regex SafeStatement=new Regex(@"^(?:PRINT[A-Z_]*|DATAFORM|DATA|DATALIST|ENDLIST|PRINTDATA[A-Z]*|ENDDATA|IF|ELSEIF|ELSE|ENDIF|SIF|SELECTCASE|CASE|CASEELSE|ENDSELECT|RETURNF?|LOCAL[A-Z]*|DRAWLINE|CUSTOMDRAWLINE|SETCOLOR[A-Z]*|SETBGCOLOR[A-Z]*|RESETCOLOR|RESETBGCOLOR|FONT[A-Z]*|ALIGNMENT|SETFONT|WAIT|WAITANYKEY|TIMES|REPEAT|REND|FOR|NEXT|WHILE|WEND|BREAK|CONTINUE)\b",RegexOptions.IgnoreCase);
         public StoryPolicy(Func<IEnumerable<string>> files,Func<string,string> read,string path=null,Func<StoryTemplateData> templates=null)
         {
-            listFiles=files; readText=read; rulesPath=path; templateLoader=templates;
-            if(templates!=null) Template.Reason="正在按游戏名称关键词和版本匹配内置模板";
-            if(path!=null && File.Exists(path)) try { Import(File.ReadAllText(path),false); } catch { Warning="本游戏规则无法读取，已回到保守判断。"; }
+            listFiles=files; readText=read; rulesPath=path;
+            if(path!=null && File.Exists(path)) try { Import(File.ReadAllText(path),false); } catch { Warning="本游戏手动开关无法读取，使用默认开启。"; }
         }
-        public void PrepareTemplates()
-        {
-            lock(cache)
-            {
-                if(templatesLoaded) return;
-                templatesLoaded=true;
-                if(templateLoader==null) return;
-                try { Template=templateLoader() ?? new StoryTemplateData(); }
-                catch(Exception ex) { Template=new StoryTemplateData { State="error",Reason="内置模板无法读取，继续本地保守判断（"+ex.GetType().Name+"）" }; }
-            }
-        }
+        // Kept for old callers; templates are never read or applied.
+        public void PrepareTemplates() { }
         public static string Normalize(string path) { return (path ?? "").Replace('\\','/').TrimStart('/'); }
         public static IEnumerable<string> Enumerate(Func<string,IEnumerable<string>> dirs,Func<string,IEnumerable<string>> files)
         {
@@ -144,49 +133,35 @@ namespace MinorShift.Emuera.AI
             if(found.Length!=1) throw new FormatException("函数缺失、重复或使用未识别声明，保守保留");
             return found[0];
         }
+        static string FunctionPrefix(string key) { return key.Substring(0,key.LastIndexOf('|')+1); }
+        bool Denied(string prefix) { return rules.Any(r=>r.Value=="deny" && r.Key.StartsWith(prefix,StringComparison.Ordinal)); }
         public StoryDecision Evaluate(string[] context)
         {
             lock(cache)
             {
-                PrepareTemplates();
-                var decision=new StoryDecision();
-                if(context==null || context.Length==0) { decision.Reason="缺少完整调用位置，默认保留原文"; return decision; }
-                try
+                var decision=new StoryDecision { Allowed=true,Kind="default-allow",Reason="默认开启 AI；未命中手动关闭记录" };
+                var leaves=new List<StoryFunction>(); var problems=new List<string>();
+                foreach(string site in (context ?? new string[0]).Distinct())
                 {
-                    var leaves=new List<StoryFunction>(); bool risky=false, unknownParent=false, denied=false, templateUnknown=false;
-                    foreach(string site in context.Distinct())
+                    var parts=site.Split('|'); int line;
+                    if(parts.Length!=4 || !int.TryParse(parts[2],out line)) { problems.Add("调用位置不完整"); continue; }
+                    // Explicit disables are attached to game/file/function and survive source edits.
+                    string prefix=Normalize(parts[1]).ToLowerInvariant()+"|"+parts[0].ToUpperInvariant()+"|";
+                    if(Denied(prefix)) { decision.Allowed=false; decision.Kind="manual-deny"; decision.Reason="命中本游戏手动关闭记录（含父调用）"; decision.Location=parts[1]+":"+line; }
+                    try
                     {
-                        var parts=site.Split('|'); int line;
-                        if(parts.Length!=4 || !int.TryParse(parts[2],out line)) throw new FormatException("调用位置不完整");
-                        var f=Resolve(parts[0],parts[1]); bool leaf=parts[3]=="leaf";
-                        if(leaf) leaves.Add(f);
-                        string classification;
-                        if(leaf && Template.Rules.TryGetValue(f.Key,out classification))
-                        {
-                            decision.TemplateRule=decision.TemplateRule.Length==0 ? classification : decision.TemplateRule+","+classification;
-                            if(classification=="story") { risky=true; decision.Location=f.File+":"+line; }
-                            if(classification=="unknown") templateUnknown=true;
-                        }
-                        string action; if(rules.TryGetValue(f.Key,out action) && action=="deny") denied=true;
-                        if(StoryName.IsMatch(f.Name) || StoryName.IsMatch(f.File) || f.GatedLines.Contains(line) || (leaf && f.Kind=="story")) { risky=true; decision.Location=f.File+":"+line; }
-                        if(!leaf && f.Kind=="story" && !(f.Name.Equals("SYSTEM_TITLE",StringComparison.OrdinalIgnoreCase) && f.RepeatingInputLines.Contains(line))) { risky=true; decision.Location=f.File+":"+line; }
-                        if(!leaf && !Infrastructure.IsMatch(f.Name) && !RoutineName.IsMatch(f.Name) && !Regex.IsMatch(f.Name,@"^(?:M_)?KOJO_MESSAGE_COM(?:_K\d+)?$",RegexOptions.IgnoreCase)) unknownParent=true;
-                        if(!leaf && (f.HasEventFlags || (f.Name.Equals("SYSTEM_TITLE",StringComparison.OrdinalIgnoreCase) && !f.RepeatingInputLines.Contains(line)))) unknownParent=true;
+                        var f=Resolve(parts[0],parts[1]);
+                        if(parts[3]=="leaf") leaves.Add(f);
+                        if(Denied(FunctionPrefix(f.Key))) { decision.Allowed=false; decision.Kind="manual-deny"; decision.Reason="命中本游戏手动关闭记录（含父调用）"; decision.Location=f.File+":"+line; }
                     }
-                    leaves=leaves.GroupBy(f=>f.Key).Select(g=>g.First()).ToList();
-                    decision.RuleKey=leaves.Count==1 ? leaves[0].Key : "";
-                    if(decision.Location.Length==0 && leaves.Count>0) decision.Location=leaves[0].File+":"+leaves[0].Start+" @"+leaves[0].Name;
-                    if(denied) { decision.Kind="manual-deny"; decision.Reason="命中本游戏手动禁止规则（含父调用）"; return decision; }
-                    if(risky) { decision.Kind="story"; decision.Reason="当前调用链处于剧情函数或事件标记分支；保护优先于函数允许规则"; return decision; }
-                    if(leaves.Count==0) { decision.Reason="没有可核对的正文/输入所在函数"; return decision; }
-                    bool manual=leaves.All(f=>rules.ContainsKey(f.Key) && rules[f.Key]=="allow");
-                    if(manual) { decision.Allowed=true; decision.Kind="manual-allow"; decision.Reason="命中本游戏手动允许规则，脚本指纹一致，未命中剧情保护"; return decision; }
-                    if(templateUnknown) { decision.Reason="内置模板将该函数标为不确定，保留原文"; return decision; }
-                    if(unknownParent) { decision.Reason="父调用未确认为日常调度，默认保留原文"; return decision; }
-                    if(leaves.All(f=>f.Kind=="routine")) { decision.Allowed=true; decision.Kind="routine"; decision.Reason=(decision.TemplateRule.Length>0 ? "已核对内置模板和脚本指纹；" : "")+"正文所在函数均通过日常口上静态检查，当前调用链未命中剧情信号"; return decision; }
-                    decision.Reason=leaves.First(f=>f.Kind!="routine").Reason;
+                    catch(Exception ex) { problems.Add(ex.Message); }
                 }
-                catch(Exception ex) { decision.Reason="分析无法确认："+ex.Message; }
+                leaves=leaves.GroupBy(f=>f.Key).Select(g=>g.First()).ToList();
+                decision.RuleKey=leaves.Count==1 ? leaves[0].Key : "";
+                if(decision.Location.Length==0 && leaves.Count>0) decision.Location=leaves[0].File+":"+leaves[0].Start+" @"+leaves[0].Name;
+                if(decision.Allowed && leaves.Count>0 && leaves.All(f=>RuleAction(f.Key)=="allow")) { decision.Kind="manual-allow"; decision.Reason="用户已开启此函数的 AI"; }
+                if(decision.Allowed && (context==null || context.Length==0 || problems.Count>0)) decision.Reason+="；来源信息不完整，仍按默认开启，可仅关闭本段";
+                if(problems.Count>0) decision.Reason+="（"+string.Join("；",problems.Distinct().Take(3))+"）";
                 return decision;
             }
         }
@@ -194,21 +169,16 @@ namespace MinorShift.Emuera.AI
         {
             if(string.IsNullOrEmpty(key)) throw new FormatException("本段涉及多个函数或来源不明，请使用仅本段允许/禁止。");
             if(action!="allow" && action!="deny" && action!="auto") throw new FormatException("规则操作无效。");
-            lock(cache)
-            {
-                string old; bool had=rules.TryGetValue(key,out old);
-                if(action=="auto") rules.Remove(key); else rules[key]=action;
-                try { Save(); } catch { if(had) rules[key]=old; else rules.Remove(key); throw; }
-            }
+            ApplyRules(new Dictionary<string,string>{{key,action}});
         }
-        public string RuleAction(string key) { lock(cache) { string action; return rules.TryGetValue(key,out action) ? action : "auto"; } }
+        public string RuleAction(string key) { lock(cache) { string action; return Denied(FunctionPrefix(key)) ? "deny" : rules.TryGetValue(key,out action) ? action : "auto"; } }
         public void ApplyRules(Dictionary<string,string> edits)
         {
             lock(cache)
             {
                 foreach(var edit in edits) if(!Regex.IsMatch(edit.Key,@"^[^|]+\|[^|]+\|[a-f0-9]{64}$") || (edit.Value!="auto" && edit.Value!="allow" && edit.Value!="deny")) throw new FormatException("函数规则无效");
                 var old=new Dictionary<string,string>(rules);
-                foreach(var edit in edits) { if(edit.Value=="auto") rules.Remove(edit.Key); else rules[edit.Key]=edit.Value; }
+                foreach(var edit in edits) { string prefix=FunctionPrefix(edit.Key); foreach(string oldKey in rules.Keys.Where(k=>k.StartsWith(prefix,StringComparison.Ordinal)).ToArray()) rules.Remove(oldKey); if(edit.Value!="auto") rules[edit.Key]=edit.Value; }
                 try { Save(); } catch { rules.Clear(); foreach(var r in old) rules[r.Key]=r.Value; throw; }
             }
         }
@@ -237,7 +207,7 @@ namespace MinorShift.Emuera.AI
         }
         public string Export()
         {
-            lock(cache) return Json.Codec().Serialize(new Dictionary<string,object>{{"schema",1},{"default","protect-unknown"},{"rules",rules.Select(r=>(object)new Dictionary<string,object>{{"key",r.Key},{"action",r.Value}}).ToArray()}});
+            lock(cache) return Json.Codec().Serialize(new Dictionary<string,object>{{"schema",1},{"default","allow"},{"rules",rules.Select(r=>(object)new Dictionary<string,object>{{"key",r.Key},{"action",r.Value}}).ToArray()}});
         }
         public void Import(string json,bool save=true)
         {

@@ -23,7 +23,7 @@ internal static class FunctionDocumentTests
         var daily=Json.Object(Json.Array(doc.Page("KOJO_DAILY",0,"")["rows"]).Single());
         Check(Json.Text(daily,"classification")=="routine" && Json.Text(daily,"action")=="auto","clear daily functions default to automatic AI eligibility");
         var unknown=Json.Object(Json.Array(doc.Page("KOJO_MISC",0,"unknown")["rows"]).Single());
-        Check(Json.Text(unknown,"action")=="auto" && !policy.Evaluate(["KOJO_MISC|ERB/local.erb|5|leaf"]).Allowed,"unknown functions are editable but not silently allowed");
+        Check(Json.Text(unknown,"action")=="auto" && policy.Evaluate(["KOJO_MISC|ERB/local.erb|5|leaf"]).Allowed,"unknown functions are enabled by default and editable");
         string key=Json.Text(unknown,"key");
         doc.Update([new Dictionary<string,object>{{"key",key},{"action","allow"},{"note","玩家确认可改写"}}]);
         Check(policy.Evaluate(["KOJO_MISC|ERB/local.erb|5|leaf"]).Allowed && doc.Export().Contains("玩家确认可改写"),"edited selection and user note persist in an importable document");
@@ -33,7 +33,7 @@ internal static class FunctionDocumentTests
         Check(invalid,"unlisted function keys cannot be authorized through document edits");
         source=source.Replace("Unclassified dialogue.","Changed dialogue.");
         var changedPolicy=new StoryPolicy(()=>["ERB/local.erb"],_=>source,rules);
-        using(var changed=new StoryFunctionDocument(changedPolicy,Path.Combine(run,"changed.json"),()=>{})) { await changed.Start(); Check(!changedPolicy.Evaluate(["KOJO_MISC|ERB/local.erb|5|leaf"]).Allowed,"source updates do not reuse old function permissions"); }
+        using(var changed=new StoryFunctionDocument(changedPolicy,Path.Combine(run,"changed.json"),()=>{})) { await changed.Start(); Check(changedPolicy.Evaluate(["KOJO_MISC|ERB/local.erb|5|leaf"]).Allowed && changedPolicy.Evaluate(["KOJO_MISC|ERB/local.erb|5|leaf"]).Kind=="default-allow","source updates return to default-on rather than inheriting old allow fingerprints"); }
         Check(!doc.Export().Contains("Calm dialogue.") && !doc.Export().Contains("Fixed plot."),"export includes function metadata and choices rather than game dialogue body");
         using(var broken=new StoryFunctionDocument(new StoryPolicy(()=>["missing.erb"],_=>throw new IOException()),Path.Combine(run,"broken.json"),()=>{})) { await broken.Start(); Check(broken.State=="ready" && broken.Reason.Contains("读取失败") && Json.Int(broken.Page("",0,""),"count")==0,"unreadable scripts are reported without inventing function permissions"); }
 
@@ -46,19 +46,19 @@ internal static class FunctionDocumentTests
         try
         {
             host.Start(); await host.Started.Task.WaitAsync(TimeSpan.FromSeconds(60)); await Until(()=>host.Document.State=="ready");
-            Check(host.Controller.StoryTemplate.State=="unmatched" && Json.Int(host.Document.Page("",0,""),"count")==2,"unmatched game automatically gets a function document before opening the editor");
+            Check(host.Controller.StoryTemplate.State=="removed" && Json.Int(host.Document.Page("",0,""),"count")==2,"every game automatically gets a function document without templates");
             var initial=Json.Codec().DeserializeObject(System.Text.Json.JsonSerializer.Serialize(host.Session!.Output.Snapshot));
             host.Session.Input.Submit(new InputFrame(Value:"1")); await Until(()=>host.Controller.Current!=null && host.Controller.StoryReady);
-            Check(client.Calls==0 && !host.Controller.CanGenerate,"unselected uncertain dialogue remains original");
+            await Until(()=>client.Calls==1 && !host.Controller.Busy); Check(host.Controller.CanGenerate && host.Controller.DisplayMode=="ai","uncertain dialogue automatically generates before any selection");
             await host.Command(new Dictionary<string,object>{{"type","aiStoryDocument"},{"query","KOJO_MISC"},{"page",0},{"kind",""}});
             var row=Json.Object(Json.Array(host.Document.Page("KOJO_MISC",0,"")["rows"]).Single()); string functionKey=Json.Text(row,"key");
             Dictionary<string,object> Edit(string id,string action) => new(){{"type","aiStoryDocumentSave"},{"documentId",id},{"edits",new object[]{new Dictionary<string,object>{{"key",functionKey},{"action",action},{"note","用户选择"}}}}};
-            await host.Command(Edit("old-document","allow")); Check(client.Calls==0 && !host.Controller.CanGenerate,"stale editor from another game cannot apply a function selection");
+            await host.Command(Edit("old-document","allow")); Check(client.Calls==1 && host.Controller.CanGenerate,"stale editor from another game cannot apply a function selection");
             string before=System.Text.Json.JsonSerializer.Serialize(host.Session.Output.Snapshot);
-            await host.Command(Edit(host.Document.Id,"allow")); await Until(()=>client.Calls==1 && !host.Controller.Busy);
+            await host.Command(Edit(host.Document.Id,"allow")); await Until(()=>client.Calls==2 && !host.Controller.Busy);
             Check(host.Controller.DisplayMode=="ai" && System.Text.Json.JsonSerializer.Serialize(host.Session.Output.Snapshot)==before,"saving an allowed function automatically prioritizes AI without replaying the game action");
             await host.Command(Edit(host.Document.Id,"deny")); await host.Command("aiGenerate");
-            Check(client.Calls==1 && host.Controller.DisplayMode=="original" && System.Text.Json.JsonSerializer.Serialize(host.Session.Output.Snapshot)==before,"unchecking a function immediately restores original and blocks regeneration without numeric changes");
+            Check(client.Calls==2 && host.Controller.DisplayMode=="original" && System.Text.Json.JsonSerializer.Serialize(host.Session.Output.Snapshot)==before,"unchecking a function immediately restores original and blocks regeneration without numeric changes");
             Check(host.Controller.Log.ReadRecent().Contains("story.document-edit") && host.Controller.Log.ReadRecent().Contains("story.document"),"document creation and selection decisions are logged");
             File.WriteAllText(Path.Combine(output,"generation.log"),host.Controller.Log.ReadRecent());
             File.WriteAllText(Path.Combine(output,"example-function-template.json"),host.Document.Export());

@@ -42,7 +42,7 @@ namespace MinorShift.Emuera.AI
         public AiSettings()
         {
             Endpoint="https://api.openai.com/v1"; Model=""; ApiKey=""; ProtectedKey="";
-            TimeoutSeconds=20; OutputTokens=400; AutoGenerate=true; ProtectStory=true; PresetJson="";
+            TimeoutSeconds=20; OutputTokens=400; Enabled=true; AutoGenerate=true; ProtectStory=false; PresetJson="";
             CharacterDescription=""; Personality=""; World=""; UseGameStyle=true; ThinkingMode="auto"; GameStyle="";
         }
         public AiSettings Copy() { return (AiSettings)MemberwiseClone(); }
@@ -58,7 +58,7 @@ namespace MinorShift.Emuera.AI
                     result.ApiKey=Encoding.UTF8.GetString(ProtectedData.Unprotect(Convert.FromBase64String(result.ProtectedKey),null,DataProtectionScope.CurrentUser));
                 return result;
             }
-            catch { warning="AI 设置无法读取，已关闭 AI 并使用原口上。"; return new AiSettings(); }
+            catch { warning="AI 设置无法读取，已关闭 AI 并使用原口上。"; return new AiSettings { Enabled=false }; }
         }
         public void Save(string path)
         {

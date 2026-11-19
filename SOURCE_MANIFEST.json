@@ -6,8 +6,8 @@
   },
   {
     "path": ".gitignore",
-    "bytes": 697,
-    "sha256": "69904ea8f37d8e9cc9ff7d0ee036811413ac5ef858e7ba0fd7539a6c5cc936b6"
+    "bytes": 630,
+    "sha256": "7f83d8add6beaee28022bcf5a3455b73116b049fd30e9fc9b9f7b837c7e3efba"
   },
   {
     "path": "build-android.ps1",
@@ -21,8 +21,8 @@
   },
   {
     "path": "CHANGES.txt",
-    "bytes": 14205,
-    "sha256": "d622a77d3825f5f374586a18f0f4222afdb27aa8a2572f163239a89218c81757"
+    "bytes": 14968,
+    "sha256": "0e812f65f725e249bfc70c7ee76b35a692a86770bc811b0f7c0b68402b76cc93"
   },
   {
     "path": "demo/CSV/Base.csv",
@@ -61,13 +61,13 @@
   },
   {
     "path": "docs/BUILD.md",
-    "bytes": 2251,
-    "sha256": "3f265601309b30d7c981d1138d167cb8a907881b5431ac666ce0786cf8d74144"
+    "bytes": 1779,
+    "sha256": "59863a8fa5798fcf1327a56bd8d3a718fa99bd66503b3b50547774dd27a78ce5"
   },
   {
     "path": "docs/TEMPLATES.md",
-    "bytes": 1651,
-    "sha256": "59ae9606d627e6b74a1c4a4f27c14130f5ce095359692fedbbf800924f6f9567"
+    "bytes": 1941,
+    "sha256": "d1882b3f971a1bfac9b83d2f4d40f9a98ecf345aaa5207f1985a2a7f3c4046a7"
   },
   {
     "path": "EmueraAI.exe.config",
@@ -106,13 +106,13 @@
   },
   {
     "path": "portable/Dialogue/PortableModels.cs",
-    "bytes": 7675,
-    "sha256": "16c9974a3d1404ee00bc3bf81134360b7a68d2241c01a6f9038ffaf2e3fbf7b5"
+    "bytes": 7711,
+    "sha256": "55e4227bae1c692100a1f0eb787b3132eeca34e93f6b85f19e1bed7983273287"
   },
   {
     "path": "portable/Dialogue/StoryFunctionDocument.cs",
-    "bytes": 5381,
-    "sha256": "bf35f2702b846ffcdd1f383d7b7c5fb9af387f57256b26dca26a9812b1ff7fcb"
+    "bytes": 5485,
+    "sha256": "45968cce4463ce7c98932480eaaf5d472c57df13e1809dc68dc95e3682336112"
   },
   {
     "path": "portable/Dialogue/StoryTemplateCatalog.cs",
@@ -1576,8 +1576,8 @@
   },
   {
     "path": "portable/era-core/EraCore.Maui/BridgeHost.Ai.cs",
-    "bytes": 21049,
-    "sha256": "b7fda92b05d41874ff7bbda792f11b1bb57715eb6e9e574135d2a116db51cdbe"
+    "bytes": 19736,
+    "sha256": "d74e5a2a6f335b07be25f893e499600beb563ca29875711b4d23122e66a1fad2"
   },
   {
     "path": "portable/era-core/EraCore.Maui/BridgeHost.cs",
@@ -1596,8 +1596,8 @@
   },
   {
     "path": "portable/era-core/EraCore.Maui/EraCore.Maui.csproj",
-    "bytes": 8361,
-    "sha256": "3aee5176456bffaa780df5a656aae8f9fc80e0795d6b25bfc76abe567363e91e"
+    "bytes": 8275,
+    "sha256": "184dc6370d7ae265d51ce6554580e7ceedcb7a4205b7b8368d4dae7e7dd500af"
   },
   {
     "path": "portable/era-core/EraCore.Maui/JsBridge/AndroidJsBridge.cs",
@@ -1698,11 +1698,6 @@
     "path": "portable/era-core/EraCore.Maui/Resources/AppIcon/appicon.svg",
     "bytes": 398,
     "sha256": "afc46984d2896ff87006d1fe25b226ecc2d740c500ae50d7756d01b34686d849"
-  },
-  {
-    "path": "portable/era-core/EraCore.Maui/Resources/Raw/story-templates.zip",
-    "bytes": 18230837,
-    "sha256": "89f0c2aec4d79b964365c3b04a159a09c25fe2d54fe80551396baf4eaa6738b1"
   },
   {
     "path": "portable/era-core/EraCore.Maui/Resources/Splash/splash.svg",
@@ -1911,8 +1906,8 @@
   },
   {
     "path": "portable/era-core/EraCore.Web/src/components/__tests__/AiDialoguePanel.test.ts",
-    "bytes": 14141,
-    "sha256": "ed8ca68b7ae1cf3f6d9ce9b7bf1d16f204d583413f6cf793ceae4b500e8e166c"
+    "bytes": 13836,
+    "sha256": "727d09b9f0c54f4f5cc5ea417f6ca767b6ef381eae5f377c3523d0325fb20747"
   },
   {
     "path": "portable/era-core/EraCore.Web/src/components/__tests__/InputBar.test.ts",
@@ -1941,8 +1936,8 @@
   },
   {
     "path": "portable/era-core/EraCore.Web/src/components/AiDialoguePanel.vue",
-    "bytes": 26028,
-    "sha256": "c7be55fcf61e363a1cf405aaf6383ab43eb8331a34017599caabc267801cc5a6"
+    "bytes": 25520,
+    "sha256": "3f582796c39beb13f36b8d13d887e9e118512daf87867be0d78572c8725e5e98"
   },
   {
     "path": "portable/era-core/EraCore.Web/src/components/AppShell.vue",
@@ -2426,8 +2421,8 @@
   },
   {
     "path": "portable/Tests/FunctionDocumentTests.cs",
-    "bytes": 8216,
-    "sha256": "22c64b06b534652ad2b2192043f247263a8ca32c0103c3dbf90a3d1c811ec369"
+    "bytes": 8473,
+    "sha256": "1deba684968cc2f7b00d5b7528142831ea19492754cec7f8ab3c499993addf17"
   },
   {
     "path": "portable/Tests/HostAiTests.cs",
@@ -2436,8 +2431,8 @@
   },
   {
     "path": "portable/Tests/Program.cs",
-    "bytes": 14793,
-    "sha256": "d7cd5a3327a07ff6c250b1e51d0730a496dafe4aa71e11936ddf41dd676d513d"
+    "bytes": 14688,
+    "sha256": "752077b2195626bba7ce370144a3b5a5f73f39d3860d421eb0ccf348f2b22481"
   },
   {
     "path": "portable/Tests/StoryBundle.cs",
@@ -2450,14 +2445,9 @@
     "sha256": "c7d4ec6fade81cdbe509572df49be4622b3a3661e2928fc44291db2dd27e7229"
   },
   {
-    "path": "portable/Tests/StoryTemplateTests.cs",
-    "bytes": 11926,
-    "sha256": "9f4452e7bc3455fe57b8c54e0fa84102cf4e86edc0f3b3f5298355dc883e1bcf"
-  },
-  {
     "path": "portable/Tests/StoryTests.cs",
-    "bytes": 10754,
-    "sha256": "a55509f45b9d88b1106d815f8690bbca4a604ef07730f70b2a801edf403e8399"
+    "bytes": 12663,
+    "sha256": "acebf6c2fdfb4e1bb58b19921a8022d7c19e87f6396c6c0b980ace57985e806e"
   },
   {
     "path": "portable/Tests/SupplementTests.cs",
@@ -2486,8 +2476,8 @@
   },
   {
     "path": "README.md",
-    "bytes": 3504,
-    "sha256": "6a99d1f5ccd84b325e2739fad6dd6fc09a4d2936e58f35712d42dc1b7429538c"
+    "bytes": 3325,
+    "sha256": "d1f92f7afb55fec564dbdcb842730eb47d6ef82a939fa5c7870e6ee904503921"
   },
   {
     "path": "setup-android.ps1",
@@ -2546,13 +2536,13 @@
   },
   {
     "path": "src/Emuera/AI/AiController.cs",
-    "bytes": 16866,
-    "sha256": "10aaa2329c82820a0a73e06a57e63f1382b0d6f6fadb32e4168f15abafb1b97a"
+    "bytes": 16646,
+    "sha256": "77369cf27633fc56afb0d48e6304d1956740af010e0a2e37be155add86d49551"
   },
   {
     "path": "src/Emuera/AI/AiFunctionDocumentWindow.cs",
-    "bytes": 9748,
-    "sha256": "5718465bb9b6cd90e786c3d7ae01cd27cecf630a3ce6a833021805c7eb2e0de6"
+    "bytes": 9637,
+    "sha256": "e84d6302097c2a37dc704c4dcf5a27dcc518bf578c8b3c023a7f90c55b05ada2"
   },
   {
     "path": "src/Emuera/AI/AiLog.cs",
@@ -2561,18 +2551,18 @@
   },
   {
     "path": "src/Emuera/AI/AiModels.cs",
-    "bytes": 4957,
-    "sha256": "fd9acf91686f328461104be0d5545bf2ea7d433e5c0983700ba5d0f686ab857d"
+    "bytes": 4988,
+    "sha256": "ae490c0384939a327e4c77ef62bc19fbf3bfc93a11beaeb0f70622bc994ce475"
   },
   {
     "path": "src/Emuera/AI/AiWindow.cs",
-    "bytes": 24534,
-    "sha256": "c99a1bd75d19a1ea35778d7418db1f69023fc598379efbd04e74ad295f5acb12"
+    "bytes": 24683,
+    "sha256": "7c5ce9f352255aadf965a48cf3b36fb12c8421b018c518710e832e164bad2724"
   },
   {
     "path": "src/Emuera/AI/DesktopStorySession.cs",
-    "bytes": 2820,
-    "sha256": "eb905dfe4140e1c1ebe3627ce6e00c9255683e30215ec1e8d4d40a2c60788ffb"
+    "bytes": 1926,
+    "sha256": "0318d733fc84455013a1ec5f3a1febc4f89202124daeded705712d5778cd01bb"
   },
   {
     "path": "src/Emuera/AI/DialogueDiagnostics.cs",
@@ -2621,8 +2611,8 @@
   },
   {
     "path": "src/Emuera/AI/StoryPolicy.cs",
-    "bytes": 21029,
-    "sha256": "4d0ee47569173584b91edbd24b8d7757daa9f54b8a624c4fc71f1e9362b1976a"
+    "bytes": 19033,
+    "sha256": "aa7d747e42a659e224e52f3feb03e8f421ec01779b49d104adaef7a2857d9e43"
   },
   {
     "path": "src/Emuera/Config/Config.cs",
@@ -2681,8 +2671,8 @@
   },
   {
     "path": "src/Emuera/Emuera.csproj",
-    "bytes": 13419,
-    "sha256": "2370d3c7e8b2ad6e5130c6b15731d981ee4da7cd1631e2ab6e051c7cf4a94eb7"
+    "bytes": 13539,
+    "sha256": "1eca5ca962d2a1242d1f6f2886fefd90897e2f4b2d3a5b919d6543a789b19ab7"
   },
   {
     "path": "src/Emuera/Forms/ClipBoardDialog.cs",
@@ -3121,8 +3111,8 @@
   },
   {
     "path": "src/Emuera/Properties/AssemblyInfo.cs",
-    "bytes": 1579,
-    "sha256": "fa14a19f8dc5ad7004d3412aca51b4823a02d053e7824f2a23f91d63d6ea0935"
+    "bytes": 1615,
+    "sha256": "9b0079474086df02dd7bb8f4bc8486b6734e95d0fb1506d9fa3f30545f1eb72a"
   },
   {
     "path": "src/Emuera/Properties/Resources.Designer.cs",
@@ -3196,18 +3186,18 @@
   },
   {
     "path": "Start-Demo.cmd",
-    "bytes": 1293,
-    "sha256": "11f30d60e631e1860d2dd0c4fdd332dccee6855b6ae2e9b7bdc1c584a44f6f98"
+    "bytes": 1483,
+    "sha256": "ebced66c37ded7dd6440db56ca3a0dbfb3606e0d930547c47f8b0c04d1863c22"
   },
   {
     "path": "Start-Loader.cmd",
-    "bytes": 1263,
-    "sha256": "b7d8fbf09b0487d9f10f8ceccdc14e318e4839e130b20fd8f95de429fb6773de"
+    "bytes": 1453,
+    "sha256": "2fa0354962c48a7adb2ba91944a65a7e463cf68de15376fdc7760d07c9bdf770"
   },
   {
     "path": "tests/CoreTests.cs",
-    "bytes": 63179,
-    "sha256": "a5089914f8dd4cb98191349dba378089b22f908ade28ee42541b6328033b4498"
+    "bytes": 63172,
+    "sha256": "f13b0fa7538e2ab9b1ed03a1ffdb4432a9034e1111c54ac53422c8f4a11a5a41"
   },
   {
     "path": "tests/run.ps1",

@@ -33,11 +33,11 @@ namespace MinorShift.Emuera.AI
                         try { foreach(var row in Json.Array(Json.Get(Json.Object(Json.Codec().DeserializeObject(File.ReadAllText(path))),"rules"))) { var item=Json.Object(row); string note=Json.Text(item,"note"); if(note.Length>0) notes[Json.Text(item,"key")]=note; } } catch { /* damaged notes cannot permit AI */ }
                     functions=policy.ReadDocument((done,total)=> { Done=done; Total=total; if(done==total || done%20==0) changed(); },message=>errors.Add(message),()=>cancel.IsCancellationRequested);
                     cancel.Token.ThrowIfCancellationRequested();
-                    State="ready"; Reason="已建立 "+functions.Length+" 个函数；明确日常默认优先 AI，剧情和不确定项默认保留"+(errors.Count>0 ? "；"+errors.Count+" 个脚本读取失败，已保留原文" : "");
+                    State="ready"; Reason="已建立 "+functions.Length+" 个函数；默认全部开启 AI，可取消勾选关闭指定剧情/函数"+(errors.Count>0 ? "；"+errors.Count+" 个脚本读取失败，未列出；默认开启 AI" : "");
                     Save(); changed();
                 }
                 catch(OperationCanceledException) { State="cancelled"; }
-                catch(Exception ex) { State="error"; Reason="函数清单未完成："+ex.GetType().Name+"；继续保守判断"; changed(); }
+                catch(Exception ex) { State="error"; Reason="函数清单未完成："+ex.GetType().Name+"；不影响默认生成，可仅关闭本段"; changed(); }
             }));
         }
         Dictionary<string,object> Row(StoryFunction f) => new Dictionary<string,object>{{"key",f.Key},{"file",f.File},{"function",f.Name},{"line",f.Start},{"classification",f.Kind},{"reason",f.Reason},{"action",policy.RuleAction(f.Key)},{"note",notes.TryGetValue(f.Key,out string note) ? note : ""}};
@@ -69,7 +69,7 @@ namespace MinorShift.Emuera.AI
         }
         public string Export()
         {
-            lock(notes) { if(State!="ready") throw new InvalidOperationException("请等待函数清单完成"); return Json.Codec().Serialize(new Dictionary<string,object>{{"schema",1},{"default","protect-unknown"},{"document","generated-functions"},{"rules",functions.Select(f=>(object)Row(f)).ToArray()},{"readErrors",errors.ToArray()}}); }
+            lock(notes) { if(State!="ready") throw new InvalidOperationException("请等待函数清单完成"); return Json.Codec().Serialize(new Dictionary<string,object>{{"schema",1},{"default","allow"},{"document","generated-functions"},{"rules",functions.Select(f=>(object)Row(f)).ToArray()},{"readErrors",errors.ToArray()}}); }
         }
         void Save() { Directory.CreateDirectory(Path.GetDirectoryName(path)); string temporary=path+".tmp"; File.WriteAllText(temporary,Export(),new UTF8Encoding(false)); if(File.Exists(path)) File.Replace(temporary,path,null); else File.Move(temporary,path); }
         public void Dispose() { cancel.Cancel(); }

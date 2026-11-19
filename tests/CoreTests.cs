@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -495,16 +495,18 @@ internal static class Tests
                 controller.ConfigureStoryPolicy(new StoryPolicy(()=>Directory.EnumerateFiles(Path.Combine(game,"ERB"),"*.ERB",SearchOption.AllDirectories).Select(p=>p.Substring(game.Length).Replace('\\','/')),p=>File.ReadAllText(Path.Combine(game,p))));
                 var protectedSettings=Settings(); protectedSettings.ProtectStory=true; protectedSettings.UseGameStyle=false; controller.SetSettings(protectedSettings);
                 console.PressEnterKey(false,"6",false); Pump(WaitStory(controller));
-                int beforeStoryCalls=fake.Calls; Pump(controller.GenerateAsync(true));
-                Check(!controller.CanGenerate && fake.Calls==beforeStoryCalls && controller.DisplayMode=="original","Windows preserves uncertain text with event flags in the caller, including direct regenerate");
-                Pump(controller.SetStoryRuleAsync("allow","function")); fake.Reply=ct=>Task.FromResult("旅人收起地图，等待安排。"); string storyState=StateHash(); Pump(controller.GenerateAsync(true));
-                Check(controller.DisplayMode=="ai" && StateHash()==storyState,"Windows function allow can generate without changing saved game state");
+                fake.Reply=ct=>Task.FromResult("旅人收起地图，等待安排。");
+                int beforeStoryCalls=fake.Calls; string storyState=StateHash(); Pump(controller.GenerateAsync(true));
+                Check(controller.CanGenerate && fake.Calls==beforeStoryCalls+1 && StateHash()==storyState,"Windows uncertain/caller-flag dialogue defaults to AI without numeric changes");
+                Pump(controller.SetStoryRuleAsync("deny","function")); Pump(controller.GenerateAsync(true));
+                Check(!controller.CanGenerate && fake.Calls==beforeStoryCalls+1 && controller.DisplayMode=="original" && StateHash()==storyState,"Windows explicit function off restores original and blocks regeneration");
+                Pump(controller.SetStoryRuleAsync("auto","function"));
                 console.PressEnterKey(false,"7",false); Pump(WaitStory(controller));
-                Check(!controller.CanGenerate && controller.Story.Kind=="story","Windows full call chain protects a daily function inside a story despite its saved allow");
-                Pump(controller.SetStoryRuleAsync("allow","event")); storyState=StateHash(); Pump(controller.GenerateAsync(true));
-                Check(controller.DisplayMode=="ai" && StateHash()==storyState,"Windows explicit event allow is presentation-only");
+                Check(controller.CanGenerate,"Windows story-named parent no longer automatically blocks AI");
+                Pump(controller.SetStoryRuleAsync("deny","event")); storyState=StateHash(); Pump(controller.GenerateAsync(true));
+                Check(!controller.CanGenerate && controller.DisplayMode=="original" && StateHash()==storyState,"Windows manually disabling a story event preserves the full save");
                 console.PressEnterKey(false,"7",false); Pump(WaitStory(controller));
-                Check(!controller.CanGenerate && controller.Log.ReadRecent().Contains("story.decision"),"Windows event allow expires on repeated input and records the protection reason");
+                Check(controller.CanGenerate && controller.Log.ReadRecent().Contains("event-deny"),"Windows per-event off expires on the next input and logs the manual reason");
                 DesktopTemplateChecks(root,game,console,controller,fake);
                 controller.SetSettings(Settings());
                 LauncherCloseChecks(window,console,controller,fake);
@@ -516,17 +518,17 @@ internal static class Tests
     { var until=DateTime.UtcNow.AddSeconds(10); while(!controller.StoryReady && DateTime.UtcNow<until) await Task.Delay(10); if(!controller.StoryReady) throw new Exception("Story check timed out"); }
     static void DesktopTemplateChecks(string root,string game,EmueraConsole console,AiController controller,Client client)
     {
-        foreach(var identity in new[]{new StoryGameIdentity { Folder="eraMaouEx",Version="920" },new StoryGameIdentity { Folder="eraTheWorld",Version="proto" },new StoryGameIdentity { Folder="eratohoYMAEM_Chinese-master",Version="4287" }})
-            using(var bundle=DesktopStorySession.OpenBundle())
-            { var match=StoryTemplateCatalog.Match(bundle,identity); Check(match.State=="matched" && match.Rules.Count>0,"Windows embedded templates auto-match keyword/version: "+identity.Folder); }
-        using(var bundle=DesktopStorySession.OpenBundle()) Check(StoryTemplateCatalog.Match(bundle,new StoryGameIdentity { Folder="eraMaouEx",Version="999999" }).State=="unmatched","Windows version mismatch stays conservative instead of guessing a template");
+        Check(new AiSettings().Enabled && new AiSettings().AutoGenerate,"Windows new settings enable automatic AI by default");
+        Check(!typeof(AiController).Assembly.GetManifestResourceNames().Any(n=>n.Contains("StoryTemplates")),"Windows executable contains no built-in story template archive");
+        bool invoked=false; var noTemplates=new StoryPolicy(()=>new string[0],_=>"",null,()=>{invoked=true; throw new Exception("must not load");});
+        noTemplates.PrepareTemplates(); Check(noTemplates.Evaluate(new string[0]).Allowed && !invoked,"legacy template loader cannot run or block default AI");
         string storage=Path.Combine(root,"logs","desktop-templates","run-"+Guid.NewGuid().ToString("N"));
         using(var session=new DesktopStorySession(controller,game,storage))
         {
-            Pump(session.StartAsync()); Check(controller.StoryTemplate.State=="unmatched" && session.Document.State=="ready","Windows unmatched game automatically creates its editable function document");
+            Pump(session.StartAsync()); Check(controller.StoryTemplate.State=="removed" && session.Document.State=="ready","Windows always creates its editable function document without matching a template");
             var settings=Settings(); settings.ProtectStory=true; settings.AutoGenerate=true; settings.UseGameStyle=false; controller.SetSettings(settings);
             console.PressEnterKey(false,"6",false); Pump(WaitStory(controller));
-            Check(!controller.CanGenerate,"document selection does not automatically permit an uncertain caller");
+            Pump(Task.Delay(100)); Check(controller.CanGenerate && controller.DisplayMode=="ai","all functions, including uncertain callers, start enabled");
             string before=StateHash(); int calls=client.Calls; client.Reply=ct=>Task.FromResult("旅人收起地图，等待安排。");
             using(var editor=new AiFunctionDocumentWindow(controller,session.Document))
             {
@@ -547,7 +549,7 @@ internal static class Tests
             }
             using(var other=new AiController(Settings(),new Client())) using(var reopened=new DesktopStorySession(other,game,storage))
             { Pump(reopened.StartAsync()); var saved=Json.Object(Json.Array(reopened.Document.Page("KOJO_DAILY",0,"")["rows"]).Single()); Check(Json.Text(saved,"action")=="deny" && Json.Text(saved,"note")=="已确认的日常口上","Windows per-game choices and notes persist when the game is reopened"); }
-            Check(controller.Log.ReadRecent().Contains("story.template") && controller.Log.ReadRecent().Contains("story.document-edit"),"Windows log includes template matching and document editing reasons");
+            Check(controller.Log.ReadRecent().Contains("story.mode") && controller.Log.ReadRecent().Contains("story.document-edit"),"Windows log includes default-on mode and manual editing reasons");
             File.WriteAllText(Path.Combine(root,"logs","desktop-templates","generation.log"),controller.Log.ReadRecent(),Encoding.UTF8);
         }
     }

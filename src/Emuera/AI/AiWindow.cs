@@ -29,7 +29,7 @@ namespace MinorShift.Emuera.AI
             var preview=new Button { Text="查看请求",AutoSize=true };
             var logs=new Button { Text="生成日志",AutoSize=true }; var probe=new Button { Text="测试已保存 API",AutoSize=true };
             var style=new Button { Text="游戏风格",AutoSize=true };
-            var story=new Button { Text="剧情保护",AutoSize=true };
+            var story=new Button { Text="剧情 / 函数开关",AutoSize=true };
             actions.Controls.AddRange(new Control[]{generate,original,settings,preview,logs,probe,style,story});
             var functions=new Button { Text="函数清单 / 编辑选择",AutoSize=true,Enabled=document!=null };
             actions.Controls.Add(functions);
@@ -80,20 +80,20 @@ namespace MinorShift.Emuera.AI
         }
         void ShowStoryRules()
         {
-            using(var form=new Form { Text="本游戏剧情保护",Size=new Size(680,430),StartPosition=FormStartPosition.CenterParent })
+            using(var form=new Form { Text="本游戏 AI 生成开关",Size=new Size(680,430),StartPosition=FormStartPosition.CenterParent })
             {
                 var reason=new TextBox { Multiline=true,ReadOnly=true,Dock=DockStyle.Top,Height=120,ScrollBars=ScrollBars.Vertical };
                 string displayedEvent=""; long displayedTurn=0;
                 var actions=new FlowLayoutPanel { Dock=DockStyle.Fill,Padding=new Padding(12),AutoScroll=true };
-                form.Controls.Add(actions); form.Controls.Add(new Label { Dock=DockStyle.Bottom,Height=82,Padding=new Padding(10),Text="默认保护剧情和不确定文本。允许后点击主面板的重新生成。\n函数规则只属于本游戏和脚本指纹；剧情调用仍保护。本段允许只影响当前事件，不覆盖永久禁止。导入模板不修改游戏脚本或存档。" }); form.Controls.Add(reason);
-                Action refresh=()=> { if(!form.IsDisposed) { displayedEvent=controller.Current==null ? "" : controller.Current.EventId; displayedTurn=controller.Current==null ? 0 : controller.Current.StoryTurn; reason.Text="内置模板："+(controller.StoryTemplate.Name.Length>0 ? controller.StoryTemplate.Name : "未套用")+"\r\n"+controller.StoryTemplate.Reason+"\r\n"+(controller.CanGenerate ? "允许 AI：" : "保留原文：")+controller.Story.Reason+"\r\n"+controller.Story.Location; } };
+                form.Controls.Add(actions); form.Controls.Add(new Label { Dock=DockStyle.Bottom,Height=82,Padding=new Padding(10),Text="默认开启 AI，不再匹配模板。可手动关闭本段或本游戏此函数。\n关闭函数后再次进入仍保留原文，也会关闭其调用的口上。仅本段操作不覆盖已保存的函数关闭记录。开关不修改游戏数值。" }); form.Controls.Add(reason);
+                Action refresh=()=> { if(!form.IsDisposed) { displayedEvent=controller.Current==null ? "" : controller.Current.EventId; displayedTurn=controller.Current==null ? 0 : controller.Current.StoryTurn; reason.Text="默认开启 AI；仅按手动关闭记录保留原文。\r\n"+(controller.CanGenerate ? "允许 AI：" : "保留原文：")+controller.Story.Reason+"\r\n"+controller.Story.Location; } };
                 foreach(string scope in new[]{"event","function"}) foreach(string action in new[]{"allow","deny","auto"})
                 {
                     string selectedScope=scope, selectedAction=action;
-                    var button=new Button { AutoSize=true,Text=(scope=="event" ? "仅本段" : "本游戏此函数")+(action=="allow" ? "允许" : action=="deny" ? "禁止" : "恢复自动") };
+                    var button=new Button { AutoSize=true,Text=(scope=="event" ? "仅本段" : "本游戏此函数")+(action=="allow" ? "开启 AI" : action=="deny" ? "关闭 AI" : "恢复默认") };
                     button.Click+=async (s,e)=> { button.Enabled=false; try { if(controller.Current==null || controller.Current.EventId!=displayedEvent || controller.Current.StoryTurn!=displayedTurn) { refresh(); throw new InvalidOperationException("段落已经变化，请核对当前判断后再操作。"); } await controller.SetStoryRuleAsync(selectedAction,selectedScope); refresh(); } catch(Exception ex) { MessageBox.Show(form,ex.Message,"剧情规则"); } finally { if(!button.IsDisposed) button.Enabled=true; } }; actions.Controls.Add(button);
                 }
-                var import=new Button { Text="导入剧情规则模板",AutoSize=true }; var export=new Button { Text="导出本游戏规则",AutoSize=true }; actions.Controls.Add(import); actions.Controls.Add(export);
+                var import=new Button { Text="导入函数开关",AutoSize=true }; var export=new Button { Text="导出函数开关",AutoSize=true }; actions.Controls.Add(import); actions.Controls.Add(export);
                 import.Click+=async(s,e)=> { using(var dialog=new OpenFileDialog { Filter="剧情规则 JSON|*.json",RestoreDirectory=true }) if(dialog.ShowDialog(form)==DialogResult.OK) try { string json; using(var stream=File.OpenRead(dialog.FileName)) json=Preset.ReadFile(stream); await controller.ImportStoryRulesAsync(json); refresh(); } catch(Exception ex) { MessageBox.Show(form,ex.Message,"导入失败"); } };
                 export.Click+=(s,e)=> { using(var dialog=new SaveFileDialog { Filter="剧情规则 JSON|*.json",FileName="era-story-rules.json",RestoreDirectory=true }) if(dialog.ShowDialog(form)==DialogResult.OK) try { File.WriteAllText(dialog.FileName,controller.ExportStoryRules(),new UTF8Encoding(false)); } catch(Exception ex) { MessageBox.Show(form,ex.Message,"导出失败"); } };
                 refresh(); form.ShowDialog(this);
