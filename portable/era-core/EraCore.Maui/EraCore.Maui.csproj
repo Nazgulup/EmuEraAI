@@ -1,0 +1,126 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<!-- Phase 1 仅 Windows + Android（spec ID5 / Out of Scope：iOS/MacCatalyst 不在范围）。
+		     标准 MAUI app 多目标结构：net10.0-android + net10.0-windows10.0.19041.0。
+		     Issue 06 checklist 写"net10.0-maui"为简称——MAUI app TFM 实际拆为平台 TFM，
+		     `dotnet build -f net10.0-windows10.0.19041.0` 即 Windows target 验证。-->
+		<TargetFrameworks>net10.0-android</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) And '$(EraAiAndroidOnly)' != 'true'">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
+
+		<OutputType>Exe</OutputType>
+		<RootNamespace>EraCore.Maui</RootNamespace>
+		<AssemblyName>EraCore.Maui</AssemblyName>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<!-- 质量护栏（Phase 2 已开启，非 NativeAOT 配置先行）：自有源码 + SourceGen 生成代码
+		     （Styles.xaml 模板遗留 Frame/ListView 样式已删除）的 39 条警告已全部修复——
+		     XML 注释 / 空引用 / 过时 API / 平台版本，TreatWarningsAsErrors 收紧。
+		     若新增 warning 变 error，先修复根因，勿用 NoWarn 豁免。-->
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<!-- NativeAOT（PublishAot=true）时官方实验性提示 XA1040——保留可见但不阻塞护栏
+		     （Android NativeAOT 尚未 GA，官方明确 non-production，见 https://github.com/dotnet/android/issues）。
+		     IL3053 为程序集级 AOT 汇总警告——Mono.Android 绑定库内部反射/JNI 固有（nativeaot-verify-report.md
+		     §3.1B 已登记，非自有代码）；自有代码的具体警告仍按 IL2026/IL3050 等码继续拦截。 -->
+		<WarningsNotAsErrors Condition="'$(PublishAot)' == 'true'">$(WarningsNotAsErrors);XA1040;IL3053</WarningsNotAsErrors>
+
+		<MauiXamlInflator>SourceGen</MauiXamlInflator>
+
+		<ApplicationTitle>ERA AI 加载器</ApplicationTitle>
+		<ApplicationId>com.eraai.loader</ApplicationId>
+		<ApplicationDisplayVersion>0.11</ApplicationDisplayVersion>
+		<ApplicationVersion>16</ApplicationVersion>
+
+		<!-- Windows 桌面 unpackaged 模式（开发期直接 dotnet run 启动，不需要 MSIX 打包）。
+		     Phase 2 评估 MSIX 打包发布。-->
+		<WindowsPackageType>None</WindowsPackageType>
+
+		<!-- The native URL bridge uses the request-based WebView callback (API 24+). -->
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<!-- XAGNM7009 workaround: .NET 10 Android SDK 36.1.69 native marshal generation bug -->
+		<AndroidEnableMarshalMethods Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">false</AndroidEnableMarshalMethods>
+		<!-- 2.3 (perf)：Android Release 启用 Full AOT。.NET Android Release 默认仅 Profiled AOT
+		     （AndroidEnableProfiledAot=true），Full AOT 对解释器类指令密集负载收益最大。
+		     Debug 保持 JIT，避免拖慢开发构建。 -->
+		<RunAOTCompilation Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android' And '$(Configuration)' == 'Release'">true</RunAOTCompilation>
+	</PropertyGroup>
+
+	<!-- Issue 06：本票创建项目骨架承载 IJsBridge 抽象层 + 平台实现。
+     Issue 07：完整 MainPage（WebView）/ BridgeHost / GameResourceExtractor / MauiProgram 编排。-->
+
+	<!-- IJsBridge + 平台实现 + JsBridgeFactory + BridgeHost 均为 internal——
+     Tests 需 InternalsVisibleTo 才能写契约单测（mock IJsBridge / 调 JsBridgeFactory.Create）。
+     Emuera.Headless.Tests（net10.0，issue 04 MauiBridgeIO 单测）+ Emuera.Maui.Tests（net10.0-windows，issue 06 契约单测）。-->
+	<ItemGroup>
+		<InternalsVisibleTo Include="EraCore.Tests" />
+		<InternalsVisibleTo Include="EraCore.Maui.Tests" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- App Icon（最小占位，T07 / Phase 2 替换为正式图标）-->
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" />
+		<!-- Splash Screen（同上）-->
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#1E1E1E" BaseSize="128,128" />
+		<!-- Custom Fonts（暂用系统默认，T07 注入游戏字体）-->
+		<MauiFont Include="Resources\Fonts\*" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+		<!-- MauiProgram.cs 的 builder.Logging.AddDebug() 依赖此包（DEBUG 配置）。
+		     与 .NET MAUI 模板默认配置对齐。-->
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
+		<!-- issue 05：WebViewAssetLoader（安卓游戏图片资源通道）。Android-only 包——
+		     必须按 TFM 条件引用，否则 Windows target 的 restore 报 NU1202。-->
+	</ItemGroup>
+
+	<!-- 引用 Emuera.Headless.Core（issue 01 已就位，InternalsVisibleTo("Emuera.Maui") 已配置）。
+     MAUI 不引 Headless.Server / Cli（避免 AspNetCore 框架在 Android target 不可用）。-->
+	<ItemGroup>
+		<ProjectReference Include="..\EraCore.Core\EraCore.Core.csproj" />
+		<ProjectReference Include="..\..\Dialogue\EmueraAI.Dialogue.csproj" />
+		<!-- legacy-plugin-compat：facade（AssemblyName=Emuera）随 APK/exe 分发，使存量插件引用的
+		     `Emuera` 程序集可被解析（仅转发，不含实现）。Android 在「真实路径 + 非 NativeAOT」下加载。 -->
+		<ProjectReference Include="..\EraCore.Compat.Emuera\EraCore.Compat.Emuera.csproj" />
+	</ItemGroup>
+
+	<!-- legacy-plugin-compat：Android 裁剪下保住 facade 的 ExportedType 转发表（否则转发类型被剪）。
+	     桌面无裁剪，不受影响。 -->
+	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+		<TrimmerRootAssembly Include="Emuera" />
+	</ItemGroup>
+
+	<!-- ===== Issue 07 / spec ID6：MauiAsset 打包 =====
+	     wwwroot/——Vue 构建产物，由 build/VueBuild.targets 在 build 前从 EraCore.Web/dist-maui/ 复制填充。
+	     不带 LogicalName（那是 EmbeddedResource 的元数据，对 MauiAsset 无效）。
+	     2026-08-06：移除 ../test_game/ 内置游戏打包（MauiAsset Link=game\...）——
+	     原因：应用改为无游戏启动——用户经游戏列表/目录选择器选任意游戏目录，无需内置示例；
+	     GameResourceExtractor（解压内置 test_game 的类）随之退役删除（MauiProgram 启动编排
+	     同步改为无游戏启动：不 Resolve/Initialize，BridgeHost.HandleReady 在配置无根
+	     （ConfigData.Root 为 null）时跳过 Start）。e2e 测试仍用磁盘 test_game 路径，目录本身保留。-->
+	<ItemGroup>
+		<!-- Vue 构建产物（VueBuild.targets 的 CopyVueFrontendToWwwroot target 复制到 wwwroot\） -->
+		<MauiAsset Include="wwwroot\**\*" />
+		<MauiAsset Include="Resources\Raw\story-templates.zip" Link="story-templates.zip" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net10.0-android'">
+	  <PackageReference Include="Xamarin.AndroidX.WebKit" Version="1.9.0" />
+	</ItemGroup>
+
+	<!-- ===== Issue 07 / spec ID13：Vue 前端构建集成 =====
+	     Import 共享 build/VueBuild.targets，覆盖三个参数避免与 Headless.Cli 争用 EraCore.Web/dist/：
+	       ViteBase=./         ——MAUI WebView 用 file:// / ms-appx-web: 协议，相对 base 必需
+	       VueOutDir=dist-maui ——独立输出目录，避免 Headless.Cli（dist/）与 MAUI 同时构建 race
+	       VueDistDestination=wwwroot\ ——复制目标（与 MauiAsset Include="wwwroot\**\*" 对齐） -->
+	<PropertyGroup>
+		<ViteBase>./</ViteBase>
+		<VueOutDir>dist-maui</VueOutDir>
+		<VueDistDestination>wwwroot\</VueDistDestination>
+	</PropertyGroup>
+	<Import Project="..\build\VueBuild.targets" />
+
+</Project>

@@ -1,0 +1,3227 @@
+[
+  {
+    "path": ".gitattributes",
+    "bytes": 152,
+    "sha256": "b03f26e0799e8ba583f02e1d44c1df0957700afe432c874e64d1a757bf9d2d9d"
+  },
+  {
+    "path": ".gitignore",
+    "bytes": 697,
+    "sha256": "69904ea8f37d8e9cc9ff7d0ee036811413ac5ef858e7ba0fd7539a6c5cc936b6"
+  },
+  {
+    "path": "build-android.ps1",
+    "bytes": 2205,
+    "sha256": "c18fa5eaac8cfa969834e0d97c575aabbeb195e0a74f34af29472b3ac66a7fde"
+  },
+  {
+    "path": "build.ps1",
+    "bytes": 2193,
+    "sha256": "713e512ecf23a86f1d9ee2d8904ca2d999c2fdc6ee3e65fd6a5e1ebbd2e237b7"
+  },
+  {
+    "path": "CHANGES.txt",
+    "bytes": 14205,
+    "sha256": "d622a77d3825f5f374586a18f0f4222afdb27aa8a2572f163239a89218c81757"
+  },
+  {
+    "path": "demo/CSV/Base.csv",
+    "bytes": 13,
+    "sha256": "dca94fb93da4a2b40795fcb3b872dff344e8d9a5f4ffd552022fdf2768f87db3"
+  },
+  {
+    "path": "demo/CSV/CFlag.csv",
+    "bytes": 19,
+    "sha256": "a609d3e6e0efa2dbb865e5e8cb3412ec1855ae8c2ec18f7b10ec9d2032ba5412"
+  },
+  {
+    "path": "demo/CSV/Chara0.csv",
+    "bytes": 60,
+    "sha256": "a4ce55a906a540a3f557be4e0d03fcf4f59c2da540fc45f21fb5590f7399c758"
+  },
+  {
+    "path": "demo/CSV/Chara1.csv",
+    "bytes": 60,
+    "sha256": "9227adb8527d8d06573e16b0cd4090bf656b5da459a12bcc535d471921e730c9"
+  },
+  {
+    "path": "demo/CSV/Flag.csv",
+    "bytes": 44,
+    "sha256": "8635fa03c10d2c9657dc012295ccdec5d9f4af347df0da3aa6799bcbcebb5836"
+  },
+  {
+    "path": "demo/CSV/GameBase.csv",
+    "bytes": 158,
+    "sha256": "a9fd338be34a7794afd178c048699bd8b84da55ba3dc9eae5c212777c09c1838"
+  },
+  {
+    "path": "demo/ERB/DEMO.ERB",
+    "bytes": 1316,
+    "sha256": "8d9ebad2e11ff331add72c1a4d80e3f10f45d0d91554f89f617b06bb7ca34e86"
+  },
+  {
+    "path": "docs/BUILD.md",
+    "bytes": 2251,
+    "sha256": "3f265601309b30d7c981d1138d167cb8a907881b5431ac666ce0786cf8d74144"
+  },
+  {
+    "path": "docs/TEMPLATES.md",
+    "bytes": 1651,
+    "sha256": "59ae9606d627e6b74a1c4a4f27c14130f5ce095359692fedbbf800924f6f9567"
+  },
+  {
+    "path": "EmueraAI.exe.config",
+    "bytes": 162,
+    "sha256": "62b6b84706ade28a3a4bd9d121c6939e1a63d2b95b9e5d1069e4d576ff5aaef2"
+  },
+  {
+    "path": "LICENSE",
+    "bytes": 2376,
+    "sha256": "bb109d89a5da6bcb28190a80f600bd2733f79217480cb8674052245df399198b"
+  },
+  {
+    "path": "LICENSE.Emuera.txt",
+    "bytes": 2376,
+    "sha256": "bb109d89a5da6bcb28190a80f600bd2733f79217480cb8674052245df399198b"
+  },
+  {
+    "path": "native/libwebp_x64.dll",
+    "bytes": 594944,
+    "sha256": "5f3e4454ebb25d24e046794f293400e440a11a9a57e359510701423da1455ca9"
+  },
+  {
+    "path": "native/libwebp_x86.dll",
+    "bytes": 488448,
+    "sha256": "ad2d0d4c21a707d7f31848c55d29997600ac7744bea7b1396f56b12fa7f0459e"
+  },
+  {
+    "path": "native/LICENSE.libwebp.txt",
+    "bytes": 1495,
+    "sha256": "b34f83b6f14c5ce4739a91b09dde4bb11c12375e0c31afe213c9d57b3aeea554"
+  },
+  {
+    "path": "portable/Dialogue/EmueraAI.Dialogue.csproj",
+    "bytes": 1010,
+    "sha256": "3a9d61df729e47d846c9d2c966dca616528aa9f5420e75e3fc1a4bbf909a4d30"
+  },
+  {
+    "path": "portable/Dialogue/PortableModels.cs",
+    "bytes": 7675,
+    "sha256": "16c9974a3d1404ee00bc3bf81134360b7a68d2241c01a6f9038ffaf2e3fbf7b5"
+  },
+  {
+    "path": "portable/Dialogue/StoryFunctionDocument.cs",
+    "bytes": 5381,
+    "sha256": "bf35f2702b846ffcdd1f383d7b7c5fb9af387f57256b26dca26a9812b1ff7fcb"
+  },
+  {
+    "path": "portable/Dialogue/StoryTemplateCatalog.cs",
+    "bytes": 9086,
+    "sha256": "9e9d691378a3329e031268623a4a4c2f6cef8620a30d6936a1b7f97a2d52e7c9"
+  },
+  {
+    "path": "portable/Dialogue/Translation.cs",
+    "bytes": 4234,
+    "sha256": "18064601ca79995849d1525fa2dc7639b2cf5051339f7988ecc2168246d8d9dd"
+  },
+  {
+    "path": "portable/env.ps1",
+    "bytes": 1080,
+    "sha256": "ba4d7ad54d660302d8fc6e6bda64fc38908683ba513804bc9f84b562752164df"
+  },
+  {
+    "path": "portable/era-core/.editorconfig",
+    "bytes": 3073,
+    "sha256": "687eac296ddd7a031adef7d4fae88f3d9ac8ac3c86d7443a4f6f2064a2801e1b"
+  },
+  {
+    "path": "portable/era-core/build/VueBuild.targets",
+    "bytes": 4460,
+    "sha256": "642e3c142ef9a0f42fb12ca9483b5fd5a43b9cbb9a0238efd1f8ca65c136bf87"
+  },
+  {
+    "path": "portable/era-core/EraCore.Compat.Emuera/EraCore.Compat.Emuera.csproj",
+    "bytes": 975,
+    "sha256": "7e578580f51f941d30f51bd06050d6e161d6a5b035a592fdd73259be75d5768b"
+  },
+  {
+    "path": "portable/era-core/EraCore.Compat.Emuera/TypeForwards.cs",
+    "bytes": 2101,
+    "sha256": "7167ff876b28d4076fee646e1f823fcef7cc91dbd6c721879bf8a910af13f36d"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Agent/AgentCliProtocol.cs",
+    "bytes": 20954,
+    "sha256": "01cfc895f7e3ae4626aa9ccafeabc4b9a7538c2e2d3a84252982e1885f974979"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Agent/AgentJsonlProtocol.cs",
+    "bytes": 20227,
+    "sha256": "a011733e8a08d42b3d0057db6593ae22dc744f1aa05101865fc627813bf2f543"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Agent/AgentLog.cs",
+    "bytes": 9308,
+    "sha256": "f9755b84c32bda0f76ab092362e3b0a372f9f8fc853e4af9517272f3ef9a0b4d"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Agent/AgentProtocolBase.cs",
+    "bytes": 6864,
+    "sha256": "799ead54a360e2b14d41b3f938898d57a0a27ea1c0aaa9e83c6099e12f358caf"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Agent/ButtonNavigator.cs",
+    "bytes": 2227,
+    "sha256": "05347f699ea8abc0db34ea9ae16dc80a93dd665a1faf67d88420c83a10d8cf61"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Agent/ButtonRegionTracker.cs",
+    "bytes": 5751,
+    "sha256": "3c0fedb9c97db241d250c84f519c713d9f412c6f1ff2afeaf0d1a759ac719f90"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Agent/ButtonSelectionMode.cs",
+    "bytes": 16325,
+    "sha256": "563b45f2cf44c57cebd175fed2ce6e0354008c3d31ae2b19673f3c2063503f3b"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Agent/CliGameLoop.cs",
+    "bytes": 5960,
+    "sha256": "d33b0232c8c5492bae8250be7d0a7220d2d83b23da1e452cf9742145308953cd"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Agent/CliInputBuffer.cs",
+    "bytes": 2358,
+    "sha256": "b169c9cb2da36a26f234d9e2ca8923ab59746e10d5567169d8b56d6eaebc02d3"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Agent/CliRedrawContracts.cs",
+    "bytes": 1224,
+    "sha256": "184ccc0641261174b05df58ac93b3a4165cb4b571d3c08c73c094941aa990d13"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Agent/CliRedrawCoordinator.cs",
+    "bytes": 4001,
+    "sha256": "cbeb869621c5a8bad1dd5e931d80994a5e4a33cac9be64ccbf17664ad6881675"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Agent/EmueraJsonContext.cs",
+    "bytes": 3694,
+    "sha256": "490b50d440a0ba0d2009839d1d21d95c7b5ed6d46578dcf6e66c6db5721d00d5"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Agent/EmueraLog.cs",
+    "bytes": 5844,
+    "sha256": "0b527c85e2ed4a7cc198ae9ad94a22d0ae3cc13516e96f3de715d6606ede21ca"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Agent/IConsoleStateView.cs",
+    "bytes": 482,
+    "sha256": "8dcfeea13117ecb14fb5e8e115ac552e8952dba47f0f7236dc8621e50749d3ae"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Agent/IInputTimer.cs",
+    "bytes": 1608,
+    "sha256": "6fa944ea8e69790d2dde3276d88e223ade08c3ea09c969321eeb6bbbacce82e6"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Agent/JsonlCommand.cs",
+    "bytes": 2230,
+    "sha256": "985a18607dec7c88246ee481a28f7d3ecd367666ee74b07678539291eb42aaf4"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Agent/VtTerminalLifecycle.cs",
+    "bytes": 2162,
+    "sha256": "1200acd357f370f74f1a1fe9b69f86a33b3fdf9d134e1082341815d98738d993"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/ARCHITECTURE.md",
+    "bytes": 20316,
+    "sha256": "41659d3782989aebec9e86a1ed8c7c1caa18fffefeab898c13809a2695ed0c5d"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Assets/AssetChannel.cs",
+    "bytes": 4631,
+    "sha256": "6c7b830c54c898757ddaab8a2d4d51bc732c5be973ea082ed6195650f0b77f7d"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Assets/AssetPathValidator.cs",
+    "bytes": 4824,
+    "sha256": "2992d62fb8f40822da861542536c169b8273293982ff69a7957320ce715f0eb3"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Compat/LegacyPluginCompat.cs",
+    "bytes": 4620,
+    "sha256": "21bd0f25d625e73ef4247b19cdcd46c95db8a784b7022b5a1891c26c9f31ace4"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/EmueraRuntimeInitializer.cs",
+    "bytes": 7237,
+    "sha256": "239cf032e5a5986d8c37c758b14e5248877d7bd494e1d65426036fd099079a93"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/EraCore.Core.csproj",
+    "bytes": 3184,
+    "sha256": "e59ca6f09dc4bbecfee96238a94ac219fd5f95da3064a9fc397034dcf02ad782"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Files/AppDataIo.cs",
+    "bytes": 6088,
+    "sha256": "dc73b0105d35d38fbac5e4dced52237b7cc0d5252f5216d4734350e918319cbd"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Files/AppDataPaths.cs",
+    "bytes": 3840,
+    "sha256": "31ff6ceb2e3f443edb0d66cb80e9906e087a19398966cfa17941223a7fc94caf"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Files/CaseInsensitivePathResolver.cs",
+    "bytes": 3088,
+    "sha256": "82334205a8b1de494e64739355d645f31a329735849446540f4c35bc7abeb869"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Files/DirectoryChildCache.cs",
+    "bytes": 2201,
+    "sha256": "87af3803331e30cd62e5244ed47fb16f828ff367a3d425045281e4390fbb36fb"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Files/DirectoryLister.cs",
+    "bytes": 3659,
+    "sha256": "eefb3f78a9e86d606671320253e528277ee1c8a746ac3d46a55768f7dad7b13f"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Files/FileSystemGameDirAccessor.cs",
+    "bytes": 12303,
+    "sha256": "954785d72b05e8d49a0426031085ed7679de4312d27fb16b802e384494d810a0"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Files/GameLibrary.cs",
+    "bytes": 1826,
+    "sha256": "4679f4b9ae1439f86ba895f2918fd0d4051dde85ba4e71db882ed2ca7ef6508c"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Files/GamePaths.cs",
+    "bytes": 4833,
+    "sha256": "78e3c7622002c32325b5f0e8dc0b60a7ff2975c07c3c941c3bbaa0355715c44d"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Files/GameRootEnvironment.cs",
+    "bytes": 3534,
+    "sha256": "f6cc97823fd24d2c3a3d53eafa7d498beef5f9492dc4f098e113f36204246856"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Files/GameTree.cs",
+    "bytes": 6736,
+    "sha256": "dedd364545b57e43a547df9890e28967ec5174b3de67444710ac85b4bebde6c2"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Files/IGameDirAccessor.cs",
+    "bytes": 3501,
+    "sha256": "1e1243c01d017f8260b6f040366ef258da477f9e50638c09e73a3b2f0bd6223e"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/GameExitException.cs",
+    "bytes": 421,
+    "sha256": "cca9eaaff7487cec0031f8deea0f273217b4a79fa15db4342bea5931a187aea4"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/GlobalStatic.cs",
+    "bytes": 13932,
+    "sha256": "0c4026ef9dbb988cc3d500133044b37d294ff9b33439123d2f8453230c09cb3a"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Headless/HeadlessClipboard.cs",
+    "bytes": 550,
+    "sha256": "e42d0b22f9885c0f1de9f0ec92280ff06cf9693b1af9989464d241c2be022412"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Headless/HeadlessConsole.cs",
+    "bytes": 9263,
+    "sha256": "9199ef53c16e66460f2bae9ecb880bec16febd5ea7c2d3e02abff3e43aa5e36d"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Headless/HeadlessDialog.cs",
+    "bytes": 543,
+    "sha256": "3c1b7b7ec43791c4435eb04e789d147bd0da1b6262aa07479880acf04179da36"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Headless/HeadlessFontCollection.cs",
+    "bytes": 484,
+    "sha256": "18aad8f87478540b8054ae37db9dc761663538f8adbc6295d52720cfabf65fd1"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Headless/HeadlessImageContext.cs",
+    "bytes": 1044,
+    "sha256": "96c84befd3d3df5e6f1b4d0ca41641fa544286caf7c4b34058fdb3cdd37dfcfe"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Headless/HeadlessSound.cs",
+    "bytes": 272,
+    "sha256": "158ed82c4b1e6451d440d577a3c13b156502d33dc44f0ab33f13358152f29eda"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Headless/HeadlessStringMeasure.cs",
+    "bytes": 991,
+    "sha256": "c019ae94858570740adead36492fb66041cde662d167ad2a9ddf8df7b9ae89e3"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/HeadlessFatalException.cs",
+    "bytes": 734,
+    "sha256": "a6e56966d75bb1ba264f1d5906591c059a3df9b58eb6a86f5924ddccd353a89d"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Input/IInputHost.cs",
+    "bytes": 13741,
+    "sha256": "ef194bb6269b002213752eb9ad381975975f883c9ef8f602b4cbac1394d20bfb"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Input/InputFrame.cs",
+    "bytes": 3738,
+    "sha256": "4655078aea162e69c1c60f889f6f67d8293f123c96f0367a90ed8253687f0874"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Input/InputPort.cs",
+    "bytes": 2253,
+    "sha256": "1248a33ea273c2e41b4db199571826e0aa0148fb47d3a6af4d2bdc5d676a262d"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Input/InputStateApplier.cs",
+    "bytes": 3306,
+    "sha256": "cf6a6b0e04955d01b35e83dc818fd42c66ec0a9d2887f4eec774b65fe926fdd4"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Output/AwaitInfo.cs",
+    "bytes": 8117,
+    "sha256": "0a7a36b6c982fad80fca42b55526a0ce77dc07c88c10e8ec3582685eb2412461"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Output/DialogueFrame.cs",
+    "bytes": 1029,
+    "sha256": "56fdd8b21e93841aacfd3801a52e0ae6605153fee1dbf3f512773eb2b2821798"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Output/DisplayState.cs",
+    "bytes": 40614,
+    "sha256": "5371cf1f205ae452fb92fbb020e56514b7f0dc96683c0ad9f7af011063cd33ba"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Output/OutputHub.cs",
+    "bytes": 5173,
+    "sha256": "7af8dcbcdc23d8d3e887770bea36cb5f5e5339682fda305233309752947d1415"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Output/OutputPort.cs",
+    "bytes": 3189,
+    "sha256": "15ea9507703e806d5f1bce0b896d61e9527c44999fc4746ef54468a6f71066ea"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Output/Turn.cs",
+    "bytes": 1868,
+    "sha256": "55d2f801fe686c19027f60c6d4d6e3753990596b1508a58a7a5844f35dbebbde"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Output/TurnFrames.cs",
+    "bytes": 8700,
+    "sha256": "aa085933af7d59400e4f6001d2e06d8fed840cd409216e3beaceff533925988b"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Output/TurnRecord.cs",
+    "bytes": 19309,
+    "sha256": "58418c90b6c690e64f64f00482549bbc524a7580d98046106e8c3f721f288b96"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Output/TurnSubscription.cs",
+    "bytes": 1335,
+    "sha256": "acafc475c3b7912d0d7e41d5948e7b21cd902759e6b3ee395ae533ee3135c9c0"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Primitives/EmuColor.cs",
+    "bytes": 3657,
+    "sha256": "c09995596d3776b784aecd9dddedd71fdf3106e8707e3d74e2eaee66d78483c2"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Primitives/EmuFont.cs",
+    "bytes": 1165,
+    "sha256": "1b3699c619e9a5b7d667cc2cb72beaf1ca79dda9605dff78bca7017af1ca59fd"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Primitives/EmuFontStyle.cs",
+    "bytes": 1784,
+    "sha256": "2714e38e0ef651f661c387915730e20ab26aba7858765c8ab20e26640d4312b0"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Primitives/EmuPoint.cs",
+    "bytes": 499,
+    "sha256": "ad18852eb001790868261d548fb53604755566506a1f4e2051c7848ea17e343e"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Primitives/EmuRectangle.cs",
+    "bytes": 1080,
+    "sha256": "07d1932f71154c538982c93e143207f33404f80808f810c40db7e2932427c2ee"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Primitives/EmuRectangleF.cs",
+    "bytes": 880,
+    "sha256": "07c33457b14c0d66af35e222f0125feefab72e24b7e996494636f156003a5cbc"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Primitives/EmuSize.cs",
+    "bytes": 516,
+    "sha256": "0a5d99395c08fc541cdcafc4966fc260e32b750504aef8cfba54f28d183e4e66"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Program.cs",
+    "bytes": 3192,
+    "sha256": "c87da2db77a16d968a42388398851d8c53620979b731db2bbf5194edd30564c5"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Server/GameConfigService.cs",
+    "bytes": 5685,
+    "sha256": "c260d236a8fda0f71df12f2133bc51e629a1fe1d0221de6b9721b74fbf4184df"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Server/GameServerProtocol.cs",
+    "bytes": 25549,
+    "sha256": "30e59348bbdfe8884103d1ed96d4c1c41e5c42247cdbe82fe5ca44726c2a88d0"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Server/HttpListenerHost.cs",
+    "bytes": 13728,
+    "sha256": "46fbb92fda360e2587894e522d3fe463e312332a514280170293013daa4afc1f"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Server/HttpRouteDispatcher.cs",
+    "bytes": 15373,
+    "sha256": "18d755a5b399fe53a8636de845e791a460ec1b274122f89e63b748c617715fd0"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Server/ServerJsonContext.cs",
+    "bytes": 2489,
+    "sha256": "c964e4714d250aa3757b6709b319ebd9f7fae2a7cc1e654eb4755b4111bd8c8b"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Server/WsRelay.cs",
+    "bytes": 5722,
+    "sha256": "5aee2d2e6091e4f7ba9c915f87f540218ead8969fd6b12dce63791caefd61121"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Sessions/BoundedLoopWait.cs",
+    "bytes": 4523,
+    "sha256": "70a5a19fe9f52c0ea4d520ce845b9617da70ecd73d1a5219fe855ab40c4f411b"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Sessions/Controller.cs",
+    "bytes": 12135,
+    "sha256": "3be6e9b4c317bc87561da891e5eab1bb29e580d469a806f6b8e92eddcc207eb3"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Sessions/CoreSession.cs",
+    "bytes": 24309,
+    "sha256": "b24333c5702605733755421453cc9cb1eb9778e3ca529568ee8ca63a3770472a"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Sessions/CoreSessionOptions.cs",
+    "bytes": 3622,
+    "sha256": "d476f48c8c928525aadba468a22ad94a302c1d79ffc0b429a8f075bc63974b11"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Sessions/GameLoopComposer.cs",
+    "bytes": 1941,
+    "sha256": "d19ca9607b1b06310eb4d846f3a63c7bc350ea97f9b46be5e96b9598a8727dcb"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Sessions/HostMetrics.cs",
+    "bytes": 2045,
+    "sha256": "d2fc41e018d65897196fbfa91cded05170fe90bde2ee54ad4914b01b80bfb1c1"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Sessions/HttpSessionIO.cs",
+    "bytes": 4965,
+    "sha256": "ce590d8a1e6770fae6324909da06473d3268f7d9f226ac9aa9869390d83c1dc1"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Sessions/SessionIO.cs",
+    "bytes": 741,
+    "sha256": "5d1cbdd4fe55debcf7bbba33e87a113fc5cd7bf4fbe4e6ba0b3421f014fc7cc0"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Sessions/SessionRegistry.cs",
+    "bytes": 33641,
+    "sha256": "e4d00fde8d449a89fe65dd7bd6616692ff7d04f3df883725566fb44ac1b731e7"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Sessions/TurnDelivery.cs",
+    "bytes": 12423,
+    "sha256": "487b82ed5e27157f74cfbd1485d8ecdd660a7c00989d72c19a7d7d1a4fbb28de"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Properties/lang/emuera-eng.xml",
+    "bytes": 108980,
+    "sha256": "ed48be624c2af0e40d6d9edcf52f96d889671b4adadbf771c4468138bc759a94"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Properties/lang/emuera-zhs.xml",
+    "bytes": 98051,
+    "sha256": "4bf64f76859b08eee0513a6119da8bbf4e76487e4437ec7d7fd37b2963e215b6"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Config/AppSettings.cs",
+    "bytes": 13175,
+    "sha256": "5f3677b703854b5f1308fd31821656522cab5d18754cce8012fd929174074e16"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Config/Config.cs",
+    "bytes": 24309,
+    "sha256": "99ff1b664440ff81445930d579e5d76cd5f3b334bb5e0ac77e626d26bf613039"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Config/ConfigCode.cs",
+    "bytes": 5968,
+    "sha256": "77b5a24dd0655c07de880a156fcf3f6271a98df6057d3880f334155cb0af3027"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Config/ConfigData.cs",
+    "bytes": 75714,
+    "sha256": "04fb31d6197c008e60cb513d6adeb4a8dd478ddfa52ab9523246ae12cd3f3642"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Config/ConfigItem.cs",
+    "bytes": 8899,
+    "sha256": "faef77dc7e36fef491118fe32bc23de8b4b073427c8da798cb54fc371a3def43"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Config/ConfigKeyAliases.cs",
+    "bytes": 9078,
+    "sha256": "03f9480e03a179d26020ba51049cdaafd1a6e3d89b1958c91a163d7e3ff8fa62"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Config/DimLockPolicy.cs",
+    "bytes": 2251,
+    "sha256": "ddaf00043462e751b9e3975c7e98b4f58ccada59c3bd29be673c572b351c7a62"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Config/InMemoryAppSettingsStore.cs",
+    "bytes": 1340,
+    "sha256": "2aeffd546773985d6478bcc2ef8dbe3bb8f628bf91fad41fc4b4eea58d53cc71"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Config/JSON/JSONConfig.cs",
+    "bytes": 1782,
+    "sha256": "4d6d4a61c5d3703f86db20fc7c1e43430671ff3d3edb603be6f52b0fa3ec421c"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Config/JSON/JSONConfigData.cs",
+    "bytes": 477,
+    "sha256": "fa1744364c45ebb13c951298b838c155d5ea13c091322934f412c4040811e613"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Config/MaxParallelErbFiles.cs",
+    "bytes": 2303,
+    "sha256": "098f794f5815673b3d281e72b5b6ae6e24f8d9dfd1ff0212e8c7910ba00ffc13"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Config/SafReadDegree.cs",
+    "bytes": 2779,
+    "sha256": "a6160c832438bead8be0f622a0dc3b783b103da7249c35343f32d239a77ff5fb"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Config/SweepGatePolicy.cs",
+    "bytes": 2204,
+    "sha256": "e25e9eb5bbc053220149b16621941a6cded3d999e4843566d0b3bf5f28b37290"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/InputRequest.cs",
+    "bytes": 3224,
+    "sha256": "277ea261f342563a5f19c653536d5aa3b47d8baad76c8a66f840e5d5beed3eb2"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/CallStack.cs",
+    "bytes": 10534,
+    "sha256": "e866273452555774baca501449b7f6a4b9a7e5d8a69c1554916d35630a1a7325"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Data/ConstantData.cs",
+    "bytes": 70359,
+    "sha256": "662ccdc10f38bfc3c93ccc29bee01078104a981b7d227ea86657336f7a3f760f"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Data/DefineMacro.cs",
+    "bytes": 701,
+    "sha256": "0b4a9d5fa8e7756bb4468a0e20fec47da70a35cc7ed5ff89b0641267bf969a21"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Data/GameBase.cs",
+    "bytes": 5632,
+    "sha256": "fa34c2fb30a46d5b80f02b3cd3d7495aa1df6b4cbc9fefe7597f067a3eb1aca7"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Data/IdentifierDictionary.cs",
+    "bytes": 26647,
+    "sha256": "3f977f5feeb44fdd96c2705d038ecd9a77d57a1879ba6b91e904f55f514c9dd5"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Data/LabelDictionary.cs",
+    "bytes": 8467,
+    "sha256": "d8730094847e12aa4ab6ff5a0492262cae209ce961ab2417fc77e7cbbfbab3f9"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Data/ParserMediator.cs",
+    "bytes": 10422,
+    "sha256": "e29a88ca75ce2570f692a84701d37eff2ca4a8c3e9042fc3db4c9569e8aa43b7"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Data/StrForm.cs",
+    "bytes": 10233,
+    "sha256": "9d24f60bddab6fd6b63b800363f88bc29605c3e65dd85fdc88c8b38d76b1f893"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Data/UserDefinedFunction.cs",
+    "bytes": 5113,
+    "sha256": "e6d38f0f07f4e444ad170cc0e87bd550cb5e66a6b675e60d85214ee7cba06310"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Data/UserDefinedVariable.cs",
+    "bytes": 12815,
+    "sha256": "8bef1e50e92b4b8cbd14b103974fb164a2cca8ce09854511024898d6179e9da0"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/ExecutionState.cs",
+    "bytes": 2051,
+    "sha256": "164db08b284f3ff678a4c52fed8d49a718411c3976454f8384b1503b0b65f87a"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/IProcessState.cs",
+    "bytes": 2027,
+    "sha256": "f3d62b4fa18ffbae930901bbc4ce2d48bdc9f87ff1033539b32ca2e5e17a7364"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/KeyMacro.cs",
+    "bytes": 3218,
+    "sha256": "c0cc35b75a9f94398d95b60a24d2c23c53e184ac564eab058900ef51ef4b0344"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Loader/ErbDiagnostics.cs",
+    "bytes": 8399,
+    "sha256": "1533462e65d0221ec352a966eb533a6d4ee7fe63c240a5b03525af23ac76752e"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Loader/ErbFileAssembler.cs",
+    "bytes": 31157,
+    "sha256": "09e7325bef9668ccc4eb6dff6ae5b49f8e8b76ccaa219032971c4be4779a9fa7"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Loader/ErbIrCache.cs",
+    "bytes": 41847,
+    "sha256": "9b47c22f46b0f266164c0d0388843dfc46b6d353b17e9981ebe0ebea2c5abf2a"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Loader/ErbIrLoadPipeline.cs",
+    "bytes": 31027,
+    "sha256": "d9c5041b45fbe1e8f8e2cec2ddf250c2611320283df187f45746e317eb380564"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Loader/ErbLoader.cs",
+    "bytes": 54065,
+    "sha256": "0a5031a9fd4ed90e1d39d409a826c8b146f677fd26c1e107f7cb5586930a308f"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Loader/ErbLoadScheduler.cs",
+    "bytes": 13347,
+    "sha256": "33c7aea984b20d7c994c8d9b1caa56fb9bbe4daefa84487ad087b0a6a7bf7c3d"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Loader/ErbLoadStrategy.cs",
+    "bytes": 6710,
+    "sha256": "6eb4147761794561e116c527cd8e31c002452531a9542c21c7d8bfa48c673869"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Loader/ErbMaterializer.cs",
+    "bytes": 30473,
+    "sha256": "6c86bd225bfaa82ea8ed262c36fe400b5e9793265812fbee826f16d4fd7c4f07"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Loader/ErbParseContext.cs",
+    "bytes": 5539,
+    "sha256": "43244c6967dba08871ca9dfaa8e456b494dfb5815f9aa5177dc70729aa66ec46"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Loader/ErbThreePassParser.cs",
+    "bytes": 33983,
+    "sha256": "c842e5ffd454366015d48c1e9381f2f947f059970ab65bd50f155dc693738ad7"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Loader/ErbUncalledSweepReplay.cs",
+    "bytes": 4360,
+    "sha256": "a1b8b29ad3f0f813a27ffc145942d8ad54e64c495a28c613d4f83c1479cdde2b"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Loader/ErbUncalledSweepRunner.cs",
+    "bytes": 4949,
+    "sha256": "d0e9b28d223116ab2bcfc572f9ffedd4d87426a316d031b61a01190f181ce594"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Loader/ErhLoader.cs",
+    "bytes": 15243,
+    "sha256": "474ac2bc7f51153a29822bdd8eaf6d20b6014f63cb56472244a55fcefc56aa4e"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Loader/IrLoadContext.cs",
+    "bytes": 6652,
+    "sha256": "bb370d2a09e93c727bdb6947d73abab8aacf33a6ae3bc12fad3a3e7071047b13"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Loader/LoaderEnv.cs",
+    "bytes": 1118,
+    "sha256": "bf8630b6ed0f6f51a18bc3e415f89cdf0602906f5c06a6a7275588bcb6028650"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Loader/PPState.cs",
+    "bytes": 5724,
+    "sha256": "1437acce6f31dc19875eb8f753156cf01dc6c95e528b94dabf9b6e07041a370a"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Loader/SrcContentCache.cs",
+    "bytes": 14671,
+    "sha256": "666a64c30949cb3b79721fba37322b7344cfc10b17df9a9ce6ed63f151ea25ef"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Parser/LexicalAnalyzer.cs",
+    "bytes": 38116,
+    "sha256": "0f3ebfe293de2aa36da0130049ed8201ca40e6c4541bf9a2f2297aa9f84c736e"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Parser/LogicalLineParser.cs",
+    "bytes": 24054,
+    "sha256": "5fb8dee0578121a1eb27097eb6057921e8770c46bfa56cee1e544a8103bd1df6"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Parser/ParserProbe.cs",
+    "bytes": 3542,
+    "sha256": "33057eeb880fc01f523bc5adce18b508e3112dc9e884fe5ba4ac49cd58c6f8fc"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Parser/SubWord.cs",
+    "bytes": 1359,
+    "sha256": "0d3f7b92dbef88aabfda0e0bab05bbeb5355f019e243b11ad0e6569de0174b7b"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Parser/Word.cs",
+    "bytes": 2710,
+    "sha256": "2b42748c9afb3a4efb3a62fea9d2e8b86e5876ad5ab23834a7c43ac27d625f84"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Parser/WordCollection.cs",
+    "bytes": 3207,
+    "sha256": "dac0bade9490625b0cd4907417b0793d42ef6af9199f97f243b06589937f5f8c"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Process.CalledFunction.cs",
+    "bytes": 10738,
+    "sha256": "d00aea9f8838cca9faa2f666ffec2dd013df01215fb4af64a1683d2684d07acd"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Process.cs",
+    "bytes": 31505,
+    "sha256": "611ffc279c17a29b1a1b168f406750f862d40f02a1aeaebcf5584dff0463f193"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Process.State.cs",
+    "bytes": 13012,
+    "sha256": "56dc79ef9ce7a1bbce97ea540e6f1dad8dfd0e3ba443f59a9d3fd4bb69b1e308"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/ProcessTrace.cs",
+    "bytes": 3167,
+    "sha256": "713e24209a046d98e37f90660a1a0f7691d14e3ae3d0ad533b0f7689ac0c971e"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/ScriptProc.cs",
+    "bytes": 32490,
+    "sha256": "90ce8799beb0e8320e3a2312eac82d87857b40cfe872a69cbf352c12e004a057"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Argument.cs",
+    "bytes": 18525,
+    "sha256": "671c41dca56a861f0379a1039f563a3b84ebf52eb9a50a8b7b7564ccb1cf0255"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/ArgumentBuilder.cs",
+    "bytes": 85677,
+    "sha256": "95db82ba153c58a5f708f54450cd341119b278ce67c3d7f0f676e596f0ada222"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/ArgumentParser.cs",
+    "bytes": 1561,
+    "sha256": "77d529ada1c52ae60e33f66f8c07ed9ef8241fd79cbf03ab78353de5b2fe2baa"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/BuiltInFunctionCode.cs",
+    "bytes": 7506,
+    "sha256": "b81b059f17eea361b79311216a637d7a5939c68ba50a2bf3450fbc76e238888f"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/BuiltInRegistry.cs",
+    "bytes": 5702,
+    "sha256": "7089fdb8702d6a10458a381daf62b4de16d6a9725bcdc8c12297de58cf1ec6be"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/CaseExpression.cs",
+    "bytes": 2084,
+    "sha256": "d6739b3482acc630ae2d4680b461292b68606edfe7fe6593a69dc73722be0b7d"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/CircularBuffer.cs",
+    "bytes": 3123,
+    "sha256": "09e7668e1fb0c63dc4deb444d4be49281a133b5e2ec4c8e9b2562b5fba44815c"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/ColorMatrixReader.cs",
+    "bytes": 3132,
+    "sha256": "39dad3ccd94576552235cc67f88d5dc6c47c7bfbd69a24073f191e422fadb4ea"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/DialectProfile.cs",
+    "bytes": 9530,
+    "sha256": "092f07bbe416d20f0edc5dd8d98bb14c03ca316c8db976566c77199dc5a4abd4"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/DialectRegistry.cs",
+    "bytes": 9147,
+    "sha256": "fd1a698bb81b2c20240921953693305b4318977b9c28b7e9e2fcad471bf498ed"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/DialectSurface.cs",
+    "bytes": 3251,
+    "sha256": "bc61a832af5663c7574366bea67c5bef17e05ccae3fae6aa50bbd42f17a1efd5"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Expression/AExpression.cs",
+    "bytes": 1278,
+    "sha256": "8ae7dc3fe7f7c54a414d5ef5bc91f0ce6bd5283074d8f3ace46d1177512fcb1a"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Expression/ExpressionParser.cs",
+    "bytes": 22819,
+    "sha256": "ac8a92a3ee7527440b82a677a0f54ada946be902d14fdb30e003c42d2a648849"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Expression/OperatorCode.cs",
+    "bytes": 4040,
+    "sha256": "3d73b361c932f5f546f745edf3f5da50b9663b67a2ddaddec6d54004005c043f"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Expression/OperatorMethod.cs",
+    "bytes": 22840,
+    "sha256": "28eb8d6aff9eed89b636e7a4d0d8b23b7b4bbb99b37bdcdbf2d544e924f80fac"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Expression/Term.cs",
+    "bytes": 2734,
+    "sha256": "ce39d7e4a3441fc458d34cd7afcacbdb136dd8280e568974406db0c278e9318e"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/ExpressionMediator.cs",
+    "bytes": 3866,
+    "sha256": "6b2e8ff75ea24fda701139ed9c22bb7f9a0b37fed3c9d3b2990adf6d985ea992"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/BitArrayManager.cs",
+    "bytes": 2720,
+    "sha256": "4e616633577c59475cb07ad5a9af0c492da71bf738081ebdb2df65b1a3999eba"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/Creator.cs",
+    "bytes": 16464,
+    "sha256": "624ffcbcffe4d8acb07366efb6e5623406a030bd46d8b00a9fb75d7e716ec9cc"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/Creator.Method.Array.cs",
+    "bytes": 22692,
+    "sha256": "5978131f2d8f40fb8c31a4978e99ea27b0f5a719d7f03b489ca7c1dbacb6b7fb"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/Creator.Method.Cbg.cs",
+    "bytes": 6440,
+    "sha256": "0e0579e35848aa0db0e1c9ff223432e62aa1be8ba1f6f62da299906b5192bec9"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/Creator.Method.cs",
+    "bytes": 109,
+    "sha256": "85d118af76724244335b8d9c469eacf8d0e412e41dac72fbc0bb7b8f65b21bc9"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/Creator.Method.Csv.cs",
+    "bytes": 7794,
+    "sha256": "f92b79d3e886424c7131a8988be926c43195b7ab75e4b822d23e2a8a96bf5318"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/Creator.Method.DataTable.cs",
+    "bytes": 20999,
+    "sha256": "2ce2a6c45e799ca5408bf926cb178f8012ab2adaab74b9ee62d717a27cf85b15"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/Creator.Method.General.cs",
+    "bytes": 28825,
+    "sha256": "1cb6390f296ebfb9550ca698be9a6d23e077979f0f6153314c7ba72acbce0bf6"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/Creator.Method.Graphics.cs",
+    "bytes": 24100,
+    "sha256": "07cf28079b3b1822b139d74173ce427f9fdac5224b9e705814fcebf6fff6ecfc"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/Creator.Method.Html.cs",
+    "bytes": 5224,
+    "sha256": "50a4723fcc535ebf2f03a026a607c740057ae315c02a7a14b75792cfbec3c8ae"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/Creator.Method.Io.cs",
+    "bytes": 9355,
+    "sha256": "d68adf7c0eacd2c0fd9c082a16a9ebe9001756a0dd7a7aff7d8b676d3d0399ce"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/Creator.Method.Map.cs",
+    "bytes": 15909,
+    "sha256": "692a06277b70acff1304d97dddb7a026b97722ce0044b616d528dc66e32975de"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/Creator.Method.Math.cs",
+    "bytes": 19250,
+    "sha256": "38512439138629aa5771151ce6521a38291daef44b79da64296d141e518f7aa9"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/Creator.Method.Sprite.cs",
+    "bytes": 11948,
+    "sha256": "95dfdb65b28f5ade86d32b9d5b332a54936e3ec782fe61e8d7056cdca48fb1ff"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/Creator.Method.Sql.cs",
+    "bytes": 13630,
+    "sha256": "e11cd27d885d0a6bcef0d556a8b53d13514b5d57f3ab7940560520b9d6f0294b"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/Creator.Method.String.cs",
+    "bytes": 24097,
+    "sha256": "1454dcc7b5103f562d2ef0c2d5cff7b1e8072c807df39b9cff3aab87fadc6603"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/Creator.Method.System.cs",
+    "bytes": 30126,
+    "sha256": "db5757ecd0d1c17054b9b27bf5fe9e16b03ec993730a34d7969ad9140ac86e08"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/Creator.Method.Variable.cs",
+    "bytes": 10074,
+    "sha256": "7746fcd2b0e51fa169cd91951e72e2b91c17f760629986604f438b54786b0e3e"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/Creator.Method.Xml.cs",
+    "bytes": 19979,
+    "sha256": "f113df9e8e2f138c249f2a50705cef598de175e29a7951709fcf60ea3f8d99ea"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/Creator.Registry.cs",
+    "bytes": 8638,
+    "sha256": "6e112b3cda896fa811bddad09d41dc74b51d60e3ffdb1427c610f43c7779d8c2"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/FunctionMethod.cs",
+    "bytes": 11463,
+    "sha256": "e49b911b6b41f2e11d8f4be7a37e1931ec9e32070b425afe8aab8f9be7e6231c"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/FunctionMethodTerm.cs",
+    "bytes": 1361,
+    "sha256": "706e41b120943466c0aac6ac6eab57d47d1149653c590876815fb76831fd4ed1"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/UserDefinedMethodTerm.cs",
+    "bytes": 5128,
+    "sha256": "4de9bcb68a030eb56595dd3c83b998a2ff9cfed229e6077e89f4d3254ecd067f"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Function/UserDefinedRefMethod.cs",
+    "bytes": 2516,
+    "sha256": "e7549b0472cc22aae3811376450c5a86ff3a616f6ce1c9a627fd13282dd71cbd"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/FunctionArgType.cs",
+    "bytes": 4553,
+    "sha256": "1e6b560c3783cd3d378c1814c27893b44e0c55992d0e6fbeb9aed3175fea2dcc"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/FunctionIdentifier.cs",
+    "bytes": 34816,
+    "sha256": "5ee57700880faa52d57d900f1944ec56b35d6f013ab6b731d6c4ef32c5d2e223"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/FunctionIdentifier.Registry.cs",
+    "bytes": 6346,
+    "sha256": "43c1b3ec74d080a83cd1cf5dfa1587e06091f4cbddcf1790c3f275d3fb17d175"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Instraction.Child.cs",
+    "bytes": 123553,
+    "sha256": "11453b4fad92f2df037ce2b6f142d0c6b08c8e8218ad955b840a5d5cdc909662"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Instraction.Child.JumpResolution.cs",
+    "bytes": 8680,
+    "sha256": "867dd357a39c16c3904fec1c41fe31ab26e0e3d3824d0d74ed15343bc9040ee4"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Instruction.cs",
+    "bytes": 1436,
+    "sha256": "2cba59e5fda1696898eaf29f7a84c4787d56d2e673138770616e0a99808e1ed5"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/LogicalLine.cs",
+    "bytes": 10679,
+    "sha256": "e7515147715d7a1e1fd725f9c5f83450bef8a201f959701376db3202babb79dc"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/SelectCaseJumpTable.cs",
+    "bytes": 4489,
+    "sha256": "0f674712ac81b24e8eb2940d25ab3ff189730f056ece9793546c8f49822fad5a"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Variable/CharacterData.cs",
+    "bytes": 31813,
+    "sha256": "e6e138a178ed46d425710dc7f77e326484265b960793a82219edede22d63e58e"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Variable/IVariableEvaluator.cs",
+    "bytes": 1924,
+    "sha256": "ebfcef4f852876f315064dc5747b6d1b8821f31898373bedea87979ccc1f57fd"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Variable/VariableCode.cs",
+    "bytes": 22769,
+    "sha256": "7b758331373e3f0c040abb5f7a6c9d568ccad56341a9c14df2a0aa48c25e3dae"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Variable/VariableData.cs",
+    "bytes": 54670,
+    "sha256": "bd4b7109a87407c892268b03cd9db9d5b71617fa42cfeb2515ac146193bb9209"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Variable/VariableEvaluator.cs",
+    "bytes": 82967,
+    "sha256": "66541afdb0abeb34733114cea80e2b6ee8a30027f2900d925b95734c3f295eb3"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Variable/VariableIdentifier.cs",
+    "bytes": 10521,
+    "sha256": "6476539df3b503b116ed326c21b58dd1829580be09f1df4f4660a25e1b865f2c"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Variable/VariableLocal.cs",
+    "bytes": 3167,
+    "sha256": "f18b51b850dd2a281e47f9c030ec1f26e1e706225d5021d65b5ffaf38a904578"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Variable/VariableParser.cs",
+    "bytes": 6564,
+    "sha256": "5d8a8afd82a493ec80c1332c84f40ee37a0ad95bbc34dfa56893a2017039add8"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Variable/VariableStrArgTerm.cs",
+    "bytes": 2296,
+    "sha256": "b19e64efa15ba22725398e4c12ea6844773e5357c737f8a4a6985e5dcf376494"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Variable/VariableTerm.cs",
+    "bytes": 13610,
+    "sha256": "00f141f03e1a05f2d4bf7e8a7b2d74f2a8f3f0d54553a226353e297e7c14c759"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/Statements/Variable/VariableToken.cs",
+    "bytes": 91424,
+    "sha256": "a07aa453869673390f9a97ea8a122dbc5c95fc66261e0976cd10df62d5c7477e"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Script/SystemProc.cs",
+    "bytes": 30510,
+    "sha256": "81f46b30a905772f3fb1859a6738ade406ab11426768569900befc61b6297e8d"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/CharStream.cs",
+    "bytes": 3899,
+    "sha256": "a882497625defd39bcf93ad931709c0f955876ee8de6be316328115cadea9ab6"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/CtrlZ.cs",
+    "bytes": 1545,
+    "sha256": "a9a7ae7e0121170a644e589cd9954dcfd4e332bebb611c5382ca9fde5fd0f107"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/EmueraException.cs",
+    "bytes": 2445,
+    "sha256": "2289278d7495753478ef541cb42a5cf6262536013b6e69018e4f2c30a9350c65"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/EncodingHandler.cs",
+    "bytes": 4378,
+    "sha256": "c7e91376abe70266ccc18866d9c4b27043b8bafa120a9033d6c57e5c7c7eb394"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/EraBinaryDataReader.cs",
+    "bytes": 23023,
+    "sha256": "d4d01b5cce6e515b3452af854eb3b3eb833809295b6fb2f504fceed57ce8e93c"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/EraBinaryDataWriter.cs",
+    "bytes": 12537,
+    "sha256": "e28da71969133fdbbdc1920efacee38df16e3d37d655c4783364005140103d56"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/EraDataStream.cs",
+    "bytes": 19952,
+    "sha256": "d0d8106f17d471fd5f7a48e87f1eebd3170805daf8fa34dc15435b00cd665164"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/EraStreamReader.cs",
+    "bytes": 7693,
+    "sha256": "a9fb94c8981fe6d6dad5552bb00ce366d30ee99759ee4c0e61fce43725030262"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/EvilMask/ConsoleDivPart.cs",
+    "bytes": 7334,
+    "sha256": "6b83b04d3d6fcdde802c94009028e84ea05f9ffe269ca156945edc0156b6e77c"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/EvilMask/ConsoleEscapedParts.cs",
+    "bytes": 4856,
+    "sha256": "b8325b84b7dfd38fd573a191384bfed931e55ff302eebd9cc80f9be9f5e13116"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/EvilMask/Lang.cs",
+    "bytes": 181617,
+    "sha256": "03639799fa7b00665fcc54927fca6e08df40388a2dfb602872f73a157c7865ac"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/EvilMask/Shape.cs",
+    "bytes": 10942,
+    "sha256": "a8b5f98c3fedb4254b359c7a4b004f563159884b7e39804d58fa01f4d33e2ee7"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/EvilMask/Utils.cs",
+    "bytes": 9734,
+    "sha256": "446e0f666b57118ad5e510b86afe15e94f7b809fbf75ab903623f79418c1b03b"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/LangManager.cs",
+    "bytes": 1804,
+    "sha256": "504908dcf81ceaafcea6ac1b4f431194afa974b0c448ea1956e7e9bc301716d4"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/PluginSystem/BasePluginManifest.cs",
+    "bytes": 546,
+    "sha256": "cbb19642bf8816a774640830990e3f1f40817e332f80c09fadac5d31c0300f45"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/PluginSystem/IPluginMethod.cs",
+    "bytes": 260,
+    "sha256": "861b20e79f9bf44fbaa8d0b17e7550dc13f30505a9359bc13829288bc6ca8964"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/PluginSystem/PluginAPICharContext.cs",
+    "bytes": 8142,
+    "sha256": "e9a4d02f66f47d555448dae3dbfa14c512a4122403f89e0bb33c6243ac865e54"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/PluginSystem/PluginManager.cs",
+    "bytes": 26748,
+    "sha256": "2993b86acaf72b351e5b464965447ad2506aed18ae356981b8c66ef94e8acb10"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/PluginSystem/PluginMethodParameter.cs",
+    "bytes": 888,
+    "sha256": "c887fd8a9000b14ca39465b90697f11b7d0222857ca88035fecb63ca4aba8997"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/PluginSystem/VariableDataWrappers.cs",
+    "bytes": 10444,
+    "sha256": "4258a43c094258313942f52b350fbb52822a98a8396856fff3c6e30643e6962f"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/Preload.cs",
+    "bytes": 19234,
+    "sha256": "a6d32a4c1838fe656f20ed2b600b3531c7b573617ffed17900379dc30c2b116c"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/RegexFactory.cs",
+    "bytes": 554,
+    "sha256": "0129256d792afffb4e2de7470a8d97b00d9a0f259b02876c19576a1e46ab0b48"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/SafCompat.cs",
+    "bytes": 10796,
+    "sha256": "c5764d250441046442f4c93760acd53ec09b7ec9cf70db9c0e4e24f59826dd8a"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/SafPath.cs",
+    "bytes": 11421,
+    "sha256": "6b088bb7a904259698c3f59dd109775af626728b29108c98396a7df6ca290793"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/SFMT.cs",
+    "bytes": 12332,
+    "sha256": "232d0e70e8e496fef7c9068dace468a57b5446a94bfc4beb3d0c13019dfd638a"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/Sql/SqlManager.cs",
+    "bytes": 22983,
+    "sha256": "52d857a49440528ce8abe592dcc9eff7414ffebef89248f67d7555c0afc732fb"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/StringConverter.cs",
+    "bytes": 7487,
+    "sha256": "1a41a710daa669d336e86cf26b018fb1661f196a10c975ccc401404c4c9b0b78"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/Runtime/Utils/Sys.cs",
+    "bytes": 1881,
+    "sha256": "0636c813ace5f894763161d5aaf47f6769692527230631cbed7355a57e9e14b0"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/FontFactory.cs",
+    "bytes": 904,
+    "sha256": "5a9e81ae2b6d5bd9a31e987e442e50a2546e9ed97d50be0907fd3a84a7590d7c"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/AConsoleDisplayNode.cs",
+    "bytes": 1790,
+    "sha256": "724b3f7aa1ca7094004c4bf3b0efdcc261e0d226e8abbd5a4da52eaaac1d9383"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/AConsoleDisplayPart.cs",
+    "bytes": 1791,
+    "sha256": "bac899de291bc9ad1b3f056fb2d42e26f4cb440810df3c6b3c25cb7604078b51"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/ButtonStringCreator.cs",
+    "bytes": 6699,
+    "sha256": "32daec8b62d33d0d1afcc49eb823de5b4ad461ceacb8a576bdb40ef6571b5dc1"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/ConsoleButtonString.cs",
+    "bytes": 9027,
+    "sha256": "7bcf525b17da6fc99aefeabbb361a09db567ec5e082a0fa6216d311ab49c6c0f"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/ConsoleDisplayLine.cs",
+    "bytes": 4830,
+    "sha256": "55c4964b670c772621300b20695a14307e15f09d42d0b512bc1247d0b11765e0"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/ConsoleImagePart.cs",
+    "bytes": 10877,
+    "sha256": "13c4bbad11fc6d27ad9899d1fbb9c7bc27c6c7bfb34abfb7726209c37f2ae86b"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/ConsoleShapePart.cs",
+    "bytes": 6896,
+    "sha256": "c9125f19bc0fa0c81eb51935993acf2954858fd2cb55f92dafee694e194afcf5"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/ConsoleStyledString.cs",
+    "bytes": 4360,
+    "sha256": "9b8dad590c73ad9d9c1b9e80e80ca9bd547f220cfa477436494ecd10bbd24643"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/HtmlManager.cs",
+    "bytes": 52417,
+    "sha256": "3059f89f88c4c471c592683d160aab390ef63eda3a151d3f66ba67dc18491577"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/IConsoleUI.cs",
+    "bytes": 2977,
+    "sha256": "db2db5a20af5917256941dbd8e440b5cdb885c5a4962966e162d5d4343d4ddcd"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/Image/AContentItem.cs",
+    "bytes": 270,
+    "sha256": "4b20c0d13c30c1583c7c15f6627c816a98bf38d6e93070a45af56158c2a646f6"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/Image/AImage.cs",
+    "bytes": 495,
+    "sha256": "7e71b745e3b0b3b31548be311d4da4c59df9ea4df93ec03781494410c2dce82d"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/Image/AppContents.cs",
+    "bytes": 7937,
+    "sha256": "022b076c969d07a53914d961b0d2ee14270075ed254ffe7126cdf7d805dba864"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/Image/ConstImage.cs",
+    "bytes": 2640,
+    "sha256": "b52de074165cda501cc6ba16e86ccc538eaba5b523702c9e502ac23f1379da86"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/Image/CroppedImage.cs",
+    "bytes": 10122,
+    "sha256": "d8fb881df82166af7930604ecf191d653e165d8aeb787adc42a880d941ba9943"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/Image/GraphicsImage.cs",
+    "bytes": 18879,
+    "sha256": "5cff9064fcad576a6d372b1359ad49082bd88da609b02cf3426773f8c85c4adc"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/Image/IImageContext.cs",
+    "bytes": 1026,
+    "sha256": "b20c3e3ea1d9e139c3bea9d869510c0a5bf5a1a788656d008ba641b946331ba4"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/Image/ImageNameTable.cs",
+    "bytes": 9936,
+    "sha256": "9490facc2671bdb5b1749bcf8ea7c342541efec60a902be98fbc39b7ee47fcaa"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/Image/ImageSizeProbe.cs",
+    "bytes": 7804,
+    "sha256": "030745689ee965f6c5dc88bf6aa5aa3356669b91cefe91d8a748c5378bad44f9"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/IViewportProvider.cs",
+    "bytes": 1783,
+    "sha256": "d3ccf4f64a861fd1246693ca9796ea866183d889d554282b626b91bb1c3e7992"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/PrintStringBuffer.cs",
+    "bytes": 18492,
+    "sha256": "a7b77266551d4076b25e2ad10d8460679aa35f3740476cfbf559971874af8e44"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Shared/UI/Game/StringStyle.cs",
+    "bytes": 1948,
+    "sha256": "27a7ba124308a91696194c0f2a0492967a017f0c16b4809286877f953809d2cc"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/AgentCliVtScreen.cs",
+    "bytes": 4558,
+    "sha256": "54c169fcd690955439e6a057d6cf4e43c378c921bf36f099902a2804f870f2c2"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/BufferedVtScreen.cs",
+    "bytes": 2770,
+    "sha256": "1c50e131728f4cd114e660bfd22ef3af5e716f463e10766f74591dc263afa87b"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/CliViewport.cs",
+    "bytes": 2139,
+    "sha256": "c906edbc5a2690a748e66d80b66359093542df2ca4befe82948c3bef76571295"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/CountdownRenderer.cs",
+    "bytes": 4684,
+    "sha256": "78ad9d0f4a4263743228205259d551b4cc3940cc677ab8e9f795d81ec709870c"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/IButtonDisplayContext.cs",
+    "bytes": 230,
+    "sha256": "23ff74eccac346f38a90bc371593706134e105b62e98370cd506e9763c2b2a32"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/IVtEventSink.cs",
+    "bytes": 796,
+    "sha256": "c27823620889009a8b5e4fb8a08ab6a8907a9186780061cf4617ac4841bb3081"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/IVtHost.cs",
+    "bytes": 3862,
+    "sha256": "a0fdaff37c6c6f83d92df1d4e7d24185dc5932c85241ba7661a3934e4c8160e7"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/IWindowSize.cs",
+    "bytes": 140,
+    "sha256": "fa3d21c6690a9d4feb9d174b3868696f87d28d7c7cb1609fd29b2b96a5b0a994"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/Platform/ITerminalInput.cs",
+    "bytes": 231,
+    "sha256": "7dc1676de9881ea0bfe543603a1bb18df8d9836db9847f38061169e45053b35e"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/Platform/ITerminalSetup.cs",
+    "bytes": 275,
+    "sha256": "abbd90aefbecd5ef474fd314b2f51b7c43f54ad3063581c9151ca357c6924de9"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/Platform/PosixTerminalInput.cs",
+    "bytes": 1747,
+    "sha256": "b9e9bcd7f1bc3d206500dc0ce8ae5f230a0f637e15bb88c225e07c549d84a2c1"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/Platform/PosixTerminalSetup.cs",
+    "bytes": 3247,
+    "sha256": "7ad8629db4bbde1c685e33b31655a302ecb0df70b8d281721f49f1187bf63f2f"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/Platform/WindowsTerminalInput.cs",
+    "bytes": 5350,
+    "sha256": "372cda1930c45068587a010ea1f2b920faef6effdf3412eabbda77fe21e78d36"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/Platform/WindowsTerminalSetup.cs",
+    "bytes": 5823,
+    "sha256": "2ed75d723bef92125a38d7fbb17b3aadebfd095b3fe11339ffc30081e3d6b49e"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/ScrollController.cs",
+    "bytes": 6359,
+    "sha256": "f095530f4ddda86ac892d9b9d831206746069cee862a88cd0f4105836167f5ff"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/ScrollStatusBarRenderer.cs",
+    "bytes": 3003,
+    "sha256": "fa9a1cf90a9be7304603644773efd27e46209d7e576b2134957188100fadf46a"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/TerminalCursor.cs",
+    "bytes": 2182,
+    "sha256": "5e442c26cbaa26c3bf5c47ff4bc9bf5b4d4f754290111ca4219bcd92c6ed8a13"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/TerminalDisplayWidth.cs",
+    "bytes": 10059,
+    "sha256": "e876f5fca086297b66cb7b182a1608dcefa9fc146a5355234d165f3e24d83b1b"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/TerminalLineFormatter.cs",
+    "bytes": 7782,
+    "sha256": "554cec862d918387f94edf813d48f48091c2641a8e349b2d340d5cb8ab5c8b15"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/TerminalRenderer.cs",
+    "bytes": 18571,
+    "sha256": "4a134d9e6a58a5e6c7d6c10cfdbe0dec39a280e8df8d8b944f5b5b98ed727c18"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/TerminalViewportGeometry.cs",
+    "bytes": 5548,
+    "sha256": "3fb2c1e68d71ce4f9173517463051cd4469052377ab35dcf879e8ef37cfce328"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/VtInputHandler.cs",
+    "bytes": 7343,
+    "sha256": "b770eb708894e96242388629563169c4a6fae6cea40ecdb2941783530e579175"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Terminal/VtParser.cs",
+    "bytes": 6832,
+    "sha256": "ab7823c5068ea539acac63b635356b7497fa9bc3801de6843fd647e6150c4dfd"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/UI/Game/AiObservation.cs",
+    "bytes": 11381,
+    "sha256": "c48932fb6457131629b5eba9cb5324bda0c9b94188e77bd9499e854c8626fe61"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/UI/Game/Console/ButtonIndex.cs",
+    "bytes": 4867,
+    "sha256": "8a7c2dd9c2945f0882e4a0e7b0eb02eb163a9ba78e0e63ddafe242e883768fac"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/UI/Game/Console/ConsoleInputHandler.cs",
+    "bytes": 29806,
+    "sha256": "e8ed6fcd4991bb45ab9f5a198d21f8353d5f07a5d8f6fd4ac01b8d283766ffb7"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/UI/Game/Console/ConsolePrintManager.cs",
+    "bytes": 36848,
+    "sha256": "c1f814f98e889e2b49fdbecdfdc173c9567842b44d05400dc60e2f5dbbd4b767"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/UI/Game/Console/ConsoleRefreshHandler.cs",
+    "bytes": 3683,
+    "sha256": "b3e040e3774bb295964e99eb6a8911a2595557e02371f646708aedfabe2f43c8"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/UI/Game/Console/ConsoleStateData.cs",
+    "bytes": 9323,
+    "sha256": "9f7eebba2ced88c4dfada188e29b822dde106fe2f4c8382713c5d01a8004341a"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/UI/Game/Console/ConsoleStateManager.cs",
+    "bytes": 21444,
+    "sha256": "a5079a451f64129a360a1e8cda9284a56ef317c1f5ad8fb1f84efe13f838f056"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/UI/Game/Console/ConsoleTimerManager.cs",
+    "bytes": 7487,
+    "sha256": "181c38fb3b9a1bcf167b7bc99d82fb88834959dbf9df3b565937f1dbb9af5e99"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/UI/Game/EmueraConsole.cs",
+    "bytes": 27441,
+    "sha256": "f71446fb6df438405b03e0806ba155456c009739072fadceb061c50e9a4b0042"
+  },
+  {
+    "path": "portable/era-core/EraCore.Core/Wildcard.cs",
+    "bytes": 2157,
+    "sha256": "69a571ee06d030ac0b17946d25e9baa0ac9d276a066503e98719b94cdcd46719"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/App.xaml",
+    "bytes": 678,
+    "sha256": "fedd13d222397570d8f120e6d43a85de3c9cd3eb3155252976ee97ffcb19a689"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/App.xaml.cs",
+    "bytes": 1527,
+    "sha256": "df3cc198bb646a917a2917ead109eb51ea70ea890a305f63ec08ef9e831975ee"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/BridgeHost.Ai.cs",
+    "bytes": 21049,
+    "sha256": "b7fda92b05d41874ff7bbda792f11b1bb57715eb6e9e574135d2a116db51cdbe"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/BridgeHost.cs",
+    "bytes": 126468,
+    "sha256": "d0e1fcfbd984c1632c399301459d80de470eaf493f03e08f2d4e421fb6657635"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/BridgeHost.Start.cs",
+    "bytes": 965,
+    "sha256": "420bd8d73a673280f98fef3466f866a760da66d4e41f15acdd3cfdf125a80a4a"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Directory.Build.props",
+    "bytes": 2017,
+    "sha256": "6baea0344c1574e3ea55c0af3ffb47b4b08a00b7d0e01e73328f1aa729dd9284"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/EraCore.Maui.csproj",
+    "bytes": 8361,
+    "sha256": "3aee5176456bffaa780df5a656aae8f9fc80e0795d6b25bfc76abe567363e91e"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/JsBridge/AndroidJsBridge.cs",
+    "bytes": 16331,
+    "sha256": "7f8bfdd2987c9c7e97c7b788b561287408e009889742cfb082d41cc9a0684193"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/JsBridge/IJsBridge.cs",
+    "bytes": 7301,
+    "sha256": "0525f1f97e6f9fc9ec45d4d9b90e78383d7339e767fe3f2b7aedd11d638bfcda"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/JsBridge/JsBridgeFactory.cs",
+    "bytes": 1374,
+    "sha256": "19ce6990f4c4a221922fd390915a01733f45f4a64bdab029ee40ffda2cba9ad9"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/JsBridge/JsBridgeHelper.cs",
+    "bytes": 2697,
+    "sha256": "9a334118b1050a14f6f6e631457c40d3998e71bc8cb73ea7ad9d74442bb9aaee"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/JsBridge/WindowsJsBridge.cs",
+    "bytes": 12451,
+    "sha256": "553a292a5805275c621f2d56de1fd1930c6e0446e50cc205d3b7d693f8209a86"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Json/MauiJsonContext.cs",
+    "bytes": 10378,
+    "sha256": "38cd811398562302a6b506e9200b0822c80c13a0ff063ba14fd094708058d8a5"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/MainPage.xaml",
+    "bytes": 787,
+    "sha256": "4086ef42f51cc680756a695d8a69fe0387c510010c464d4038a8c9cc9f3f1745"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/MainPage.xaml.cs",
+    "bytes": 29807,
+    "sha256": "e4a7c324d839047894a5a46be878597c7b4cd133ebc83ffd73d3190e02a0c7c1"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/MauiProgram.cs",
+    "bytes": 10149,
+    "sha256": "51474b16c4f4a7c0bc81f09070909dba14a8d9e5035ad19473b4dd824d93c6ac"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Platforms/Android/AndroidManifest.xml",
+    "bytes": 2123,
+    "sha256": "b9798e60bcb32c03822da3f4569c9fc199a8c61dc835a1bfda039090598398c3"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Platforms/Android/MainActivity.cs",
+    "bytes": 5640,
+    "sha256": "169878eaf49664e1f4e42748c459ebdc6147a44a647df168fed2ab17c5ade592"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Platforms/Android/MainApplication.cs",
+    "bytes": 328,
+    "sha256": "043a7664e3859d4f643f9f8d83a796d30f87b6ffdc670da747baac32d056e7b4"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Platforms/Android/Resources/values/colors.xml",
+    "bytes": 214,
+    "sha256": "2b3cc8b3ea207d46a774179d2492268d7cb1768750081f518bcf67a75eff36ea"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Platforms/Android/Resources/xml/file_paths.xml",
+    "bytes": 250,
+    "sha256": "81ae88bcd5fef2718e21c11c3a2befb026905c6603469fa5f27d4b4e1f0912fb"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Platforms/Android/Resources/xml/network_security_config.xml",
+    "bytes": 301,
+    "sha256": "e0a5e6005601c7d5c12e0d744066b925adf9562e24efbe7dbf9a9d00ce3e531b"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Platforms/Windows/app.manifest",
+    "bytes": 476,
+    "sha256": "01f31f6d9bf618d696f72696ce99cd2a58884dc0a70ea06bd958da0aec1d79ec"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Platforms/Windows/App.xaml",
+    "bytes": 313,
+    "sha256": "381da6155ec5eaffbcf9c7b9d2686442c5871ed9ec13988a3f30d23826467e53"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Platforms/Windows/App.xaml.cs",
+    "bytes": 391,
+    "sha256": "e4c3ff28be66e68d4045febe34dfc90200e19e5527e959c8d6449471c8ab25d9"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Platforms/Windows/Package.appxmanifest",
+    "bytes": 1627,
+    "sha256": "fd70d12533b693a5431c10e1ccf9f3a8fc9e65a2a0b69cf42205179a6c7227d2"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Resources/AppIcon/appicon.svg",
+    "bytes": 398,
+    "sha256": "afc46984d2896ff87006d1fe25b226ecc2d740c500ae50d7756d01b34686d849"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Resources/Raw/story-templates.zip",
+    "bytes": 18230837,
+    "sha256": "89f0c2aec4d79b964365c3b04a159a09c25fe2d54fe80551396baf4eaa6738b1"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Resources/Splash/splash.svg",
+    "bytes": 390,
+    "sha256": "b373062e4623c0893434276d4d770c06e57a08c6690b5ce2f1cb1814fa6cf9fa"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Resources/Styles/Colors.xaml",
+    "bytes": 2328,
+    "sha256": "e4af9bce679a050f0c540337d8243bf89ed27a4fead2e0f89354c118e57a2fd3"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Resources/Styles/Styles.xaml",
+    "bytes": 24725,
+    "sha256": "51f99df9affc58435d7d8089e60e48c1c04ecf648ff28f2fa97b8e91d5fb3dc5"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Services/AndroidStorageVolumes.cs",
+    "bytes": 5551,
+    "sha256": "6b9706873bb9ba5ff55413e30aa483349995a1eb3b465d038839c0919c62723d"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Services/ExternalStoragePermission.cs",
+    "bytes": 4946,
+    "sha256": "88120d8b8b177bb83544d2a318d5d40922d8ee82a5593fda40f1a7100b86b850"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Services/MauiControlServer.cs",
+    "bytes": 10083,
+    "sha256": "336e651cf6f2dc429af2316de2ccfcb18786dbed7c66dac45db2e91485cd9dec"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Services/PreferencesAppSettingsStore.cs",
+    "bytes": 3937,
+    "sha256": "8ea938aae14a0f7e854083995a901588728ffbceffa1743dd080c7cb63669c84"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Services/SafGameDirAccessor.cs",
+    "bytes": 71460,
+    "sha256": "81a91a85f4b475de4587b676deae0e83a97b1465f3d0904f6557acb75dd69f1d"
+  },
+  {
+    "path": "portable/era-core/EraCore.Maui/Services/SafLocalPathResolver.cs",
+    "bytes": 4712,
+    "sha256": "0e0838c8044b602879e028690aed48f5fa147c854dbf881ff3f60f68c8dae37d"
+  },
+  {
+    "path": "portable/era-core/EraCore.Tests/LoaderTestHarness.cs",
+    "bytes": 9339,
+    "sha256": "c47d1653998ad5fd812c2597efe1fcad91573b023ee382dfac54bf4f4dd904f8"
+  },
+  {
+    "path": "portable/era-core/EraCore.Tests/RootScope.cs",
+    "bytes": 904,
+    "sha256": "14c88f54dce6d8a7dc9005ebfb01a003d7bd08cd89f0df4d26f94f23540721b5"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/DESIGN.md",
+    "bytes": 7553,
+    "sha256": "56a07d1f5cb1968d7de52fb01dd77d209eca1e90c5bd4ccde442e2a3d044edd6"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/index.html",
+    "bytes": 6030,
+    "sha256": "d4bc7496e6a6d70dc4e680f7aee0b0e3d4fc823a1c340c23101be40c91fda017"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/package-lock.json",
+    "bytes": 94893,
+    "sha256": "152a6fef3d80d961280ae9e055407728b3089043d2f0a2f85338a3ea8192ae49"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/package.json",
+    "bytes": 903,
+    "sha256": "67c3042286f34a66051097c2b41a324197d2991afdcee6c5395e4909a65d4eb8"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/playwright.config.ts",
+    "bytes": 800,
+    "sha256": "218a7db235010f93ddb1d505a847654d23a580b97b67351e53d5be766e0cb8ff"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/README.md",
+    "bytes": 14249,
+    "sha256": "36011fb636248791f319bbf921a33363cfcd36658baae536bfcef12cf41690d8"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/scripts/analyze_dejavu_widths.py",
+    "bytes": 6251,
+    "sha256": "1e163fe0b79eb178512e15603a428ddb927fa4a5e514179a37f083b247309475"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/scripts/build_emblock_font.py",
+    "bytes": 7937,
+    "sha256": "c743e442f13a83e5672e0cd3e6a4bfefcbb04e2493f1e060e6f988a2f76b2275"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/scripts/check-ai-host-replay.mjs",
+    "bytes": 3938,
+    "sha256": "86034d82a953397ac488156c1bfe08f76ff171a39db8982ee19b3474fab7a1c2"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/scripts/check-ai-mobile.mjs",
+    "bytes": 12123,
+    "sha256": "b740499c2c67ce0f96bae544b013e2772f49f78ce4f925cc9b51b396d266984d"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/scripts/check-builtin-templates.mjs",
+    "bytes": 3985,
+    "sha256": "a6bcca9b85f83fbc83ea289104a19dc515ab77867c42c0bfd7c4dfd278966e35"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/scripts/check-css-floor.mjs",
+    "bytes": 2888,
+    "sha256": "86db2a723aa092d902b774740e0b3e087630f97528c7addd13b199a3b85d1f49"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/scripts/check-function-document.mjs",
+    "bytes": 4120,
+    "sha256": "4d586ad019dc9b3d047162753b81d5ffc74e4a15a29420f62591360c04473578"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/scripts/check-legacy-syntax.mjs",
+    "bytes": 3468,
+    "sha256": "1ecff3521c460d88ef0c4b4a7ae91328f34da959b857b2d62c45de523f48ab76"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/scripts/check-mobile-layout.mjs",
+    "bytes": 10860,
+    "sha256": "bc3cf0659425b04979d15857c9df330c9fa5df975ec78e261c84d8f556865281"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/scripts/check-story-mobile.mjs",
+    "bytes": 4984,
+    "sha256": "d9ded88cf6b3073a354a86c5bf0649aab3fdd414271e45c0dcf18514555766c5"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/scripts/check-supplement-mobile.mjs",
+    "bytes": 4894,
+    "sha256": "bf29c4cd86a21932ad785446e35729314bbdf6f9e78796574ddce7df7cc43797"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/scripts/check-translation-mobile.mjs",
+    "bytes": 7211,
+    "sha256": "2e20a387fe8067739728d66b7191f90115ea5e1095dbd2d456ecb159ec3179e5"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/scripts/check_font_coverage.py",
+    "bytes": 4249,
+    "sha256": "4cbf2f15bc67897aaea15798a1b61583a3212010747a4e27da787f84c847e552"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/scripts/check_glyph_bounds.py",
+    "bytes": 2152,
+    "sha256": "3291d3c8401af87d2a8e7238158788984d01cdea20a40dc6ea2736ce6154dd93"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/scripts/dejavu_width_match.json",
+    "bytes": 36079,
+    "sha256": "12f9e29539973b3386b13afe12c43692d1466afad43426bbc0ac0dbe198c2e2b"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/scripts/gen-legacy-gap.mjs",
+    "bytes": 4918,
+    "sha256": "789e48c240c279992ddafbb95bd5a3fc871c4ba6fea287308e0dfca150fd9967"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/__tests__/App.menuPrewarm.test.ts",
+    "bytes": 3023,
+    "sha256": "66c45f889f513655cb9137d168b784740ee19bf610c21c89c831dbbe696eb212"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/__tests__/App.viewSwitch.test.ts",
+    "bytes": 8042,
+    "sha256": "8ec7424c94e4c68e56ff3b98651611d45fdda6394cb3141559dfb7d03b483d29"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/__tests__/legacyWebview.test.ts",
+    "bytes": 2842,
+    "sha256": "b6c46118c8c76ac46be294fa6fb94b2b1bdf2638cb00d3c133b90002d4a6f1d6"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/App.vue",
+    "bytes": 21217,
+    "sha256": "44c53ee8415c84b87cbcec16168988705ed421e3a3fe23f68451620ba90b550c"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/assets/fonts/EmueraBlock.woff2",
+    "bytes": 15240,
+    "sha256": "79a29a9d405d73969d3f51e4bcfb27cf36722b63487dbd8b91ae46b838a42dbf"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/assets/fonts/IPA_Font_License_Agreement_v1.0.txt",
+    "bytes": 20564,
+    "sha256": "4c84dd528ec3044638ec346fc1ee27cd1eb95dfc04cbc6a881b3ca7a7f517e54"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/assets/fonts/IPAGothic.woff2",
+    "bytes": 3055144,
+    "sha256": "b1a900dd859b998839da0c0b9dbfad5c8c77f117b788f8659e2e2dfdb49759d7"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/assets/fonts/LICENSE.DejaVu.txt",
+    "bytes": 8816,
+    "sha256": "7a083b136e64d064794c3419751e5c7dd10d2f64c108fe5ba161eae5e5958a93"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/__tests__/AiDialoguePanel.test.ts",
+    "bytes": 14141,
+    "sha256": "ed8ca68b7ae1cf3f6d9ce9b7bf1d16f204d583413f6cf793ceae4b500e8e166c"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/__tests__/InputBar.test.ts",
+    "bytes": 7086,
+    "sha256": "1cf2475ba56dd6d6173c93cef94bb7e068775893250d16d76489cfd96cc61135"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/__tests__/MobileChoicePanel.test.ts",
+    "bytes": 7119,
+    "sha256": "0f6083554eaecf9982bd147a3049b020c196f13d5d2fbf406ea56436b5a4ba77"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/__tests__/TerminalDisplay.imageVirtualScroll.test.ts",
+    "bytes": 11320,
+    "sha256": "15884c8b985ebb589987f87ce223d371aa958436e75a14f2707a2fd6e86b583f"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/__tests__/TerminalDisplay.test.ts",
+    "bytes": 55618,
+    "sha256": "2e7f329cd5c0be7223dad6ad21ec58f3483d9bbdef010f1906ad7fddb2685058"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/__tests__/TinputCountdown.test.ts",
+    "bytes": 4941,
+    "sha256": "c0945e48aa0d668d1d937e90f3d615cdbcb252bcfba58b53def380ff9e28403e"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/AiDialoguePanel.vue",
+    "bytes": 26028,
+    "sha256": "c7be55fcf61e363a1cf405aaf6383ab43eb8331a34017599caabc267801cc5a6"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/AppShell.vue",
+    "bytes": 1065,
+    "sha256": "c05ff9cf1b0052963986e000272a68839ce71877304948bf72a982ad23e9e2d4"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/ChangeDirDialog.vue",
+    "bytes": 18726,
+    "sha256": "e7c50b8cbe4553877712658dc9632200e6b20e83dce9c936080f2fc3a39bbc08"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/ConfirmDialog.vue",
+    "bytes": 4243,
+    "sha256": "47891a5c1814cba9ff7996db212b77ac345d24c15ce741a392d4df79dd41af83"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/DrawerMenu.vue",
+    "bytes": 12465,
+    "sha256": "c4f66ca23803ce43a02349bfeb52209dae4bce38a7cf03c34dba17d20d13dd0c"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/GameLibraryView.vue",
+    "bytes": 21634,
+    "sha256": "a8e76c3d27e89e6869129afd1672e9f5575da94dac7b127dc6feb4317ea13409"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/GameRow.vue",
+    "bytes": 7911,
+    "sha256": "ef7f9b1495830e1dbe8077f1914735beb986b68ae44915a2b7d34c520b1b6c2d"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/InputBar.vue",
+    "bytes": 15570,
+    "sha256": "0728d963550b0bf7b021e9164a3674ce7f7509bd575ae2048581fd86c0ab37d5"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/MauiGameList.vue",
+    "bytes": 11513,
+    "sha256": "58d3cb87fe238e6cdf0bee9c18c7f77746fcf1c3cc7c4c415604143c54ba17b7"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/menuTypes.ts",
+    "bytes": 1276,
+    "sha256": "8a98ede139037ce1b632f7a96392e100a0629ebcf7d46f3b4226e91cfe7e4535"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/MobileChoicePanel.vue",
+    "bytes": 4076,
+    "sha256": "6c63ff075ba32fc1f353a133a961a42875f6c55dbc7b6f4d98bd06978311fcd7"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/PopupMenu.vue",
+    "bytes": 10047,
+    "sha256": "9a92b91ac173785ab6759d37cb95ec6c154a10a4765bfe275f44fd34cf7fa61b"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/SegmentRenderer.vue",
+    "bytes": 9362,
+    "sha256": "7ba9917bddaf0df0c4ec40a8ee9b43e7a8e67671c01e428c6dcfa9568624ed5a"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/SpectatorBanner.vue",
+    "bytes": 1600,
+    "sha256": "537a6672e40e6a35ae7acb4d34f520f078a9a21a13a0845fdd1bf80c8bcae46c"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/StatusBanner.vue",
+    "bytes": 2971,
+    "sha256": "4e923576aa6000a7946e193df1334ec8d57c1a6919c6f3dd84bf3f28bb83eaef"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/TerminalDisplay.vue",
+    "bytes": 59033,
+    "sha256": "d9958309c6c7f031157840bd2c349e4659d8d4825e8a8501a149a38924ca33df"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/TinputCountdown.vue",
+    "bytes": 3118,
+    "sha256": "2a3c1baaf8d6e3d9fae7bc982b5b23859b6113583ff1591d169c13c0f83dcd8a"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/components/WebGameList.vue",
+    "bytes": 4426,
+    "sha256": "19d89c8e8fa7602dce07549a6c24b70e251e087013649a871e9444ba67691654"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/composables/__tests__/useAppInit.test.ts",
+    "bytes": 26932,
+    "sha256": "ab63888fdf454241c0bb6430335fd1228172a0482d4d4e30e83bffb90adddf1b"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/composables/__tests__/useGameStatusMonitor.test.ts",
+    "bytes": 7911,
+    "sha256": "95e85cd8d6b7d8db349dbe3bed2009097671b0bed7cfde7f54d65ef7de49f133"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/composables/__tests__/useKeyMouseInput.test.ts",
+    "bytes": 4799,
+    "sha256": "7923f6ea81ccd155c2bcb8365b065d858cbe6cf0a98ad548abaa83e3199d5cc4"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/composables/__tests__/usePinchZoom.test.ts",
+    "bytes": 12408,
+    "sha256": "b169f33cddefb35f9374f4fd500763ad724b73edf0023444d2c4a9a63dbcae09"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/composables/__tests__/useVirtualScroll.test.ts",
+    "bytes": 27700,
+    "sha256": "996f388daf30075e4a6fad249048a7c10831e281738d9db739d4cde1b317bf42"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/composables/useAppInit.ts",
+    "bytes": 20507,
+    "sha256": "24dad649515ece0b6265672180397766766a5c559686be911b3ad7cd79b2cef8"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/composables/useGameStatusMonitor.ts",
+    "bytes": 2903,
+    "sha256": "6fd7db2304ccbe923ea99c65f917b0639d773bf0cb23684873a94357375789da"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/composables/useKeyMouseInput.ts",
+    "bytes": 8277,
+    "sha256": "a6aca38c15a1f6e38835b6366d69f8b19e4e37068f28a72a42a50e42ae93b4ae"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/composables/usePinchZoom.ts",
+    "bytes": 7712,
+    "sha256": "dc07fb6397736470089dcbd930e2d3b48a51ceaa897bb137930a7d34c0c2bbb9"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/composables/useVirtualScroll.ts",
+    "bytes": 17671,
+    "sha256": "a4bac29e3bb5df9e5e6284abb4823fb745f3d7852038147803bea13baafe0658"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/config/constants.ts",
+    "bytes": 358,
+    "sha256": "e75723531c6b5cae9947dd1b1bfffc4224fb66b076b3a30f01ac7d0a71025517"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/env.d.ts",
+    "bytes": 242,
+    "sha256": "04c95921074dd2239225065c69bbbc42781a585c6092c00f67c677909b5a0ad8"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/__tests__/aiPresentation.test.ts",
+    "bytes": 8317,
+    "sha256": "3583cacaf40bd2887d5019006a6a1703e5d738c44f33a73b50c142df48b046b6"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/__tests__/aiPreset.test.ts",
+    "bytes": 1357,
+    "sha256": "cf90a4a18d6749acebc11b40f45a778d7cf2c8f90b80a3c720ea75fa3e8205fd"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/__tests__/awaiting.test.ts",
+    "bytes": 8264,
+    "sha256": "2960cd889b2fdfcc013976f48a070923de85787f6627e9f1225a07b6d94989e2"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/__tests__/gameLibrary.test.ts",
+    "bytes": 5373,
+    "sha256": "30c8635750fff040307fad9d3b81a89c8ddfc99d9e7530c0d957aba52f0a9e87"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/__tests__/imageCover.test.ts",
+    "bytes": 7382,
+    "sha256": "a1ca3ec82dd7f4c9838385966131a117a18c8b84e31e7a33724dee63cdd1f3ea"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/__tests__/imageLayout.canvas.test.ts",
+    "bytes": 5542,
+    "sha256": "1bbe4373a5a33ee04f9b9357305b6cd48d49700f4473baa47adeb4abe3f9435f"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/__tests__/imageLayout.test.ts",
+    "bytes": 4932,
+    "sha256": "879ec49f4a7e0e9d58ebfff055f4dae096e9a24ae7f279213f5ba8588e594f73"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/__tests__/inputRouting.test.ts",
+    "bytes": 9518,
+    "sha256": "3f6b8725c91eb19891b13c22067c8e22a0ba496027719055ff15e6fc60d76a19"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/__tests__/keyCodes.test.ts",
+    "bytes": 3809,
+    "sha256": "610792fea35d648bb30220c38502b1d3d6450d3fb0e34aafa45b4c4f87731ebd"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/__tests__/loadingStatus.test.ts",
+    "bytes": 2360,
+    "sha256": "87e7d04761c3d4caf0d75dcc02c3beb48fc7bd7648215a4199a436b05dea81b0"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/__tests__/mauiBridge.test.ts",
+    "bytes": 15962,
+    "sha256": "938f12968caebd7e8ed6dc7b1b6da079ef608afecf055bbceac16c1733e1f227"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/__tests__/opsApplier.test.ts",
+    "bytes": 30950,
+    "sha256": "a772bb49f3374978f1ffc84a20d900810dadefdb9c3d2629b7fb4c9e9a7f4aed"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/__tests__/parseTurnRecord.test.ts",
+    "bytes": 24615,
+    "sha256": "4fde7202a986f5d1a93a39736cf4abf427e27384bd525cfaa352ccdebfd9c12f"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/__tests__/resourceResolver.test.ts",
+    "bytes": 2779,
+    "sha256": "f466a916e68ed7990aa246618855301c57b853dc71bca91317542da17b094fae"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/__tests__/snapshotReducer.test.ts",
+    "bytes": 7876,
+    "sha256": "0c5bb0826dd92ec8f7944469beb75e12f4c3933296a5a34fb483c4310c35715b"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/__tests__/touchLayout.vertical.test.ts",
+    "bytes": 8467,
+    "sha256": "d5c8c3ebcbf6e1fafa99180ff959135d49adfd4637868f3379f52f52e06a6b12"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/__tests__/translation.test.ts",
+    "bytes": 4421,
+    "sha256": "185648771f185bb05fa792e3c42c074a1a0907f79fe3ddcf90fbd51eeeda0b3a"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/aiPresentation.ts",
+    "bytes": 5361,
+    "sha256": "b830ff4085a2c80621effa5673b0f1d176a1616d1b8388690e69b8f629847028"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/aiPreset.ts",
+    "bytes": 2467,
+    "sha256": "d7f2aa11be49f7a2661d49d9b5c69ce6e5acbe584ea5e78368d79c463cac4123"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/awaiting.ts",
+    "bytes": 1068,
+    "sha256": "87f938776a16e6c1cfc09ba5551c4aff34bdfbf4d0bb91c7a90a4becbac65df9"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/gameChoices.ts",
+    "bytes": 1252,
+    "sha256": "292ede64438609c59fa4a42dbad1ecf29550baf61263ef455f82a55f8d10c2a8"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/gameLibrary.ts",
+    "bytes": 6061,
+    "sha256": "3ba176ef8eb19e12edd79a502756795e0a34d49e13163a68980c4ba2156a7e64"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/imageCover.ts",
+    "bytes": 9241,
+    "sha256": "8ce7a9618357808030c73a5ffa45851078aa1c6a3cc3aabd5d21258c7ece5d98"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/imageLayout.ts",
+    "bytes": 6035,
+    "sha256": "845557033328cfacd54de6e5182a0509b9652e60e57df1c068f5c30c5f2b85ce"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/inputRouting.ts",
+    "bytes": 5987,
+    "sha256": "aeea116d137ebf65e2a3450c5f1225b0f8a976f245db913c47180291fc0458e3"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/keyCodes.ts",
+    "bytes": 2808,
+    "sha256": "5607c5b0886e3fbc309aa0bf3f04d937337dff3fa602d9cbf4157ecf24b6340a"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/loadingStatus.ts",
+    "bytes": 1088,
+    "sha256": "939d331dd8ee0e9d81e04cba2d70b286fea4ab6fef2d70d84b72de0fa4085a8e"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/mauiBridge.ts",
+    "bytes": 30025,
+    "sha256": "c06feed262e86c31fc767b8ce7dcd46f83ee5bf529e26566f37592603f88ace6"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/opsApplier.ts",
+    "bytes": 10448,
+    "sha256": "233b06799ddbdab3808a550b1bc66859a65797035622d2f024876d7867dc0755"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/parseTurnRecord.ts",
+    "bytes": 18904,
+    "sha256": "a63eac21bc9f8748b321b13c9c4e73e86ce9e70b8a195f6829c5e23e3815ce14"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/prewarmMenuShadow.ts",
+    "bytes": 4909,
+    "sha256": "cf26c4fe9ddcba18c93cf6311baa31f29651b612761be03547036978b2cf60e0"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/resourceResolver.ts",
+    "bytes": 1027,
+    "sha256": "03873cf53b3caefee5523d46135b711b509ebfbd7b3621aedbbbba844dca4bda"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/snapshotReducer.ts",
+    "bytes": 2630,
+    "sha256": "e89907a61407e891fb6862adcf8d763ec3bb87014ebe879bca9daae0a3d90d14"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/touchLayout.ts",
+    "bytes": 13933,
+    "sha256": "f7e3dad1f2fa1116b6da821429a3c8d6ff5623424e8f4ba5a3e2dcfbb9849756"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/lib/translation.ts",
+    "bytes": 5859,
+    "sha256": "0773b9993345926d8b4aea6853c9337bb25ace6787c572a8ee21069ccb595f14"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/main.ts",
+    "bytes": 1456,
+    "sha256": "0d268f34a855a4bb05fb737c71fccd977cd8017ed1d24f0029819b59fba265c7"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/stores/__tests__/appSettings.test.ts",
+    "bytes": 6025,
+    "sha256": "793e6004a84c04c6551986cffb795f4557ac41da14d9096a880c7eca6c87b926"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/stores/__tests__/connection.test.ts",
+    "bytes": 43286,
+    "sha256": "428dc33a6e66d2b169051df03b68385d5ab0a9b8ec76b63c0d7c456e30c619c5"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/stores/__tests__/connectionControl.test.ts",
+    "bytes": 6687,
+    "sha256": "1e767a2b7f423bb9629724fe395802afd4e58966021112d1c552553dd96e5cc8"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/stores/__tests__/game.test.ts",
+    "bytes": 37417,
+    "sha256": "06ad42ebfbc45cb8f5ad36674d1eb23b3edee929f8152f4aafad923f786df381"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/stores/__tests__/gameAwaiting.test.ts",
+    "bytes": 7160,
+    "sha256": "fd9a2f5b11ad2f81ca2775e9b0bc4f1e5daf696acca446ff18c82080c66145df"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/stores/__tests__/gameExitHttp.test.ts",
+    "bytes": 4723,
+    "sha256": "96bcceac422da929b1700f1ce5994bb76785f456b3aa41995d9c4b4e6b434426"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/stores/__tests__/gameLayout.test.ts",
+    "bytes": 9721,
+    "sha256": "c3ecfac1fc6bc26b7801fd180563d19544b202e244c0a93382d72202d80b4870"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/stores/__tests__/gameLibrary.test.ts",
+    "bytes": 17625,
+    "sha256": "a4e216f590687a27ff27afec9ef589a0aac59211599304614a8c6277328c903c"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/stores/__tests__/gameLoadGame.test.ts",
+    "bytes": 13324,
+    "sha256": "5b796cc50c97054303ea654595f587031030fcb9da27a8ffcb9ecd382ecff142"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/stores/__tests__/gameQuickRestart.test.ts",
+    "bytes": 12909,
+    "sha256": "2d532985b5a4c8e3a68bc1a4d95f4310b5d875d88292e76bef75197fab11cfe0"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/stores/__tests__/gameWebLibrary.test.ts",
+    "bytes": 6206,
+    "sha256": "7e371c30246f0461402ec6bee04b2a7284a692945eadec2676f7b5269e7c4e9f"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/stores/__tests__/ui.test.ts",
+    "bytes": 14288,
+    "sha256": "767d4f0a0556c84844cd608d1abdc0cdd5956c915d20ac0a64d6decc5f5a9769"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/stores/connection.ts",
+    "bytes": 33826,
+    "sha256": "5aa0e81429e1c1d88e1fb95b4aae8642e2e2c4840f87f76395e2857b301be8f4"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/stores/game.ts",
+    "bytes": 88583,
+    "sha256": "b53fcb1d96d1c06c18ac234c488a178371e6f719a5f2e22d7f2cdcd01c0f89fc"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/stores/ui.ts",
+    "bytes": 12554,
+    "sha256": "04c2aa41e8bec73b26b704e31a2c9e2312de8aedd68befd270596ab1d6ed0f88"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/styles/fonts.css",
+    "bytes": 1807,
+    "sha256": "a503bdcb196f9cb4dc96c8faf07990f96473c17695710104c4d0ac13ea686d85"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/styles/legacy-webview.css",
+    "bytes": 6714,
+    "sha256": "6ca07c1044b4b84c1de709008e890ee8c275bae483085b8d10228a1510918b51"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/styles/theme.css",
+    "bytes": 14494,
+    "sha256": "08f8bd24bf69186ab8e2548eca4ef7587086e1ce51e68c501b45269c325298df"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/test-setup.ts",
+    "bytes": 2500,
+    "sha256": "a08a0792338246ce2b74c39a096a6e01d4c5ae0ba92c91df0f301c958e9b96bd"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/types/protocol.ts",
+    "bytes": 21457,
+    "sha256": "2636490dc3e31fa735953b6d6634de75b62f587da60df074c7150b8702a8f0fd"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/views/DebugView.vue",
+    "bytes": 6180,
+    "sha256": "ecd1d92de5e193de391cd5d1363885415b21d475d97929faf36192179961e62c"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/views/SettingsView.vue",
+    "bytes": 34144,
+    "sha256": "17d926bcd65f99564d58fe09da8a24d1e8739256bee43eb3abbeb594ded4e82a"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/src/views/TerminalView.vue",
+    "bytes": 7400,
+    "sha256": "4cf422093d42bc769b1a28258e33d0cb32bf047da92e950b3090817eb9d563c9"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/tsconfig.json",
+    "bytes": 700,
+    "sha256": "96ba4e8716b92bcbe91ae5f389d864f339ba88ec2b415c44fc123f92cc01d266"
+  },
+  {
+    "path": "portable/era-core/EraCore.Web/vite.config.ts",
+    "bytes": 4508,
+    "sha256": "c6f820fec2d5b51a27643cdc1ac551ea78c82fa4257bcc41cadee05815090061"
+  },
+  {
+    "path": "portable/era-core/Readme/License/Emuera.LICENSE.txt",
+    "bytes": 1268,
+    "sha256": "1f27b15384ae0238260cee2e54f8df66f2f07eb8c267ef773651ffcbdffafd51"
+  },
+  {
+    "path": "portable/era-core/Readme/License/LibWebp.LICENSE.txt",
+    "bytes": 1495,
+    "sha256": "b34f83b6f14c5ce4739a91b09dde4bb11c12375e0c31afe213c9d57b3aeea554"
+  },
+  {
+    "path": "portable/NuGet.Config",
+    "bytes": 262,
+    "sha256": "bc5ad4e92d1dd6ada633a02eb0f9d4f5c5618b0699d3ec036779a8e3d2e993be"
+  },
+  {
+    "path": "portable/Tests/AddressTests.cs",
+    "bytes": 5738,
+    "sha256": "21aa5d1b9d813b345026f4e874efe339522d1e7ac8ed981d8149e0342b8e3dcb"
+  },
+  {
+    "path": "portable/Tests/ColorCompatibilityTests.cs",
+    "bytes": 6276,
+    "sha256": "f8148c592a1b70b9140a51106c25e55cbbe9a0795cb91eaf42ecf9a8a58b74a9"
+  },
+  {
+    "path": "portable/Tests/EmueraAI.Portable.Tests.csproj",
+    "bytes": 851,
+    "sha256": "545898b17f307e0c1e7b6ca9f303f55d83246c0308f7980911342be6952bc363"
+  },
+  {
+    "path": "portable/Tests/FunctionDocumentTests.cs",
+    "bytes": 8216,
+    "sha256": "22c64b06b534652ad2b2192043f247263a8ca32c0103c3dbf90a3d1c811ec369"
+  },
+  {
+    "path": "portable/Tests/HostAiTests.cs",
+    "bytes": 14131,
+    "sha256": "8982efd13abc81b36722d41e3753896c9d100989612e479474f3d4fd77923113"
+  },
+  {
+    "path": "portable/Tests/Program.cs",
+    "bytes": 14793,
+    "sha256": "d7cd5a3327a07ff6c250b1e51d0730a496dafe4aa71e11936ddf41dd676d513d"
+  },
+  {
+    "path": "portable/Tests/StoryBundle.cs",
+    "bytes": 4594,
+    "sha256": "0e0159c07a923f859e674228751a1e6061f72db1d18ae7b98ea86b146f453545"
+  },
+  {
+    "path": "portable/Tests/StoryScan.cs",
+    "bytes": 5579,
+    "sha256": "c7d4ec6fade81cdbe509572df49be4622b3a3661e2928fc44291db2dd27e7229"
+  },
+  {
+    "path": "portable/Tests/StoryTemplateTests.cs",
+    "bytes": 11926,
+    "sha256": "9f4452e7bc3455fe57b8c54e0fa84102cf4e86edc0f3b3f5298355dc883e1bcf"
+  },
+  {
+    "path": "portable/Tests/StoryTests.cs",
+    "bytes": 10754,
+    "sha256": "a55509f45b9d88b1106d815f8690bbca4a604ef07730f70b2a801edf403e8399"
+  },
+  {
+    "path": "portable/Tests/SupplementTests.cs",
+    "bytes": 9824,
+    "sha256": "d91375b5ccd917a13f5ac659b72edbfb82665f112c62e9b20248feda3d6bcd19"
+  },
+  {
+    "path": "portable/Tests/TranslationTests.cs",
+    "bytes": 9018,
+    "sha256": "0fbb04d60e75396c56159f9075d51f7678c03ffe009f6219c844b8666be4b04c"
+  },
+  {
+    "path": "portable/toolchain.lock.json",
+    "bytes": 605,
+    "sha256": "9ad735254aafea20b93f501d255bdde5f83f11ba1569ce768d7eebc83bf57f85"
+  },
+  {
+    "path": "portable/UPSTREAM.txt",
+    "bytes": 718,
+    "sha256": "891ce60e07f1ccc219cb0a53c4ac436e559a90affa1e72bd1607fa38de0c1397"
+  },
+  {
+    "path": "presets/ERA-dialogue.json",
+    "bytes": 2572,
+    "sha256": "6f337a2de3ee3f80901883e4a9330299e15a9bb4a48f9dd0e7bf688318a65131"
+  },
+  {
+    "path": "README.md",
+    "bytes": 3504,
+    "sha256": "6a99d1f5ccd84b325e2739fad6dd6fc09a4d2936e58f35712d42dc1b7429538c"
+  },
+  {
+    "path": "setup-android.ps1",
+    "bytes": 3325,
+    "sha256": "58c79c3ef80dfcbfe114a3fdd7ef8e613c901c4dd015dcef1d2735e94d6df48d"
+  },
+  {
+    "path": "setup-build.ps1",
+    "bytes": 1312,
+    "sha256": "566ec87127a73fb9cd7ab4cc3657ca7869abad7219ca616f7e8feb3a86213188"
+  },
+  {
+    "path": "src/Emuera/_Library/GDI.cs",
+    "bytes": 12030,
+    "sha256": "0296088ca5e3bcaa7e453dd8e191d8b078c74656114713929d3dc028910a6fef"
+  },
+  {
+    "path": "src/Emuera/_Library/LangManager.cs",
+    "bytes": 2406,
+    "sha256": "45c63025c9a552a42e22bd8342dc1a49f5c43268ae5d21a00a1de254b7cdaffb"
+  },
+  {
+    "path": "src/Emuera/_Library/SFMT.cs",
+    "bytes": 13697,
+    "sha256": "b36133af3a292ab585a2282b3ee0f549cb7212a53c608e89eaa5ba87c47ee880"
+  },
+  {
+    "path": "src/Emuera/_Library/Sys.cs",
+    "bytes": 1383,
+    "sha256": "493c8f50ae3aade02271c5314342f7d6b38e42bff24bc9c1f244591eeb5d7228"
+  },
+  {
+    "path": "src/Emuera/_Library/WebPWrapper.cs",
+    "bytes": 118900,
+    "sha256": "17e5b4e65bd47202803520329167577c0d90c51950bf17fd21812154ae924465"
+  },
+  {
+    "path": "src/Emuera/_Library/WinInput.cs",
+    "bytes": 242,
+    "sha256": "7ac4785da75226f3f6710efa848511867c29967d5e7d16927db45ebadc044507"
+  },
+  {
+    "path": "src/Emuera/_Library/WinmmTimer.cs",
+    "bytes": 1554,
+    "sha256": "8f87f05dde768d86f53aa7eef1c8f1db3cb18fde457111a77c8abc74f8543ab5"
+  },
+  {
+    "path": "src/Emuera/AI/AddressTerms.cs",
+    "bytes": 3973,
+    "sha256": "4c0fed530a8d3ce33642e643e05b748b0d8de8d7e35dd90ed2a1646b346ba761"
+  },
+  {
+    "path": "src/Emuera/AI/AiClient.cs",
+    "bytes": 11067,
+    "sha256": "1bcb82c5e4d8c66b592f2cf1491eb69d8bf34452d06bdf8113bd0ddd138939e1"
+  },
+  {
+    "path": "src/Emuera/AI/AiController.cs",
+    "bytes": 16866,
+    "sha256": "10aaa2329c82820a0a73e06a57e63f1382b0d6f6fadb32e4168f15abafb1b97a"
+  },
+  {
+    "path": "src/Emuera/AI/AiFunctionDocumentWindow.cs",
+    "bytes": 9748,
+    "sha256": "5718465bb9b6cd90e786c3d7ae01cd27cecf630a3ce6a833021805c7eb2e0de6"
+  },
+  {
+    "path": "src/Emuera/AI/AiLog.cs",
+    "bytes": 3935,
+    "sha256": "09ac945f2f8a63eb1be6c94ce708b36dfff1d5bc7a81cd161f4a84e9c22ed13b"
+  },
+  {
+    "path": "src/Emuera/AI/AiModels.cs",
+    "bytes": 4957,
+    "sha256": "fd9acf91686f328461104be0d5545bf2ea7d433e5c0983700ba5d0f686ab857d"
+  },
+  {
+    "path": "src/Emuera/AI/AiWindow.cs",
+    "bytes": 24534,
+    "sha256": "c99a1bd75d19a1ea35778d7418db1f69023fc598379efbd04e74ad295f5acb12"
+  },
+  {
+    "path": "src/Emuera/AI/DesktopStorySession.cs",
+    "bytes": 2820,
+    "sha256": "eb905dfe4140e1c1ebe3627ce6e00c9255683e30215ec1e8d4d40a2c60788ffb"
+  },
+  {
+    "path": "src/Emuera/AI/DialogueDiagnostics.cs",
+    "bytes": 2904,
+    "sha256": "06c7e718d914f28680fc1896e24576ecd641f33a288bb2f6e312b30d2e5ab4f5"
+  },
+  {
+    "path": "src/Emuera/AI/EngineObservation.cs",
+    "bytes": 12145,
+    "sha256": "a25780084d19ed28f2d19ce58676e261d8d38569707d3ef39124bb9d061ba616"
+  },
+  {
+    "path": "src/Emuera/AI/GameLauncher.cs",
+    "bytes": 7962,
+    "sha256": "d5093dff2108af0530e87e092d7529036d07f78f8c98b70de45ada117c7dab88"
+  },
+  {
+    "path": "src/Emuera/AI/GameStyle.cs",
+    "bytes": 11134,
+    "sha256": "e5deca21922c92fae0ea8073767297ee18ffe43354bbdaa608e5a06218ee4c12"
+  },
+  {
+    "path": "src/Emuera/AI/InlinePresentation.cs",
+    "bytes": 4719,
+    "sha256": "2cc70249048f95fe8a1147a3b4834a79c234fa6b5792d387865d235d3f2d95fc"
+  },
+  {
+    "path": "src/Emuera/AI/LauncherSession.cs",
+    "bytes": 2423,
+    "sha256": "eba170dcb2ba2a55e98c61c83debc78e7381d7395c77ea8553771122ab3d4421"
+  },
+  {
+    "path": "src/Emuera/AI/MainWindow.Ai.cs",
+    "bytes": 2178,
+    "sha256": "3a0d0922b34792ed254afd0a089dd6a184de918913d6dc1e5d5d872bfc0c1f7a"
+  },
+  {
+    "path": "src/Emuera/AI/MainWindow.Launcher.cs",
+    "bytes": 1238,
+    "sha256": "69c5fbec37ee1e5123ca6151486573d8311f5f4d04810f1f5442e3f950159632"
+  },
+  {
+    "path": "src/Emuera/AI/Preset.cs",
+    "bytes": 26598,
+    "sha256": "6b6693508f19f41be518fad9b8fa7400f65c4cc2a8d86497750ebe907102948b"
+  },
+  {
+    "path": "src/Emuera/AI/StoryPolicy.cs",
+    "bytes": 21029,
+    "sha256": "4d0ee47569173584b91edbd24b8d7757daa9f54b8a624c4fc71f1e9362b1976a"
+  },
+  {
+    "path": "src/Emuera/Config/Config.cs",
+    "bytes": 25723,
+    "sha256": "359bcd6a1a80ec8082badeeb333816972264b57563cd09827462db7736d9fe6a"
+  },
+  {
+    "path": "src/Emuera/Config/ConfigCode.cs",
+    "bytes": 3399,
+    "sha256": "0b1a1d3748d5feab9f5eff18e60b94a0a9fca9c9785cd126c3c060ed6ea89523"
+  },
+  {
+    "path": "src/Emuera/Config/ConfigData.cs",
+    "bytes": 27240,
+    "sha256": "7b3965307e07d8821ed39771f22aaa44d0b7851627a48d70d663e024c5a46a12"
+  },
+  {
+    "path": "src/Emuera/Config/ConfigItem.cs",
+    "bytes": 8854,
+    "sha256": "4d81bd3713eaa2769d78267f20e99119a7276aa9e8bbcb58b101da82af9a7553"
+  },
+  {
+    "path": "src/Emuera/Config/KeyMacro.cs",
+    "bytes": 2897,
+    "sha256": "71a7b3e0ed7e49d60e9ed1fe2e5fc48de8e767a8c46d3641ea106e02c1d4002a"
+  },
+  {
+    "path": "src/Emuera/Content/AContentFile.cs",
+    "bytes": 320,
+    "sha256": "82bc9daefaf0683d66a50b7e4b6568aa0d683934868d244fdadbcb54d044a40d"
+  },
+  {
+    "path": "src/Emuera/Content/AContentItem.cs",
+    "bytes": 112,
+    "sha256": "5792006ebcee06f928fa132c2a019b2942f142f7f37ac1c56cf15adc973e7f0c"
+  },
+  {
+    "path": "src/Emuera/Content/AppContents.cs",
+    "bytes": 11767,
+    "sha256": "286e742b4a4c1ac640ae33a4326e6e80707b279f073b73ca285b428bfb24e454"
+  },
+  {
+    "path": "src/Emuera/Content/ConstImage.cs",
+    "bytes": 1965,
+    "sha256": "89b5fc7f6d877380efb060ff372d8713c3ba5ce11ddedbe7a79e2e088e85338d"
+  },
+  {
+    "path": "src/Emuera/Content/CroppedImage.cs",
+    "bytes": 9985,
+    "sha256": "9aae3e5b79a305bae955f18b7d1b20dd5d164b294e7cd8cf63a6d28fab0b1c5e"
+  },
+  {
+    "path": "src/Emuera/Content/GraphicsImage.cs",
+    "bytes": 14221,
+    "sha256": "ae26b3e2a7cde182b8497ed507b4026068db6707a3a953632a2a00f7928fa3e1"
+  },
+  {
+    "path": "src/Emuera/Emuera.csproj",
+    "bytes": 13419,
+    "sha256": "2370d3c7e8b2ad6e5130c6b15731d981ee4da7cd1631e2ab6e051c7cf4a94eb7"
+  },
+  {
+    "path": "src/Emuera/Forms/ClipBoardDialog.cs",
+    "bytes": 1115,
+    "sha256": "624d160d1952b123c5ce6d2085bad7c5044733f52a667f6551d138ffdb3899c6"
+  },
+  {
+    "path": "src/Emuera/Forms/ClipBoardDialog.Designer.cs",
+    "bytes": 2460,
+    "sha256": "7e8ee07829fd6381424c08c7f9682bca6b99c3a05ce11114370d86ad2f3fb899"
+  },
+  {
+    "path": "src/Emuera/Forms/ClipBoardDialog.resx",
+    "bytes": 5698,
+    "sha256": "cbe7a23cf57abea4beca57ac456d81e11a2967d92ecffbceb7e3d7eda012789c"
+  },
+  {
+    "path": "src/Emuera/Forms/ColorBox.cs",
+    "bytes": 741,
+    "sha256": "5b4b674806925137628e7c288f59a4f3ba1abec81f41e020ac07fa922ab29a6e"
+  },
+  {
+    "path": "src/Emuera/Forms/ColorBox.Designer.cs",
+    "bytes": 2347,
+    "sha256": "7bd50de9a424555fc92e70aebcd57647c2360674f3adf5558e6c97d2f7a359c9"
+  },
+  {
+    "path": "src/Emuera/Forms/ColorBox.resx",
+    "bytes": 8868,
+    "sha256": "beedf2441547e5f23cf2afe6ebe6a57bb9b8450bee044b3c1c4edb425d204e98"
+  },
+  {
+    "path": "src/Emuera/Forms/ConfigDialog.cs",
+    "bytes": 27467,
+    "sha256": "3f7c5ffa5e9a6f63541a1f0064193007b85cc0ef07017bc9830dd26c7a7093d6"
+  },
+  {
+    "path": "src/Emuera/Forms/ConfigDialog.Designer.cs",
+    "bytes": 46653,
+    "sha256": "e29571712645388886e368062186d95e8d7869a6e0409a9735400f42d2b61e96"
+  },
+  {
+    "path": "src/Emuera/Forms/ConfigDialog.resx",
+    "bytes": 121619,
+    "sha256": "f9f0f6aa5d42471157f5992dd9b9eabcf7279e54e7f198e9743087dc7e93125b"
+  },
+  {
+    "path": "src/Emuera/Forms/DebugConfigDialog.cs",
+    "bytes": 4318,
+    "sha256": "51dfce53650df9cf10de6c46a6f1733064e17e3dc221eb843e010837a58a6a82"
+  },
+  {
+    "path": "src/Emuera/Forms/DebugConfigDialog.Designer.cs",
+    "bytes": 12507,
+    "sha256": "4fdaf825a8cbad327926e550cf282ee147f41c45d7982a27665f2311149f36f6"
+  },
+  {
+    "path": "src/Emuera/Forms/DebugConfigDialog.resx",
+    "bytes": 6092,
+    "sha256": "695de6042b15859cf9bc9d738882da64fbe35946fe98d14b55f39217d92029de"
+  },
+  {
+    "path": "src/Emuera/Forms/DebugDialog.cs",
+    "bytes": 12398,
+    "sha256": "42d67274fcaa1d2cdbcd4791d56f9693b1779f6b74b1fbbafff33630619f99c8"
+  },
+  {
+    "path": "src/Emuera/Forms/DebugDialog.Designer.cs",
+    "bytes": 17129,
+    "sha256": "02e8fadef1a9aa056d58e09da61aacab34743b5769bafd4050374c5fa83fa3c5"
+  },
+  {
+    "path": "src/Emuera/Forms/DebugDialog.resx",
+    "bytes": 5893,
+    "sha256": "fad21c1e6759e76b5e4f145b6796555db590e3dd361844498b7ec0ec75b074c6"
+  },
+  {
+    "path": "src/Emuera/Forms/EraPictureBox.cs",
+    "bytes": 2669,
+    "sha256": "baa260290b36fa9b4a61c230a61a85d8588fe21eff720038ccd54b96a4bb89bf"
+  },
+  {
+    "path": "src/Emuera/Forms/EraPictureBox.resx",
+    "bytes": 5876,
+    "sha256": "ddb3722aaeecaba98a15c40f1d9c2b0a394e9dd3d1125c141ad0411b53ef77fe"
+  },
+  {
+    "path": "src/Emuera/Forms/MainWindow.cs",
+    "bytes": 34744,
+    "sha256": "22fce384ef634abd7eddb12ce968a2a6780dd1952c882dc0f07f4ee19895602b"
+  },
+  {
+    "path": "src/Emuera/Forms/MainWindow.Designer.cs",
+    "bytes": 37438,
+    "sha256": "9a0ec7e4300d50a8764330771a46088fe2cd6e2f0aa0f32d228cd9c8e233c9cb"
+  },
+  {
+    "path": "src/Emuera/Forms/MainWindow.resx",
+    "bytes": 7288,
+    "sha256": "6412370152e64b2173ef7ac100d49e57e8b846561343d86d89d0c0a525a73823"
+  },
+  {
+    "path": "src/Emuera/GameData/ConstantData.cs",
+    "bytes": 52947,
+    "sha256": "f8bb864526f31780e3ab83d04fea47e821a84ee89a682060934995f76996d771"
+  },
+  {
+    "path": "src/Emuera/GameData/DefineMacro.cs",
+    "bytes": 722,
+    "sha256": "635e5e42d1ec5a7506b9b04f24a7c8d83665980b81b8527e594a59661c14afbb"
+  },
+  {
+    "path": "src/Emuera/GameData/Expression/CaseExpression.cs",
+    "bytes": 2193,
+    "sha256": "f43a576b8d3e3ab66b4446719ffeab0dfbcd0e63720edec814ec7cd0d58c37be"
+  },
+  {
+    "path": "src/Emuera/GameData/Expression/ExpressionMediator.cs",
+    "bytes": 3749,
+    "sha256": "31829eaf19275bfc04773f9f46e161f37ca2881130fb8e7a81a8f6b10419b23b"
+  },
+  {
+    "path": "src/Emuera/GameData/Expression/ExpressionParser.cs",
+    "bytes": 23471,
+    "sha256": "883f1950e9370535cb3cab30821c5472962b9c8f989b041e1a8d636f92c1116e"
+  },
+  {
+    "path": "src/Emuera/GameData/Expression/IOperandTerm.cs",
+    "bytes": 1300,
+    "sha256": "42771bdf5fc1a4de5c82b3d194fdf0fe33752c94470e6c7f301613b4a43aa59c"
+  },
+  {
+    "path": "src/Emuera/GameData/Expression/OperatorCode.cs",
+    "bytes": 4815,
+    "sha256": "a7583497f15cce89373c8646cdcd34431652784d8430fc2139de33a37c352e6b"
+  },
+  {
+    "path": "src/Emuera/GameData/Expression/OperatorMethod.cs",
+    "bytes": 23289,
+    "sha256": "5eabaeccd6d01cf4c2abb2e756e00b95fc8f2b5354e22b0997bfb60553b3e2ff"
+  },
+  {
+    "path": "src/Emuera/GameData/Expression/Term.cs",
+    "bytes": 2872,
+    "sha256": "ff61afe4b9c346157b0186f740984b0c0a5cb1aee319d4711b23d01b19d0aad8"
+  },
+  {
+    "path": "src/Emuera/GameData/Function/Creator.cs",
+    "bytes": 10935,
+    "sha256": "41450fc6389916d09d41ce2293f805bdfa3f9ad6a7aeb8445403dfae1a52513a"
+  },
+  {
+    "path": "src/Emuera/GameData/Function/Creator.Method.cs",
+    "bytes": 179301,
+    "sha256": "9d10e0c36841b34396ee2526aa47ee4772b17a34d0a5410ef87f43cecaa3678b"
+  },
+  {
+    "path": "src/Emuera/GameData/Function/FunctionMethod.cs",
+    "bytes": 2493,
+    "sha256": "fa57e54d0e989d9d28c933a263b06e175ad4d607a3205df516ad95456633a0a6"
+  },
+  {
+    "path": "src/Emuera/GameData/Function/FunctionMethodTerm.cs",
+    "bytes": 1411,
+    "sha256": "16a87568b0f635074070b6740f81bb0deb1a9e2b7e707e92f22747080e71fbff"
+  },
+  {
+    "path": "src/Emuera/GameData/Function/UserDefinedMethodTerm.cs",
+    "bytes": 5355,
+    "sha256": "ddbcae9463be994092e394fe065aa78bf72f055a953b4de99ccb355a49af85c9"
+  },
+  {
+    "path": "src/Emuera/GameData/Function/UserDefinedRefMethod.cs",
+    "bytes": 2517,
+    "sha256": "46dd5637fd92795cec5b54239488878bc414223e32e8a9438037d3fd922dbdca"
+  },
+  {
+    "path": "src/Emuera/GameData/GameBase.cs",
+    "bytes": 6010,
+    "sha256": "329eb309f5fb4549b5cf9501eee23ede9826e864d69d266b3ea7a47165f91021"
+  },
+  {
+    "path": "src/Emuera/GameData/IdentifierDictionary.cs",
+    "bytes": 22873,
+    "sha256": "77d147a175d074efd51b9cc3692c381d524455863dfdad8b781072898e6d2c60"
+  },
+  {
+    "path": "src/Emuera/GameData/ParserMediator.cs",
+    "bytes": 5471,
+    "sha256": "5a21b0239b6d263fdf3dbd15699fdefe49165f841f0e1aef2388759188c10897"
+  },
+  {
+    "path": "src/Emuera/GameData/StrForm.cs",
+    "bytes": 10421,
+    "sha256": "abeeb817c2f5ee1bcc37b968834ce0cf466dd64c36b6bb77048b98f0e3eba4bc"
+  },
+  {
+    "path": "src/Emuera/GameData/Variable/CharacterData.cs",
+    "bytes": 33833,
+    "sha256": "09b0b358747678be8fe568a1b2941258e8c1794d230c37d31226c38919a551d2"
+  },
+  {
+    "path": "src/Emuera/GameData/Variable/VariableCode.cs",
+    "bytes": 21989,
+    "sha256": "a2785f97675e336394d17a0a804b738756f0229fee3298fe3d56948be5c7696e"
+  },
+  {
+    "path": "src/Emuera/GameData/Variable/VariableData.cs",
+    "bytes": 48764,
+    "sha256": "6cdaeb0c942e49588d23267ddef9bd424a3d15f69ad36d4df4d9edaffe6b682e"
+  },
+  {
+    "path": "src/Emuera/GameData/Variable/VariableEvaluator.cs",
+    "bytes": 83026,
+    "sha256": "1a640481b5e1bf59b5a575ef9b83751005b9aa9d737532c125cdaaf147f4a4d9"
+  },
+  {
+    "path": "src/Emuera/GameData/Variable/VariableIdentifier.cs",
+    "bytes": 10990,
+    "sha256": "3c63b5cc3cae301970c7252608ec105413e78142c85a4b1a559cea6fed4a893e"
+  },
+  {
+    "path": "src/Emuera/GameData/Variable/VariableLocal.cs",
+    "bytes": 3801,
+    "sha256": "ab89f418d0f2fb841bf7f795531020c96899aa00d318d1f4dcad149bdedc3cd9"
+  },
+  {
+    "path": "src/Emuera/GameData/Variable/VariableParser.cs",
+    "bytes": 6371,
+    "sha256": "e9939e5921e20389e130e5ba956bb3228ae3ac68a118eebb92018f7a0c78d237"
+  },
+  {
+    "path": "src/Emuera/GameData/Variable/VariableStrArgTerm.cs",
+    "bytes": 1652,
+    "sha256": "1632b6cc5f302699846aaa91b7140d80b650a9ea83cf041d46f622840e105c6f"
+  },
+  {
+    "path": "src/Emuera/GameData/Variable/VariableTerm.cs",
+    "bytes": 14736,
+    "sha256": "1d6e828c93a3770480730ce2a167868dcfed10fe694c1daa3b173d7cd8c09aaa"
+  },
+  {
+    "path": "src/Emuera/GameData/Variable/VariableToken.cs",
+    "bytes": 100224,
+    "sha256": "950b92fb91a6f5eba8fac1961a9535306973008fcf60047b37c7911a1020bb62"
+  },
+  {
+    "path": "src/Emuera/GameProc/ErbLoader.cs",
+    "bytes": 60307,
+    "sha256": "a1ea417a4cd0c2d47c40988e6afa249759e9fea721ea5ae1608a2936095cf391"
+  },
+  {
+    "path": "src/Emuera/GameProc/Function/Argument.cs",
+    "bytes": 13348,
+    "sha256": "044ebc2c722b47101507d9afd8056c79df92464c798753ddda2272fb1874db23"
+  },
+  {
+    "path": "src/Emuera/GameProc/Function/ArgumentBuilder.cs",
+    "bytes": 74601,
+    "sha256": "f99656687841f3eb2a6596f5435f9f54313f76be189dcbafeebc2095d5f18f8b"
+  },
+  {
+    "path": "src/Emuera/GameProc/Function/ArgumentParser.cs",
+    "bytes": 1468,
+    "sha256": "57b9896503be5a21c7471c10b183213fb6df37d30412cb726b1bcaac1dc0a228"
+  },
+  {
+    "path": "src/Emuera/GameProc/Function/BuiltInFunctionCode.cs",
+    "bytes": 6874,
+    "sha256": "3b3a2fc521ab99e9c5c7cc0fcca3655b61a3f63764fa9ebaf909f4065839006a"
+  },
+  {
+    "path": "src/Emuera/GameProc/Function/FunctionArgType.cs",
+    "bytes": 4036,
+    "sha256": "a9f443c9e5de1d4f66e4571d55a5cbfc94b974108875fc09c80013af6cb0d0c5"
+  },
+  {
+    "path": "src/Emuera/GameProc/Function/FunctionIdentifier.cs",
+    "bytes": 30510,
+    "sha256": "a29ddb1390b7ba4e92d7276c3d9994564048c29f063f2bb8b6940878d46a1a13"
+  },
+  {
+    "path": "src/Emuera/GameProc/Function/Instraction.Child.cs",
+    "bytes": 78870,
+    "sha256": "5707d28f91be29604d840f869ccedda2dee841e4e3491c767ccc3db391e6e920"
+  },
+  {
+    "path": "src/Emuera/GameProc/Function/Instruction.cs",
+    "bytes": 865,
+    "sha256": "b1276638c031842b1afb2e521067807594228f169fb5cdeac812f5307eb2028a"
+  },
+  {
+    "path": "src/Emuera/GameProc/HeaderFileLoader.cs",
+    "bytes": 10033,
+    "sha256": "db0c94175a636a0dbe1a33222b587e1f3ef3c8e8e4c0739f2fb03da9800d801b"
+  },
+  {
+    "path": "src/Emuera/GameProc/InputRequest.cs",
+    "bytes": 1418,
+    "sha256": "2ae342b0a2611b26569681ae17b9be4e517e85db58e3298d395e23e441571649"
+  },
+  {
+    "path": "src/Emuera/GameProc/LabelDictionary.cs",
+    "bytes": 8456,
+    "sha256": "40dddd1747912013aede12803eaec291f6427b770f0dbe6a3398bb47551268a1"
+  },
+  {
+    "path": "src/Emuera/GameProc/LogicalLine.cs",
+    "bytes": 8986,
+    "sha256": "237e64ba43c448b8e3d85268d31f349f28abcf4c2e07b3e30ac670fa243e6490"
+  },
+  {
+    "path": "src/Emuera/GameProc/LogicalLineParser.cs",
+    "bytes": 18354,
+    "sha256": "e0cd6369c408bf6d1f9c9452f8394e9f379c3ef3a99d4da2b83e5212ed0e50f4"
+  },
+  {
+    "path": "src/Emuera/GameProc/Process.CalledFunction.cs",
+    "bytes": 10524,
+    "sha256": "e8c37e97fced96490a1c20710057050c9056714c99b8162f09f08c92b69b638f"
+  },
+  {
+    "path": "src/Emuera/GameProc/Process.cs",
+    "bytes": 17547,
+    "sha256": "00f8be49bad8ee491b92ea50587cad6612c70232dadf6805115d66c0a2d5055f"
+  },
+  {
+    "path": "src/Emuera/GameProc/Process.ScriptProc.cs",
+    "bytes": 36282,
+    "sha256": "b4027f0ae426c0c63489c035ca35954c77193eb50bbc137f021b6eb748d45756"
+  },
+  {
+    "path": "src/Emuera/GameProc/Process.State.cs",
+    "bytes": 18798,
+    "sha256": "aaba000f7d0cab104fcf07c4ba180d2c76fddb72eee1d26cf3d8ecfc3140eb0b"
+  },
+  {
+    "path": "src/Emuera/GameProc/Process.SystemProc.cs",
+    "bytes": 32665,
+    "sha256": "9006c34b556b410a817fd900ccc9737d92307fdbbe24a4e7fb89c93d41b9ce19"
+  },
+  {
+    "path": "src/Emuera/GameProc/UserDefinedFunction.cs",
+    "bytes": 5649,
+    "sha256": "ec735bbdea5c3a8a4a5cf98fc8eaffcabc94f7331c15fdb001762af8211a3c68"
+  },
+  {
+    "path": "src/Emuera/GameProc/UserDefinedVariable.cs",
+    "bytes": 13867,
+    "sha256": "11490e6448aaa4763426bb4f54b808ae33818734bcc2ebf1c1cbc17a5a85bd9e"
+  },
+  {
+    "path": "src/Emuera/GameView/AConsoleDisplayPart.cs",
+    "bytes": 1250,
+    "sha256": "85ba11a1a3aa1da8cbb05c1baf3514a7232a4e8ae9a9369919482843a9cf23f7"
+  },
+  {
+    "path": "src/Emuera/GameView/ButtonStringCreator.cs",
+    "bytes": 7003,
+    "sha256": "1beb221ca6f4906fa0a4128a4e13fb18bd83d4d42ed403238d043acdbb060cbb"
+  },
+  {
+    "path": "src/Emuera/GameView/ConsoleButtonString.cs",
+    "bytes": 6745,
+    "sha256": "59e2bea464de299cae02ca32848551b8814f67fa407f36b32459cade264b8076"
+  },
+  {
+    "path": "src/Emuera/GameView/ConsoleDisplayLine.cs",
+    "bytes": 5495,
+    "sha256": "93b5a1327acc06a68bf40bf5382caa37e3aee0ff2b26623ac9c4d067137f2d52"
+  },
+  {
+    "path": "src/Emuera/GameView/ConsoleImagePart.cs",
+    "bytes": 5588,
+    "sha256": "f42a86e292630e75bb0138cd73e5de510c359454bdd852a6cef42d40d6cbdf79"
+  },
+  {
+    "path": "src/Emuera/GameView/ConsoleShapePart.cs",
+    "bytes": 5942,
+    "sha256": "00cc844114204ed0f8d795d77d215eae00e80a43fdd6c8aecddc3a510ccd8b19"
+  },
+  {
+    "path": "src/Emuera/GameView/ConsoleStyledString.cs",
+    "bytes": 3368,
+    "sha256": "bb5c7c90ce8a6e71e84e884d1972d40184bb6a0fb9d4285febf484cf7246c4b2"
+  },
+  {
+    "path": "src/Emuera/GameView/EmueraConsole.cs",
+    "bytes": 61569,
+    "sha256": "4959669a8af350e1dfc542e314133e1642df452017e948cf277974b0619d44c3"
+  },
+  {
+    "path": "src/Emuera/GameView/EmueraConsole.Print.cs",
+    "bytes": 18139,
+    "sha256": "b9a34c50d02365ec74174a4b11054ef5c41893e784fe93fb27d737735969864c"
+  },
+  {
+    "path": "src/Emuera/GameView/HtmlManager.cs",
+    "bytes": 35994,
+    "sha256": "611b96438a11c405a8acefc3075d98607178c59909f7dc16562d1f9053152d86"
+  },
+  {
+    "path": "src/Emuera/GameView/PrintStringBuffer.cs",
+    "bytes": 17747,
+    "sha256": "9769e7101c9bb0c8e1bb915958f81d4f36abce00fd2195738b0dee6404b1628e"
+  },
+  {
+    "path": "src/Emuera/GameView/StringMeasure.cs",
+    "bytes": 2991,
+    "sha256": "a84ec9c3192128db1445e9eae8e74341aee724183aa9961b226a8aff016e787f"
+  },
+  {
+    "path": "src/Emuera/GameView/StringStyle.cs",
+    "bytes": 2125,
+    "sha256": "db64db28dbd72537388743a7503495f1c76b928b98b583ea6e38fb6725d7a195"
+  },
+  {
+    "path": "src/Emuera/GlobalStatic.cs",
+    "bytes": 2189,
+    "sha256": "84314213100b65047de57623dc3dc0f9b772704965242de6b96a4ab7425681e9"
+  },
+  {
+    "path": "src/Emuera/GlobalSuppressions.cs",
+    "bytes": 16280,
+    "sha256": "b546ea271747ed0432fe0795ba188ff52659d0d157567f3ada41ce28cb45ab5b"
+  },
+  {
+    "path": "src/Emuera/libwebp.lib",
+    "bytes": 1642954,
+    "sha256": "ee110fc1fe43f048a27dc126bff8d1483f25e275ab9a1329d5bea862fc7467fd"
+  },
+  {
+    "path": "src/Emuera/Program.cs",
+    "bytes": 7929,
+    "sha256": "e153b0fef4a33c47757a106a8c194f71bfa3a9cc1cd725b030c89864fc32fed9"
+  },
+  {
+    "path": "src/Emuera/Properties/AssemblyInfo.cs",
+    "bytes": 1579,
+    "sha256": "fa14a19f8dc5ad7004d3412aca51b4823a02d053e7824f2a23f91d63d6ea0935"
+  },
+  {
+    "path": "src/Emuera/Properties/Resources.Designer.cs",
+    "bytes": 10501,
+    "sha256": "ad836f1d81bb8583fb2118ceb9ad6f13fd7390aa0500d999686f253132ede23e"
+  },
+  {
+    "path": "src/Emuera/Properties/Resources.resx",
+    "bytes": 8555,
+    "sha256": "d1c5f87c094bbe96c324b3b7e01d82f8ebeba0a202714e1c4fa1befef064deb0"
+  },
+  {
+    "path": "src/Emuera/Properties/Settings.Designer.cs",
+    "bytes": 1191,
+    "sha256": "3dbee030f6ce9966a8a138dda6c4ff52204aecf7950dec64362fe042f7e52e70"
+  },
+  {
+    "path": "src/Emuera/Properties/Settings.settings",
+    "bytes": 242,
+    "sha256": "baba99193fc1787141063b135424b476ff4151beb833883fcb594631f17c0147"
+  },
+  {
+    "path": "src/Emuera/Sub/EmueraException.cs",
+    "bytes": 3461,
+    "sha256": "548a72b4be54fb800ffb3482ccf66c8b166e8d01dcaf5385797b070224796740"
+  },
+  {
+    "path": "src/Emuera/Sub/EraBinaryDataReader.cs",
+    "bytes": 19640,
+    "sha256": "d58325086607cfc74496affc271873cd0acac93673695b3052e5faaf8e81f3a3"
+  },
+  {
+    "path": "src/Emuera/Sub/EraBinaryDataWriter.cs",
+    "bytes": 9776,
+    "sha256": "8846d2a13077e6fc7566e7e060c0116a49190878f6407a68a880d3613b1fdb4f"
+  },
+  {
+    "path": "src/Emuera/Sub/EraDataStream.cs",
+    "bytes": 21263,
+    "sha256": "89f39382427f1e6d51d76463fd97b2d3535417304f4182f2dd96c53ddd759684"
+  },
+  {
+    "path": "src/Emuera/Sub/EraStreamReader.cs",
+    "bytes": 8048,
+    "sha256": "dc74251c0c471ee9e83efd694b9c92be080da798f5352cfef59843c49e89f186"
+  },
+  {
+    "path": "src/Emuera/Sub/LexicalAnalyzer.cs",
+    "bytes": 36971,
+    "sha256": "d91bcbba3b2c087efcd732e389dc559e2eef817b5064d0ed5fe0e937ef8315f0"
+  },
+  {
+    "path": "src/Emuera/Sub/StringStream.cs",
+    "bytes": 3494,
+    "sha256": "1ea36bd043ead3f27d1690254647130ca85e117b487e98fbd16823cc005fb67c"
+  },
+  {
+    "path": "src/Emuera/Sub/SubWord.cs",
+    "bytes": 1416,
+    "sha256": "17105808b7ca6e6251791e4c76582a53847f9865fcf6c4a10efada35b12fb4e5"
+  },
+  {
+    "path": "src/Emuera/Sub/Word.cs",
+    "bytes": 2992,
+    "sha256": "08c4e0bbe51c0baa0c08a3ad81584aa5f25afd77beaf6409afb9bedf9693b100"
+  },
+  {
+    "path": "src/Emuera/Sub/WordCollection.cs",
+    "bytes": 1875,
+    "sha256": "16df61df3fc97d29d91cf5acbaba712ac96bb3e5f330978f4f931722b95ad8e1"
+  },
+  {
+    "path": "Start-Demo.cmd",
+    "bytes": 1293,
+    "sha256": "11f30d60e631e1860d2dd0c4fdd332dccee6855b6ae2e9b7bdc1c584a44f6f98"
+  },
+  {
+    "path": "Start-Loader.cmd",
+    "bytes": 1263,
+    "sha256": "b7d8fbf09b0487d9f10f8ceccdc14e318e4839e130b20fd8f95de429fb6773de"
+  },
+  {
+    "path": "tests/CoreTests.cs",
+    "bytes": 63179,
+    "sha256": "a5089914f8dd4cb98191349dba378089b22f908ade28ee42541b6328033b4498"
+  },
+  {
+    "path": "tests/run.ps1",
+    "bytes": 1081,
+    "sha256": "f4fc9a2a9b3865e81a6ce5a5dc22c17aad93f4c79e1c049d324d10d07ef1d021"
+  },
+  {
+    "path": "tests/verify_android_package.py",
+    "bytes": 1527,
+    "sha256": "e9369f10e86de3dbe42c81f1dbf4530bcd8e9aae389796ba9678c8730aeaa835"
+  },
+  {
+    "path": "THIRD_PARTY_NOTICES.md",
+    "bytes": 992,
+    "sha256": "4d5eb80124e240baba57b81c56d9f29017cea26f3cc262c312ebac53eeb09ffb"
+  }
+]

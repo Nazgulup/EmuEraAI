@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\src\Emuera\AI\AddressTerms.cs" Link="AddressTerms.cs" />
+    <Compile Include="..\..\src\Emuera\AI\StoryPolicy.cs" Link="StoryPolicy.cs" />
+    <Compile Include="..\..\src\Emuera\AI\Preset.cs" Link="Preset.cs" />
+    <Compile Include="..\..\src\Emuera\AI\AiClient.cs" Link="AiClient.cs" />
+    <Compile Include="..\..\src\Emuera\AI\AiController.cs" Link="AiController.cs" />
+    <Compile Include="..\..\src\Emuera\AI\AiLog.cs" Link="AiLog.cs" />
+    <Compile Include="..\..\src\Emuera\AI\DialogueDiagnostics.cs" Link="DialogueDiagnostics.cs" />
+    <Compile Include="..\..\src\Emuera\AI\GameStyle.cs" Link="GameStyle.cs" />
+    <InternalsVisibleTo Include="EraCore.Maui" />
+    <InternalsVisibleTo Include="EmueraAI.Portable.Tests" />
+  </ItemGroup>
+</Project>

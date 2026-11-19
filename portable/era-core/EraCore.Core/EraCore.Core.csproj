@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <RootNamespace>MinorShift.Emuera</RootNamespace>
+    <AssemblyName>EraCore.Core</AssemblyName>
+    <DefineConstants>HEADLESS</DefineConstants>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- I-12 阶段 1：质量护栏按路径分级
+         - EraCore.Core/Shared/** 历史共享源码警告由 .editorconfig 全局抑制（T-023 物理迁移自 Emuera/）
+         - EraCore.Core/** 自有源码保持警告可见，便于阶段 2 逐步收紧 -->
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisMode>Minimum</AnalysisMode>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- 拆分自原 Emuera.Headless.csproj 的 InternalsVisibleTo 列表（issue 01）。
+         Cli 不在原 issue checklist 中，但 HeadlessRunner/ServerRunner 在 Cli 项目内调用
+         Core 的 internal 成员（GameLoopComposer.RunAsync / HeadlessFatalException 等），
+         缺失会导致编译失败——补加 Cli 是逻辑必需。-->
+    <InternalsVisibleTo Include="EraCore.Server" />
+    <InternalsVisibleTo Include="EraCore.Cli" />
+    <InternalsVisibleTo Include="EraCore.Tests" />
+    <!-- MAUI 占位（issue 07 创建 Emuera.Maui 项目后启用，MauiBridgeIO 在 Core 内 internal sealed）-->
+    <InternalsVisibleTo Include="EraCore.Maui" />
+    <InternalsVisibleTo Include="EmueraAI.Portable.Tests" />
+  </ItemGroup>
+
+  <!-- System.CommandLine 已随 HeadlessOptions 迁至 Cli 项目——Core 不再需要此引用（code-review 发现的死依赖） -->
+
+  <!-- ===== Skia 方言 P0：SQL_* 函数族（实现票 28）=====
+       唯一原生依赖（SQLitePCLRaw.bundle_e_sqlite3 随包传递）。约束：全部 SQLite 引用必须收口在
+       Runtime/Utils/Sql/SqlManager.cs 单一文件，包装器/注册层不得直接 using Microsoft.Data.Sqlite。
+       桌面优先；Android/MAUI/NativeAOT 的原生库定位形态单开后续 issue（spec §9）。 -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.12" />
+  </ItemGroup>
+
+  <!-- ===== 共享源码：Shared/ 子树（T-023 物理迁移自 Emuera/） ===== -->
+  <!-- 历史 Runtime/UI/Game 源码由 SDK 默认 glob（**\*.cs）自动包含 -->
+  <!-- .editorconfig [EraCore.Core/Shared/**] 抑制历史警告；T-022 后逐步清零并启用 nullable -->
+
+  <!-- ===== GlobalStatic：Headless 专用实现（不共享 Emuera/GlobalStatic.cs） ===== -->
+  <!-- I-02：单会话不可变全局硬约束 + setter 断言 + Reset 清理，见 GlobalStatic.cs -->
+
+  <!-- ===== 嵌入资源：语言文件（SDK 默认 glob 不含 .xml，需显式包含） ===== -->
+  <ItemGroup>
+    <EmbeddedResource Include="Shared\Properties\lang\emuera-eng.xml" LinkBase="Properties\lang" />
+    <EmbeddedResource Include="Shared\Properties\lang\emuera-zhs.xml" LinkBase="Properties\lang" />
+  </ItemGroup>
+
+</Project>

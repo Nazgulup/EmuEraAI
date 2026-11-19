@@ -1,0 +1,205 @@
+﻿0.9 (Windows, file version 1.824.0.14), 2026-11-19:
+Embed the same 182-template catalog used by Android. Share keyword/version/code
+matching and fingerprint verification across .NET Framework and portable .NET.
+Automatically build function documents for unmatched games. Add WinForms search,
+classification filter, allow checkbox, automatic/allow/deny modes, editable notes,
+per-game persistence and JSON export. Saving allowed selections prioritizes AI for
+the current event when enabled without replaying the script or changing numbers.
+Keep plot protection and original fallback. Cancel scans when the game closes.
+Prepare a source-only github-upload directory with required assets/licenses and
+build instructions. No games, saves, personal API settings, logs or private keys.
+Android release remains 0.11; its shared code and clean-source build were checked.
+
+0.11 (Android, versionCode 16), 2026-11-19:
+Bundle 182 compressed metadata-only story templates in the APK. Auto-match game
+title/folder keywords and exact metadata version/code; support localized CSV keys
+and textual version tags. Reject conflicts/ambiguous variants; verify each source
+function fingerprint and keep user rules. Audit: 98 eligible directory matches.
+Unmatched games automatically get a locally generated function document. Search,
+filter, page, checkbox allow/deny/auto, editable notes, per-game persistence and
+JSON export. Saving a permitted function prioritizes AI for the current event
+when enabled, with no interpreter input or settlement replay. Plot protection
+remains active. Cancel background scans on exit; log matching and editing reasons.
+Windows release remains 0.8; shared source compatibility was also regression-tested.
+
+0.8 (Windows) / 0.10 (Android, versionCode 15), 2026-11-19:
+Conservative shared story protection before any dialogue or style API request.
+Classify source functions locally; inspect all observed parent call sites and
+event-flag branches. Unknown/missing/ambiguous context keeps original text.
+No-original mobile supplementation uses the same gate. Per-event and per-game
+function allow/deny controls, JSON import/export, source fingerprints, decision
+reasons/call chains in logs, stale UI command rejection, cancellation safety.
+Function allow cannot bypass story ancestry; explicit function deny is strongest.
+Scan 182 game/script directories (101 with GAMEBASE.CSV), 87,405 ERB files and
+944,582 functions; export metadata-only templates, all actions default to auto.
+No game scripts, saves or API settings are modified by analysis or regeneration.
+Windows side-by-side executable is EmueraAI-0.8.exe (1.824.0.13).
+
+0.7.1 (Windows) / 0.9 (Android), 2026-11-19:
+Protect resolved ERA name/address variables and observed SELF_CALL-style results
+with placeholders. Validate before display; altered addresses fall back to original.
+Regeneration never evaluates the name function again. Windows is a side-by-side
+update (1.824.0.12), preserving running games and local API settings.
+Android adds automatic body/choice translation with a separate output budget,
+per-game cache, original view, retry, and cancellation on settings change/exit.
+Preserve actual option values, numbers, placeholders, styles, and source line rows.
+No external API was contacted for these new tests; neutral controlled responses.
+
+Emuera AI Preview — 2026-11-19
+
+0.9 (Android): Preserve original game row spacing even with touch layout enabled;
+retain horizontal touch expansion and the separate floating choice panel. Add
+an opt-in GenerateWithoutOriginal setting: while waiting for ordinary choices,
+if the current character is valid and no dialogue was captured, build a read-only
+snapshot with current options and insert AI text before the original menu. Empty
+KOJO/no-new-PRINT turns are supported. No script replay, interpreter output edits
+or invented fallback text; regenerate replaces one paragraph and late responses
+are discarded. Version code 14; Windows address preservation patch is 0.7.1.
+
+0.8.4 (Android): Fix valid named colors such as SkyBlue stopping scripts. Replace
+the incomplete 24-name portable map with the complete managed predefined color
+table, retaining grey and the desktop .NET Framework DarkSeaGreen RGB value.
+Foreground/background commands, COLOR_FROMNAME and HTML font colors now share
+desktop-compatible validation. Unknown names and unsupported Transparent still
+fail explicitly. Verify 140 standard colors against the shipped Windows binary,
+including exact RGB and case variants, eager/lazy script loading and all 11 color
+commands found in the current game. Version code 13; Windows remains 0.7.
+
+0.8.3 (Android): Remove the hard-coded 8192 output-token ceiling in settings and
+preset requests. Preserve the selected positive integer budget without clamping;
+validate context only when explicitly configured and report budget values on
+failure. Keep original in-game buttons transparent in touch, hover and pressed
+states. Preserve every live button and source row in the translucent floating
+panel, including equal-value aliases; multiple buttons on one row stay together
+without resizing the game viewport. Version code 12; Windows remains 0.7.
+
+0.8.2 (Android): Initialize saved AI settings before starting every rebuilt game
+host, including picker/reload paths that never receive another web ready message.
+Add read-only capture diagnostics to hosted turns and the AI status/log: missing
+scope, invalid target, button-only output, cleared text and observer exceptions.
+Exercise production startup/AI bridge partials with a real hosted neutral game,
+controlled AI responses and platform service substitutes; replay the resulting
+bridge trace in the mobile page to verify automatic main-transcript replacement.
+Android version code is 11; Windows remains 0.7.
+
+0.8.1 (Android): Fill the game viewport behind the controls. Remove the reserved
+choice rail and top toolbar gap, so expanding/collapsing choices never resizes
+the game. Use compact bottom-right overlay buttons matching the reference image:
+11.5% screen width, 12px text, 32-52px height, and 55% background opacity.
+Android version code is 10; Windows remains 0.7.
+
+0.8 (Android): Default to sensor landscape. Fit game text, images and hit geometry
+to the available viewport width; preserve manual zoom and provide a fit reset.
+Add collapsible bottom-right current-turn choice buttons with 48px touch targets,
+scrolling, duplicate-value filtering and the existing input/generation guards.
+Reserve space for the expanded panel; ignore image maps whose value depends on
+the tapped pixel. API, presets and interpreter-owned game logic are unchanged.
+Android version code is 9; Windows remains 0.7.
+
+0.7: Added return-to-game-selection lifecycle. On Windows, the game window X
+and both return menu entries share an unsaved-progress confirmation. Cancel
+preserves the game/request; confirm cancels AI and returns to the retained picker.
+Closing the picker exits the loader. Every selected game runs in a fresh engine
+process, isolating static config and macro paths; single-instance checks exclude
+its own picker process. Reboot and system shutdown keep their existing semantics.
+Android's exit entry is now named return-to-game-selection, clears AI panel state,
+and avoids sampling the old game from the idle picker host.
+
+0.6: Added redacted, complete dialogue logging: original, raw API content before
+validation, last accepted reply and displayed result. Long text uses numbered
+parts without splitting surrogate pairs. Comparison records distinguish exact
+copies, whitespace-only changes and repeated prior replies. Request fingerprints
+show whether the outgoing prompt actually changed. Regeneration now explicitly
+requests a new wording with the last reply and attempt number while preserving
+immutable event facts and all user sampling settings. Preview uses the same next
+request builder. Repeated replies are flagged in status; no automatic retry loop.
+
+0.5: Fixed successful AI replies appearing only in the separate panel while the
+original game text was hidden. Both Windows and Android now replace the dialogue
+in the main game transcript, with plain-text wrapping and matching scroll/menu
+layout. Regeneration updates that block; failure restores cached original lines.
+Completed dialogue remains in visible history. Engine buffers, button objects,
+LINECOUNT, game state and settlement stay unchanged. The desktop AI panel no
+longer opens automatically. Added presentation.main diagnostics on Windows.
+Validated the real ERA_MAOU_EX opening in an isolated copy by replaying a previously
+recorded neutral API reply (no new API request); screenshot and checks included.
+
+0.4: Added bounded, read-only game style sampling at load time, optional API
+style summarization and content/model-based cache. Current event facts and user
+presets remain authoritative. Pre-training openings now explicitly stay before
+the action and use the game's narrative style instead of a generic greeting.
+Added style report UI, thinking mode controls and explicit output-budget source.
+Auto mode disables thinking only for the official DeepSeek endpoint. UI tokens
+are authoritative unless the user selects preset tokens; logs show both values
+and the effective thinking mode. Confirmed the reported zero-body failure used
+all 400 completion tokens for reasoning; a neutral real API retest with 400 tokens
+and thinking disabled returned OK, with zero reasoning characters.
+Windows 135, portable 25, frontend 119 checks passed. Android version 0.4 / 5.
+The workspace uses EmueraAI-0.4.exe alongside the running old executable; launcher
+prefers the new binary and retains settings in the same directory. No running
+game is closed. User presets are preserved; the bundled default has a less rigid
+dialogue-only style instruction.
+
+0.3: AI-first presentation on Windows and Android. Captured original dialogue
+is hidden while waiting; a confirmed failure or manual cancellation reveals
+the cached original. Original ERB still executes once for game settlement.
+Output objects, geometry, LINECOUNT, menus, saves and regeneration remain intact.
+Added PRITRAIN_MESSAGE*, PRETRAIN_MESSAGE* and SELF_KOJO* observation, including
+nested pre-training calls. Existing KOJO redraw event identity is preserved.
+Added persistent, key-redacted generation logs, export, and a neutral saved-API
+connection test. Logs cover capture, preset assembly, HTTP status, reply shape,
+token usage, timeouts, validation errors and fallback. Successful bodies and
+full prompts are not logged. Reasoning-only/truncated responses are explained.
+Windows 121 / portable 22 / frontend 118 checks passed. A real neutral API probe
+returned HTTP 200 and OK; full game/preset requests were not sent in that probe.
+Android version is 0.3, version code 4.
+
+0.2.1: Preset comments (including multiline/scoped comments and nested tokens)
+are removed before macro validation/expansion; source text survives export.
+Added trim, request-local setvar/getvar/addvar, nested macros, lastusermessage,
+and independent event-stable random/roll. These never access engine variables,
+RNG or saves. Empty agentSystemPrompt/agentTask/agentResults extension slots
+are skipped with a compatibility notice; nonempty ones still fail explicitly.
+Verified the user's saved selection compiles in normal and regenerate modes
+offline, without sending its contents to an API. Android version code is 3.
+
+0.2: Added authenticated /models listing with editable model selection on both
+platforms; unavailable model lists do not prevent manual model entry.
+Raised preset import to 32 MiB and expanded the nested settings JSON budget.
+Added prompt entry toggles, ordering, content preview, and lossless unknown-field
+retention in export. Large Android AI messages use an explicitly exported native
+string bridge instead of URL transport. Android version code is now 2.
+Strict per-file legacy detection tries CP932, then GBK/Big5; mixed GBK ERH files
+no longer lose #DIM declarations such as LIST_POS after a Chinese comment.
+
+This is a modified version of Emuera, not an official Emuera release.
+Launcher fix: both Start-Loader.cmd and Start-Demo.cmd support source-tree (dist)
+and extracted-release layouts, with an explicit message when no binary exists.
+Encoding fix: detect BOM-marked Unicode and strictly validate BOM-less UTF-8
+before falling back to the existing legacy encoding (normally CP932). This
+prevents misdecoded Japanese/Chinese comments from consuming line breaks.
+Added per-game text encoding selection, including CP932, EUC-JP and ISO-2022-JP.
+Verified the supplied ERA_MAOU_EX 0.92 copy reaches its title menu.
+Original engine: Emuera 1.824.0.11 / v11+webp+test+fix private branch.
+Original copyright and license are retained in LICENSE.Emuera.txt and source files.
+
+Added an optional, separate AI dialogue panel; OpenAI-compatible HTTP transport;
+SillyTavern Chat Completion preset import/export for the documented subset;
+immutable dialogue observation; original-output fallback and regeneration;
+DPAPI-protected local API settings; --game folder selection; standalone demo;
+project-local reproducible compiler setup and interpreter integration tests.
+
+Added a Windows loader homepage: select the original exe to locate its game
+directory, select a folder, drag a path, or reopen recent games. The selected
+executable is never launched by the loader.
+
+Added an Android loader based on the pinned EraCore compatible engine, with
+phone folder access, a separate AI panel, shared dialogue/preset logic and
+SecureStorage-protected settings. See portable/UPSTREAM.txt for provenance.
+
+Original variable evaluation, command execution, RNG, save format, console output,
+and input handling remain in the existing engine. Observation hooks do not execute
+AI replies as ERB, HTML, commands or variable assignments.
+
+Native libwebp_x86.dll / libwebp_x64.dll were copied unchanged from the supplied
+v11+webp+test+fix distribution to preserve its image-loading dependencies.

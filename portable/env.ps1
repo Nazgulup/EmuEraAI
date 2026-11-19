@@ -1,0 +1,20 @@
+$eraProject = Split-Path $PSScriptRoot -Parent
+$env:DOTNET_ROOT = Join-Path $eraProject '.tools\dotnet'
+$env:DOTNET_CLI_HOME = Join-Path $eraProject '.tools\dotnet-home'
+$env:NUGET_PACKAGES = Join-Path $eraProject '.tools\nuget'
+$env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
+$env:DOTNET_CLI_UI_LANGUAGE = 'en'
+$env:MSBUILDDISABLENODEREUSE = '1'
+$env:DOTNET_CLI_USE_MSBUILD_SERVER = '0'
+$env:DOTNET_SYSTEM_NET_DISABLEIPV6 = '1'
+$env:DOTNET_SYSTEM_NET_HTTP_SOCKETSHTTPHANDLER_HTTP2SUPPORT = 'false'
+# Restricted build network: retain package signatures, use locally cached revocation information.
+$env:NUGET_CERT_REVOCATION_MODE = 'offline'
+$env:ANDROID_HOME = Join-Path $eraProject '.tools\android-sdk'
+$env:ANDROID_SDK_ROOT = $env:ANDROID_HOME
+$env:ANDROID_USER_HOME = Join-Path $eraProject '.tools\android-user'
+$env:JAVA_HOME = Join-Path $eraProject '.tools\jdk'
+$env:PATH = $env:DOTNET_ROOT + ';' + (Join-Path $env:JAVA_HOME 'bin') + ';' + $env:PATH
+$env:npm_config_cache = Join-Path $eraProject '.tools\npm-cache'
+$env:TEMP = Join-Path $eraProject '.tools\temp'
+$env:TMP = $env:TEMP

@@ -1,0 +1,34 @@
+/**
+ * fonts.css——全局字体注册。
+ *
+ * EmueraMonoJP = IPA ゴシック（IPAGothic），与 MS Gothic 度量兼容的日文等宽字体：
+ * ASCII = 半角 0.5em、CJK = 全角 1.0em，与 C# 侧 GDI 的 FontSize/2、FontSize 字符宽度
+ * 计算对齐——在 Android 等无 MS Gothic 的平台上替代默认字体，保证字符画 / 按钮行 /
+ * 整行横线等固定网格排版与 Windows 一致。
+ *
+ * 字体重定向：TerminalDisplay 的 font-family 链为「游戏字体名 → EmueraMonoJP → 通用等宽
+ * fallback」。Windows 上 MS Gothic 存在时优先命中（行为不变）；缺失时落到 EmueraMonoJP。
+ *
+ * 许可：IPA Font License v1.0（见同目录 IPA_Font_License_Agreement_v1.0.txt）。
+ * 文件：src/assets/fonts/IPAGothic.woff2（Vite 哈希 + 重写相对 URL，MAUI file:// 可加载）。
+ */
+@font-face {
+  font-family: 'EmueraMonoJP';
+  src: url('../assets/fonts/IPAGothic.woff2') format('woff2');
+  font-display: swap;
+}
+
+/**
+ * EmueraBlock——IPAGothic 缺失字形的补充字体（scripts/build_emblock_font.py 生成）。
+ * 字形来源单一：DejaVu Sans（265 字符，无程序化字形）。
+ * Box/Block/Geometric/Misc 四区全覆盖（含 ◢◣◤◥ 三角、Block 象限 U+2596–259F），
+ * 平滑矢量轮廓，提取时按 MS Gothic 实测 bbox 仿射缩放——字形视觉大小与 MS
+ * Gothic 一致，advance 强制 MS 实测值（0.5em/1.0em）。
+ * 许可：Bitstream Vera Fonts 版权 + 自由许可（可嵌入、可再分发）。
+ * 放在 EmueraMonoJP 之后：IPAGothic 有的字形它先用，缺失时逐字形回退到这里。
+ */
+@font-face {
+  font-family: 'EmueraBlock';
+  src: url('../assets/fonts/EmueraBlock.woff2') format('woff2');
+  font-display: swap;
+}

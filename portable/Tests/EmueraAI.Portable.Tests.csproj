@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dialogue\EmueraAI.Dialogue.csproj" />
+    <ProjectReference Include="..\era-core\EraCore.Core\EraCore.Core.csproj" />
+    <Compile Include="..\era-core\EraCore.Tests\LoaderTestHarness.cs" Link="LoaderTestHarness.cs" />
+    <Compile Include="..\era-core\EraCore.Tests\RootScope.cs" Link="RootScope.cs" />
+    <Compile Include="..\era-core\EraCore.Maui\BridgeHost.Ai.cs" Link="BridgeHost.Ai.cs" />
+    <Compile Include="..\era-core\EraCore.Maui\BridgeHost.Start.cs" Link="BridgeHost.Start.cs" />
+  </ItemGroup>
+</Project>

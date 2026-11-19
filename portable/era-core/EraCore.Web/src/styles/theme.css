@@ -1,0 +1,325 @@
+/**
+ * theme.css — Emuera Web UI 全局设计令牌（ui-redesign-spec §3）。
+ *
+ * 机制（spec §3.5）：原生 CSS 自定义属性，:root 下定义，main.ts 顶部引入全局生效。
+ * 组件样式一律 var(--token)，禁止再写具体 hex / rgba / 区间值。
+ * 本期为暗色单模式（spec §11）；将来加亮色在 theme.css 增加 [data-theme='light'] 覆盖层。
+ */
+:root {
+  /* ---------- 颜色（修订方案 §2.1：DESIGN.md 石板 + 天蓝权威） ---------- */
+  --color-bg: #171717;            /* 原型3页面主背景 */
+  --color-surface: #1f1f1f;       /* 应用栏、列表项、底部输入区 */
+  --color-surface-raised: #2a2b2e; /* 浮起/选中态、菜单、对话框表面 */
+  --color-border: #303134;        /* 分割线 */
+  --color-text: #e8eaed;          /* 主文字 */
+  --color-text-muted: #bdc1c6;    /* 次要文字、路径、说明 */
+  --color-indicator: #a8c7fa;     /* 原型3淡蓝强调 */
+  --color-indicator-pressed: #c4d7f8; /* 按下 / 强调 */
+  --color-success: #81c995;       /* 已连接、已加载 */
+  --color-warning: #fdd663;       /* 加载中、倒计时提醒 */
+  --color-error: #f87171;         /* 错误和危险操作 */
+  --color-control: #353638;       /* 交互控件实心背景（DESIGN.md solid controls） */
+  --color-control-hover: #414247; /* 控件 hover / active / 输入聚焦态 */
+  --color-overlay: rgba(0, 0, 0, 0.64); /* 模态遮罩：ConfirmDialog 等强模态浮层用 */
+  --color-scrim-menu: rgba(0, 0, 0, 0.32); /* 轻档遮罩：PopupMenu 非模态 scrim，避免整体压暗过重 */
+  --color-focus: #38bdf8;         /* 键盘 / 指针焦点环（2px outline），与 indicator 同色 */
+
+  /* ---------- 终端颜色（固定不随主题变化——游戏脚本控制的内容） ---------- */
+  /* 下面两个是**默认值/兜底**：读到游戏配置后由 .terminal 内联覆盖
+     （--term-color-text ← ConfigCode.ForeColor，背景 ← DisplayState.bgColor）。 */
+  --term-color-text: #e8eaed;     /* 默认文字颜色（游戏「文字色」） */
+  --term-color-bg: #171717;       /* 终端背景（游戏「背景色」） */
+  --term-btn-hover-bg: #2a2b2e;   /* 按钮 hover 背景 */
+  --term-btn-hover-line: #a8c7fa; /* 按钮 hover 下划线 */
+  --term-btn-active: #a8c7fa;     /* 按钮 active 背景 */
+  /* 触控排版的热区提示（圆角矩形）——填充 / 描边两个低 alpha 值，与 --term-btn-active
+     同色系。它们是 color-mix 不可用（旧 WebView）时的**兜底**：不做成满强度，因为一屏
+     二三十个按钮时高对比实心块会糊成一堵墙。终端颜色不随主题变化，故这里也只有一份。 */
+  --term-hit-bg: rgba(168, 199, 250, 0.12);   /* 热区填充 */
+  --term-hit-line: rgba(168, 199, 250, 0.25); /* 热区描边 */
+
+  /* ---------- 指针状态层（Material 风格，透明叠加在当前文字色上） ---------- */
+  --state-layer-hover: color-mix(in srgb, var(--color-text) 8%, transparent);
+  --state-layer-focus: color-mix(in srgb, var(--color-text) 12%, transparent);
+  --state-layer-active: color-mix(in srgb, var(--color-text) 14%, transparent);
+
+  /* ---------- 圆角（修订方案 §2.4：DESIGN.md 2/4/8 三档） ---------- */
+  --radius-indicator: 2px;        /* 左指示条 */
+  --radius-control: 12px;         /* 选择页与游戏页通用大圆角控件 */
+  --radius-surface: 12px;         /* 对话框、Popup Menu、表面化容器 */
+  --radius-hit: 6px;              /* 终端触控热区提示——比 control 更方正，避免胶囊感
+                                     （ui-redesign-spec §6.2 只对触控模式开这个例外） */
+
+  /* ---------- 阴影（spec §3.4，单档浮层，不递增） ---------- */
+  --elevation-none: none;         /* 默认层级：仅 1px --color-border 表达边界 */
+  --elevation-menu: 0 2px 8px rgba(0, 0, 0, 0.36); /* 仅 Popup Menu / 对话框等浮层 */
+
+  /* ---------- 动效（spec §3.4，档位） ---------- */
+  --motion-fast: 150ms;           /* 状态切换、opacity / background */
+  --motion-mid: 180ms;            /* 介于 fast/slow 的过渡：应用栏、紧凑标题、行 hover */
+  --motion-slow: 200ms;           /* 输入栏高度过渡、表面出现 */
+  --motion-spin: 800ms;           /* 循环 spinner 单圈周期 */
+
+  /* ---------- 浮层出入场统一参数（PopupMenu / ConfirmDialog / InputBar / 页面切换 共用） ---------- */
+  --fx-rise: 12px;                /* 上浮/下沉距离 */
+  --fx-scale: 0.85;               /* 缩放起始（进场 from / 退场 to） */
+  --fx-ease-in: cubic-bezier(0.05, 0.7, 0.1, 1.0);  /* 进场缓动曲线（加速-减速无过冲） */
+  --fx-ease-out: ease-out;        /* 退场缓动曲线 */
+
+  /* ---------- 页面切换过渡（MauiGameList ↔ 游戏画面） ---------- */
+  --page-duration: 200ms;         /* 过渡时长，与 --motion-slow 一致 */
+  --page-scale: 0.97;             /* 缩放系数，接近 1 则过渡更柔和，远离 1 则动感更强 */
+
+  /* ---------- 字体（spec §3.2） ---------- */
+  --font-ui: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+  --font-mono: ui-monospace, Consolas, 'Noto Sans Mono', monospace;
+  --font-size-xs: 11px;           /* 帧序号、日志、微辅助信息 */
+  --font-size-sm: 12px;
+  --font-size-md: 13px;           /* 按钮 / 控件正文 */
+  --font-size-base: 14px;
+  --font-size-lg: 16px;           /* 对话框 / 卡片标题 */
+  --font-size-title: 20px;
+
+  /* ---------- 间距（spec §3.3，4px 基准） ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  /* ---------- 尺寸（spec §3.3 / §8） ---------- */
+  --appbar-height: 56px;
+  --inputbar-min-height: 64px;
+  --touch-target: 48px;
+  --picker-list-max-width: 720px;
+  --row-min-height: 60px;         /* 选择页整行列表项高度（≥ --touch-target） */
+
+  /* ---------- 按钮留白（标准文字按钮统一规格） ----------
+   * 所有实心文字按钮共用 --btn-padding-* 与 --btn-min-height；尺寸变体（.btn-sm / .btn-lg）
+   * 只调 min-height 与字号，不再散落 padding 覆盖。 */
+  --btn-padding-y: 6px;
+  --btn-padding-x: 28px;
+  --btn-min-height: 36px;
+
+  color-scheme: dark;
+}
+
+/* ---------- 亮色主题 ---------- */
+[data-theme='light'] {
+  --color-bg: #ffffff;
+  --color-surface: #f3f4f6;
+  --color-surface-raised: #ffffff;
+  --color-border: #e5e7eb;
+  --color-text: #1f2937;
+  --color-text-muted: #6b7280;
+  --color-indicator: #3b82f6;
+  --color-indicator-pressed: #2563eb;
+  --color-success: #16a34a;
+  --color-warning: #d97706;
+  --color-error: #dc2626;
+  --color-control: #e5e7eb;
+  --color-control-hover: #d1d5db;
+  --color-overlay: rgba(0, 0, 0, 0.32);
+  --color-scrim-menu: rgba(0, 0, 0, 0.16);
+  --color-focus: #3b82f6;
+  color-scheme: light;
+}
+
+/* 全局基础——body 背景 / 文字 / 字体由令牌驱动 */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-base);
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+  /* 关闭 Android WebView (Chromium) 默认的蓝色 tap-highlight 覆盖层——
+     否则每次点按目标元素都会在控件自身 :active 状态层之上再蒙一层蓝色方块。
+     点按反馈改由各控件自身的 :active 状态层承担（DESIGN.md 克制状态层意图）。
+     不影响键盘 :focus-visible 焦点环。 */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/**
+ * 焦点环（spec §2.3 / §9）：统一 2px --color-focus outline。
+ * 禁止组件内 outline:none 追求简洁。
+ */
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* 指针交互模式（main.ts 焦点模态追踪）：最近一次输入来自鼠标/触摸时，
+   抑制 :focus-visible 焦点环——DESIGN.md 输入框与控件不做指针聚焦高亮；
+   键盘导航键按下即退出该模式，恢复全局焦点环（键盘可达性保留）。
+   文本输入框在 Chrome/Safari 下点击也会匹配 :focus-visible，必须在此抑制。 */
+html.pointer-interaction :focus-visible {
+  outline: none;
+}
+
+/* 等宽数字——数字、倒计时、缩放百分比防宽度抖动（spec §3.2） */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 通用控件类（spec §3.3：Filled button） ----------
+ * DESIGN.md：交互控件统一实心 #353638 深灰背景 + 白色文字（--color-text），
+ * hover/active 使用 #414247（--color-control-hover），禁用仅降透明度；
+ * 禁止亮色描边 / 发光。按钮视觉收敛为一档实心控件。 */
+.btn-primary,
+.btn-outline {
+  background: var(--color-control);
+  color: var(--color-text);
+  border: none;
+  border-radius: var(--radius-control);
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  font-size: var(--font-size-base);
+  font-family: var(--font-ui);
+  min-height: var(--btn-min-height);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--motion-fast);
+}
+.btn-primary:hover:not(:disabled),
+.btn-outline:hover:not(:disabled) {
+  background: var(--color-control-hover);
+}
+.btn-primary:active:not(:disabled),
+.btn-outline:active:not(:disabled) {
+  background: var(--color-control-hover);
+}
+.btn-primary:disabled,
+.btn-outline:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 尺寸变体——仅调 min-height 与字号，留白与基础按钮一致（--btn-padding-*） */
+.btn-sm {
+  min-height: 28px;
+  font-size: var(--font-size-sm);
+}
+.btn-lg {
+  min-height: var(--touch-target);
+  font-size: var(--font-size-base);
+}
+
+/* ---------- 通用动效（spec §3.4 --motion-*） ---------- */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes dialog-in {
+  from { opacity: 0; transform: translateY(var(--fx-rise)) scale(var(--fx-scale)); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes dialog-out {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(var(--fx-rise)) scale(var(--fx-scale)); }
+}
+/* ConfirmDialog 出入场——遮罩淡入出；卡片淡入+上浮+缩放（与 PopupMenu 共用统一参数） */
+.dialog-enter-active {
+  animation: fade-in var(--motion-fast) var(--fx-ease-in) both;
+}
+.dialog-leave-active {
+  animation: fade-out var(--motion-fast) var(--fx-ease-out) forwards;
+}
+.dialog-enter-active .confirm-dialog {
+  animation: dialog-in var(--motion-fast) var(--fx-ease-in) both;
+}
+.dialog-leave-active .confirm-dialog {
+  animation: dialog-out var(--motion-fast) var(--fx-ease-out) forwards;
+}
+@keyframes popup-in {
+  from { transform: scale(var(--fx-scale)) translateY(calc(var(--fx-rise) * -1)); }
+  to { transform: scale(1) translateY(0); }
+}
+@keyframes popup-out {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(var(--fx-scale)); }
+}
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+/* Popup Menu 出入场（spec §3.4 / M3 motion，游戏选择页菜单用）——遮罩淡入出、面板缩放。
+   遮罩（.popup-root）作为 Transition 根元素驱动 enter/leave；内容面板（.popup-menu）同帧出入。 */
+.popup-enter-active.popup-root {
+  animation: fade-in var(--motion-slow) var(--fx-ease-in) both;
+}
+.popup-leave-active.popup-root {
+  animation: fade-out var(--motion-fast) var(--fx-ease-out) forwards;
+}
+.popup-enter-active .popup-menu {
+  animation: popup-in var(--motion-slow) var(--fx-ease-in) both;
+}
+.popup-leave-active .popup-menu {
+  animation: popup-out var(--motion-fast) var(--fx-ease-out) forwards;
+}
+/* 面板先缩放出现，内容随后整体浮现（非逐项 stagger） */
+@keyframes popup-item-in {
+  from { opacity: 0; transform: translateY(var(--fx-rise)); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.popup-menu .popup-item,
+.popup-menu .popup-zoom,
+.popup-menu .popup-separator {
+  animation: popup-item-in calc(var(--motion-slow) * 2) var(--fx-ease-in) backwards;
+}
+
+/* DrawerMenu 出入场（替换 PopupMenu 浮层）——遮罩淡入淡出、面板横向滑入/滑出。
+   适配 Transition 根元素（.drawer-host）：enter/leave 类挂在 host 上。
+   根元素自身必须有 animation——Vue 靠探测根元素的动画时长决定过渡周期，
+   动画只挂在子元素上时会被当成长度 0 瞬间结束（表现为瞬弹）。
+   根元素整体淡入出（含 scrim），面板单独 slide。 */
+.drawer-enter-active.drawer-host {
+  animation: fade-in var(--motion-slow) var(--fx-ease-in) both;
+}
+.drawer-leave-active.drawer-host {
+  animation: fade-out var(--motion-fast) var(--fx-ease-out) forwards;
+}
+@keyframes drawer-slide-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes drawer-slide-out {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+.drawer-enter-active.drawer-host .drawer {
+  animation: drawer-slide-in var(--motion-slow) var(--fx-ease-in) both;
+}
+.drawer-leave-active.drawer-host .drawer {
+  animation: drawer-slide-out var(--motion-fast) var(--fx-ease-out) forwards;
+}
+/* 菜单内容逐项浮现（慢一倍，与 PopupMenu popup-item-in 一致）：面板先整体滑入，
+   内容随后统一淡入 + 上浮，用 backwards 保证首帧从隐藏态开始。 */
+@keyframes drawer-item-in {
+  from { opacity: 0; transform: translateY(var(--fx-rise)); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.drawer-enter-active.drawer-host .drawer-item,
+.drawer-enter-active.drawer-host .drawer-zoom,
+.drawer-enter-active.drawer-host .drawer-separator,
+.drawer-enter-active.drawer-host .drawer-title {
+  animation: drawer-item-in calc(var(--motion-slow) * 2) var(--fx-ease-in) backwards;
+}
+
+/* 无障碍：prefers-reduced-motion 关闭非必要过渡（spec §2.3） */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

@@ -1,0 +1,193 @@
+# EraCore.Web 前端导航
+
+EraCore.Web 是 Vue 3 单页应用，使用 Vite 构建、Pinia 管理状态、Vitest 执行测试。
+它支持两种运行模式：
+
+- HTTP 模式：通过 WebSocket 连接 `EraCore.Server`。
+- MAUI 模式：通过 `mauiBridge.ts` 与 C# `IJsBridge` 通信，不使用 HTTP/WS。
+
+## 开发命令
+
+```bash
+npm install
+npm run dev
+npm run typecheck
+npm test
+npm run build
+```
+
+开发模式下，Vite 默认运行在 `http://localhost:5173`，并将 `/ws` 和 HTTP 请求代理到 C# 服务的 `8080` 端口。
+
+## 页面入口
+
+| 文件 | 职责 |
+|---|---|
+| `src/App.vue` | 应用初始化、壳层组合（AppShell/悬浮钮）、HTTP/MAUI 分流、快速重开和退出游戏；游戏页两端共用同一壳层 |
+| `src/views/TerminalView.vue` | 终端页面外壳、连接/加载状态展示 |
+| `src/views/SettingsView.vue` | 设置页面 |
+| `src/views/DebugView.vue` | 原始回合、协议和调试信息展示 |
+| `src/main.ts` | Vue、Pinia 和应用入口初始化 |
+
+## 组件导航
+
+| 文件 | 职责 |
+|---|---|
+| `src/components/TerminalDisplay.vue` | 渲染文本、按钮、图片、背景、虚拟滚动和终端点击推进 |
+| `src/components/SegmentRenderer.vue` | 渲染文本、图片和图形 segment |
+| `src/components/InputBar.vue` | 手动输入、TINPUT 倒计时和输入提交 |
+| `src/components/GameLibraryView.vue` | MAUI/Web **共用**的游戏选择页（单一设计源）：hero/路径行/游戏列表/空状态，经 `GameLibrarySource` 抽象取数 |
+| `src/components/ChangeDirDialog.vue` | Web/HTTP 的「更改目录」对话框：手动路径输入 + 页面内目录浏览（`/game/dirs`），确认后经 `source.scan` 扫描（MAUI 不走此对话框，直接原生选择器） |
+| `src/components/MauiGameList.vue` | MAUI 游戏选择页 wrapper：右上角 ⋮ 菜单（更改目录→原生 FolderPicker/SAF / 重新扫描 / 主题），传输走 C# 桥接 |
+| `src/components/WebGameList.vue` | Web 游戏选择页 wrapper：右上角 ⋮ 菜单与 MAUI 一致（更改目录→手动输入对话框 / 重新扫描 / 主题），传输走 C# server（/game/scan、/game/dirs） |
+| `src/components/TinputCountdown.vue` | TINPUT 倒计时显示 |
+| `src/components/AppShell.vue` | 根布局壳层：全局背景、主内容与全局对话框挂载点 |
+| `src/components/DrawerMenu.vue` | 游戏页更多抽屉菜单（MAUI/Web 共用）：头部游戏标题、快速重开、缩放（含恢复）、视图切换、退出；右滑/点遮罩/Escape 关闭 |
+| `src/components/ConfirmDialog.vue` | 退出 / 确认 Alert Dialog（遮罩 + 危险文字按钮，Escape/返回取消） |
+| `src/components/StatusBanner.vue` | 顶部可关闭提示条：错误 / 警告 / 成功 / 信息 |
+| `src/components/SpectatorBanner.vue` | 旁观横幅（MAUI/Web 共用）：Agent 操控提示 + 接管按钮 |
+| `src/components/GameRow.vue` | 游戏选择页列表项（文件管理器式整行）；issues/05 IR 缓存存在性徽章（大小 + 构建时间 tooltip） |
+
+## 状态管理
+
+| 文件 | 职责 |
+|---|---|
+| `src/stores/game.ts` | 游戏目录、服务器状态、回合数据、显示快照、加载和快速重开 |
+| `src/stores/connection.ts` | HTTP/WS 地址、连接生命周期、输入和回合请求、控制权状态（旁观/接管） |
+| `src/stores/ui.ts` | 当前页面、平台、缩放和手动输入面板状态、**触控排版开关与横向阈值**（含 `TOUCH_TARGET_MIN_PX` 与 `TOUCH_TARGET_COLS_*` 档位常量） |
+
+关键状态：
+
+- `game.gameDir`：当前加载的具体游戏目录。
+- `game.mainGameDir`：MAUI 游戏库的主目录。
+- `game.scannedGames`：游戏库列表（`GameEntry`）；issues/05 每条携带 IR 缓存存在性提示 `irCached` / `irCacheBytes` / `irCacheBuiltUtc`（来自 `gamesScanned` 消息，HTTP `/game/scan` 不含 → 缺失 = 无提示）。
+- `game.serverState`：`Idle`、`Loading`、`WaitInput`、`Quit`、`Error`。
+- `game.displayState`：终端当前显示内容。
+- `game.reloadStatus`：游戏加载/快速重开是否正在进行。
+- `game.displayReportOverride` / `game.perfOverrides`：启动日志与性能（懒加载/IR/并行两项）覆盖三态。
+- `game.sweepGatePolicy` / `game.safReadDegree` / `game.maxParallelErbFiles` / `game.dimLockPolicy`：ADR-0026 诊断旋钮（设置页「诊断」分组，`SettingsView.vue` 渲染，`mauiBridge.ts` 的 set* 消息投递，`useAppInit.ts` 按词表校验 config 消息）。
+- `ui.touchLayout`：触控排版开关（localStorage `app.touchLayout`，Android 默认开 / Web 默认关）；入口有**两处**——右上角常驻按钮组的 ◎ 钮（与 ⌨ / ⋮ 并列，第一下就点到）与抽屉菜单「触控排版」项，两处共享同一状态。
+- `ui.touchTargetCols`：触控排版的横向阈值（列，设置页「外观」可调，默认 5 列，限定在候选档位内——越界或非法值回落默认）。
+
+**谁参与触控排版**：**有效按钮**（当前回合 generation、非 `EnterKey`/`AnyKey` 惰性态），**且内容不是图形**。图形指 entry 的 segments 里含 `<img>` 或 `<rect>`——这类按钮的内容由游戏以**像素**画出，`ButtonRef.width` 恒为 0（C# 侧 `ConsoleImagePart.Text` 是空串，`BuildPrintOpsForLine` 按文本算显示宽度，图片的显示宽度另由 px 决定），拿列几何去处理它会同时错三处（横向按「(目标列数 − 0) / 2」外扩、被当有效按钮撑高并画圆角矩形、占一个零宽列区间当障碍物）；真机上它们本身就够大，所以整体跳过。跳过只影响**呈现层的放大**，按钮照旧可点（`srcm` 映射图热区也不受影响）——判据在 `TerminalDisplay.vue` 的 `isTouchEligible`，三个消费点（套不套盒、撑不撑高、横不横向外扩）共用它。个别小图形按钮需要放大时，把判据收紧成「图形尺寸 ≥ 触控目标才跳过」即可（尺寸在协议里是 px 对 px，不涉及换算）。
+
+**触控排版的排版规则**：按钮盒高恒为 `max(LineHeight, 48px)`——由「内容行高 + 2 × 纵向外扩量」得到（内容行高恒等于基准行高，故恰为目标高度）。**不用 `min-height`**，也**不按行收窄外扩量**：前者会把盒钉死在目标高度上、收窄时行盒反被撑高而与虚拟滚动账本失配；后者会让同屏出现两种高度的矩形（38px 那些上下紧贴文本），真机上一眼看出不齐。盒高因此处处一致。
+
+**行高只撑几何上必需的那一点**：**撑高只会把它后面的行往下推**，所以每条冲突的约束都由**上方那一行**负责——`e = max(0, 2g − (k−1)·行距)`（`g` 是半个纵向外扩量，`k` 是两行的行索引差，限定在判定窗口 `W = ceil(目标行高 / 行距) − 1` 内；默认行距 19px 时 W = 2）。于是：相邻行满额（29px，两槽各一个盒高、两张盒正好相切），隔 1 行只要 10px，隔 2 行及以上完全不用撑；列区间不重叠的配对一律不管。撑高只加槽位——按钮盒与文字位置都不变，所以文本行与按钮行之间的间距和不开触控排版时逐行一致（这条曾经做错过：`min-height` 让盒铺满整槽，而 Chromium 的 button 布局会把内容在内容盒里垂直居中，按钮文字于是整体下沉半个增量、离开游戏给它的位置）。
+
+横向热区**按需外扩**——按钮自身已达目标列数就零外扩；与邻居之间只要求**两个热区不重叠**（空闲空隙两侧平分，最多相切，不刻意留净空）。两个方向的扩大量都靠 `padding` 与**等量负 `margin`** 相消：盒变大而它在行盒里的贡献不变，因此**文字位置一格都不动**，排版总高也与纯文本严格一致（收窄/撑高因此都不必改盒高）；被撑高的行由 `lineStyle` 显式钉高，走 `useVirtualScroll` 的 `lineExtras` 稀疏表。圆角矩形就画在那个盒子上，故「提示范围 == 真实热区」自动成立。几何全部来自快照既有的 `ButtonRef.col` / `width`，零 DOM 测量——见 `src/lib/touchLayout.ts`。
+
+## Composable 和通信层
+
+| 文件 | 职责 |
+|---|---|
+| `src/composables/useAppInit.ts` | 应用启动、MAUI 回调注册、HTTP 状态恢复 |
+| `src/composables/useGameStatusMonitor.ts` | MAUI 游戏线程存活状态探测 |
+| `src/composables/useVirtualScroll.ts` | 终端虚拟滚动和底部跟随（可选 `lineExtras` 支持稀疏加高行） |
+| `src/composables/usePinchZoom.ts` | 终端双指缩放 |
+| `src/lib/mauiBridge.ts` | Vue 与 MAUI C# 桥接消息、游戏扫描和加载 |
+| `src/lib/gameLibrary.ts` | 游戏库数据源抽象：`GameLibrarySource` 接口 + maui（桥接）/ http（HTTP）两个 adapter |
+| `src/lib/inputRouting.ts` | 按钮点击和终端点击的输入路由判定（含 `isLiveButton`——「有效按钮」的单一判据） |
+| `src/lib/touchLayout.ts` | 触控排版的热区几何（纯函数）：横向按 `ButtonRef.col`/`width` 列几何算外扩列数；纵向算每行该撑高多少（只撑几何上必需的那一点），零 DOM 测量 |
+| `src/lib/parseTurnRecord.ts` | 解析 C# 回合协议 |
+| `src/lib/opsApplier.ts` | 应用终端增量操作 |
+| `src/lib/snapshotReducer.ts` | 应用完整终端快照 |
+| `src/lib/resourceResolver.ts` | HTTP/MAUI 游戏资源 URL 解析 |
+
+## 常见修改入口
+
+| 修改内容 | 首先查看 |
+|---|---|
+| 修改终端空状态、文字、按钮或点击行为 | `components/TerminalDisplay.vue` |
+| 修改终端图片、矩形、背景和资源路径 | `components/SegmentRenderer.vue`、`lib/resourceResolver.ts`、`lib/imageLayout.ts` |
+| 修改游戏选择和加载流程 | `components/GameLibraryView.vue`、`components/ChangeDirDialog.vue`、`stores/game.ts`、`lib/mauiBridge.ts` |
+| 修改快速重开或退出游戏 | `App.vue`、`stores/game.ts`、`lib/mauiBridge.ts` |
+| 修改控制权（旁观/接管）状态 | `stores/connection.ts`、`components/SpectatorBanner.vue`、`App.vue` |
+| 修改手动输入和按钮输入 | `components/InputBar.vue`、`lib/inputRouting.ts` |
+| 修改 TINPUT 倒计时 | `components/TinputCountdown.vue`、`stores/game.ts` |
+| 修改终端滚动或缩放 | `composables/useVirtualScroll.ts`、`composables/usePinchZoom.ts`、`TerminalDisplay.vue` |
+| 修改按钮点击区域 / 触控排版规则 | `components/TerminalDisplay.vue`（`.term-btn-touch` + 撑高表）、`lib/touchLayout.ts`（横向外扩几何 + 纵向撑高量）、`lib/inputRouting.ts`（`isLiveButton`）、`stores/ui.ts`（开关与阈值） |
+| 修改 MAUI 启动和 C# 消息处理 | `composables/useAppInit.ts`、`lib/mauiBridge.ts` |
+| 修改页面导航、顶部按钮或模式分流 | `App.vue`、`components/DrawerMenu.vue` |
+| 修改 UI 主题、颜色、圆角、阴影、动效或字号 | `styles/theme.css`（唯一令牌源，组件一律 `var(--token)`） |
+| 修改弹窗、菜单或确认框 | `components/PopupMenu.vue`、`components/DrawerMenu.vue`、`components/ConfirmDialog.vue` |
+| 修改菜单首次打开的卡顿优化（或其开关） | `lib/prewarmMenuShadow.ts`、`stores/ui.ts`（`menuPrewarm`，纯前端 localStorage 开关）、`views/SettingsView.vue`；取舍与实测见 `.scratch/menu-first-open-jank/spec.md` |
+
+## 数据流
+
+### HTTP 模式
+
+```text
+App.vue
+  -> WebGameList（选择页）/ game-shell-controls + DrawerMenu（游戏页）
+  -> connection.ts
+  -> WebSocket (turns) + GET /control + GET /control/wait (control events)
+  -> parseTurnRecord.ts
+  -> game.ts
+  -> TerminalView
+  -> SpectatorBanner / TerminalDisplay / InputBar
+  -> POST /control/acquire (接管) / POST /input (用户输入)
+```
+
+### MAUI 模式
+
+```text
+App.vue
+  -> MauiGameList（选择页）/ game-shell-controls + DrawerMenu（游戏页）
+  -> mauiBridge.ts
+  -> C# BridgeHost / IJsBridge
+  -> window.__onTurn / window.__onMessage
+  -> useAppInit.ts
+  -> game.ts
+  -> TerminalView
+```
+
+### 游戏选择后的 MAUI 启动流程
+
+```text
+MauiGameList.onPickGame()
+  -> game.setGameDir()
+  -> game.reset()
+  -> loadGameFromPath()
+  -> C# OnReloadGame
+  -> 重建 BridgeHost 并启动游戏循环
+  -> PostTurn
+  -> game.applyTurn()
+  -> TerminalDisplay 渲染输出
+```
+
+### 更改目录（两平台右上角 ⋮ 菜单，交互对齐）
+
+```text
+MAUI ⋮ 菜单「更改目录」
+  -> 直接原生 FolderPicker/SAF（bridge folderPicked → setMainGameDir + scanGames）
+
+Web ⋮ 菜单「更改目录」
+  -> ChangeDirDialog（手动路径输入 + 浏览 /game/dirs 填框）
+  -> source.scan(path)（/game/scan）
+  -> gamesScanned 回流 -> game.setScannedGames -> 列表刷新
+```
+
+## 测试导航
+
+组件测试位于对应目录的 `__tests__` 子目录：
+
+| 测试文件 | 覆盖内容 |
+|---|---|
+| `src/components/__tests__/TerminalDisplay.test.ts` | 终端文本、图片、图形、背景、按钮、MAUI 空状态和触控排版（横向按需外扩的列几何 + 纵向最小撑高的取值） |
+| `src/lib/__tests__/touchLayout.vertical.test.ts` | 纵向撑高规则的直接取值 + 不变量（穷举小布局验证「列区间重叠的两张热区盒永不重叠」）——组件测试没有布局，测不到这条几何 |
+| `src/stores/__tests__/connectionControl.test.ts` | HTTP 控制权：旁观/接管、事件序列、输入 409 |
+| `src/stores/__tests__/game.test.ts` | 游戏状态、回合和目录状态 |
+| `src/stores/__tests__/gameLoadGame.test.ts` | HTTP 游戏加载 |
+| `src/stores/__tests__/gameQuickRestart.test.ts` | HTTP 快速重开 |
+| `src/stores/__tests__/gameExitHttp.test.ts` | HTTP 退出游戏（DELETE /session + 清状态 + 重扫、二次进入保护） |
+| `src/composables/__tests__/useAppInit.test.ts` | HTTP/MAUI 初始化分流 |
+| `src/lib/__tests__/parseTurnRecord.test.ts` | 回合协议解析 |
+
+修改组件或 Store 后，至少运行：
+
+```bash
+npm run typecheck
+npm test
+```
+
+新增组件、状态字段或通信消息时，应同时更新本导航文档中的对应表格和数据流。

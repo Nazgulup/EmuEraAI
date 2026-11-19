@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EraCore.Maui.MainPage">
+
+    <!-- Issue 07 / spec ID6：WebView 承载 Vue 前端。
+         URL 在 MainPage.xaml.cs 的 HandlerChanged 事件内按平台设置：
+           Windows: ms-appx-web:///wwwroot/index.html
+           Android: file:///android_asset/wwwroot/index.html
+         HandlerChanged 是拿平台原生视图的最早可靠时机（spec ID8）。
+         WebView 占满整个页面——Vue 自管 header / main 布局。-->
+    <WebView x:Name="MainWebView"
+             HorizontalOptions="Fill"
+             VerticalOptions="Fill" />
+
+</ContentPage>

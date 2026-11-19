@@ -1,0 +1,13 @@
+Android compatible engine: https://github.com/LaoBro/era-core
+Pinned source commit: 6e14de0fa0cd83b0bb83df96fc29422e107f7af4
+Downloaded: 2026-11-18
+Original basis: Emuera / Emuera.EM
+License: era-core/Readme/License/Emuera.LICENSE.txt
+
+This local copy is modified for ERA AI Loader. Additions: read-only KOJO output
+capture carried outside the game protocol, shared AI generation/preset/controller
+library, native encrypted AI settings, AI-only UI messages, API/preset panel,
+and application identity com.eraai.loader. Original engine ownership retained.
+
+Windows v11 source remains in ../src/Emuera. Android uses this portable branch.
+The two branches are not promised to support exactly the same dialect extensions.

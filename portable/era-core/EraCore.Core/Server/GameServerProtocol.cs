@@ -1,0 +1,579 @@
+using MinorShift.Emuera.Files;
+using System;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Threading;
+using System.Threading.Tasks;
+using MinorShift.Emuera.GameView;
+using MinorShift.Emuera.Input;
+using MinorShift.Emuera.Output;
+using MinorShift.Emuera.Runtime.Config;
+using MinorShift.Emuera.Sessions;
+
+namespace MinorShift.Emuera.Server;
+
+/// <summary>
+/// 传输无关的回合协议层（双宿主共享）——issue 05「抽共享层 + 双宿主」。
+/// <para>
+/// 从 <see cref="KestrelGameServer"/> 的端点处理器逐字迁移，行为与 wire 契约不变：
+/// Server（Kestrel）与 MAUI（<see cref="HttpListenerHost"/>）都是本协议的宿主壳——
+/// 宿主负责 HTTP/WS 传输（读 body、抽 token、写 response）并映射到本协议的方法；
+/// 控制状态机（Controller/acquire/release/lease/control 事件）与回合协议（session/turn/input/
+/// snapshot/state）在此单点实现，两宿主不重复。
+/// </para>
+/// <para>
+/// 响应统一为 <see cref="HttpResult"/>（状态码 + 文本 body + 内容类型）——不依赖 ASP.NET Core
+/// 的 <c>IResult</c>/<c>HttpContext</c>，使 MAUI 可用 BCL 自带的 <c>System.Net.HttpListener</c> 复用
+/// （保住「MAUI 只依赖 Core」）。JSON 响应统一用 <see cref="JsonObject"/> 构造（NativeAOT 安全）。
+/// </para>
+/// </summary>
+internal sealed class GameServerProtocol
+{
+    private const int TurnWaitTimeoutMs = 25000;
+
+    /// <summary>
+    /// 响应 JSON 序列化选项单例——双宿主共用（GameServerProtocol.Json 与 HttpListenerHost 的 WriteResultAsync 前缀）。
+    /// UnsafeRelaxedJsonEscaping 与 Kestrel 的 HttpJsonOptions 默认 relaxed 转义一致，wire 逐字节相同。
+    /// </summary>
+    internal static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+    };
+
+    private readonly SessionRegistry _sessions;
+    private readonly GameConfigService _config;
+
+    public GameServerProtocol(SessionRegistry sessions, GameConfigService config)
+    {
+        _sessions = sessions ?? throw new ArgumentNullException(nameof(sessions));
+        _config = config ?? throw new ArgumentNullException(nameof(config));
+    }
+
+    public SessionRegistry Sessions => _sessions;
+
+    /// <summary>
+    /// POST /session —— 建会话（迁移自原 HandleCreateSessionAsync，见其注释）。
+    /// </summary>
+    public HttpResult CreateSession()
+    {
+        var result = _sessions.CreateNewSessionAsync().GetAwaiter().GetResult();
+        return result.Status switch
+        {
+            SessionCreateStatus.NoGameLoaded => NoGameLoaded(),
+            SessionCreateStatus.Conflict => Json(new JsonObject { ["error"] = "A session is already active" }, 409),
+            // issue-001：旧循环仍在长回合中运行 → 503，待其退出后重试。
+            SessionCreateStatus.PreviousSessionStillRunning => ErrorResult("SESSION_STILL_RUNNING",
+                "The previous game loop is still running a long turn. Wait for it to finish, then retry.", 503),
+            _ => Json(new JsonObject { ["sessionId"] = result.SessionId, ["createdAt"] = result.CreatedAt, ["state"] = result.State }, 201),
+        };
+    }
+
+    /// <summary>POST /control/acquire —— 获取控制权并返回 drain 后的末位回合确认。</summary>
+    public HttpResult AcquireControl(ControlIdentity identity)
+    {
+        var session = _sessions.CurrentSession;
+        if (session == null)
+            return ErrorResult("NO_ACTIVE_SESSION", "No active session", 404);
+
+        var result = session.AcquireControl(identity);
+        if (result.Control.Status != ControlAcquireStatus.Acquired)
+        {
+            var code = result.Control.Status == ControlAcquireStatus.HeldByUser
+                ? "CONTROL_HELD_BY_USER"
+                : "CONTROL_HELD";
+            return ControlErrorResult(code, result.Control.Status == ControlAcquireStatus.HeldByUser
+                ? "Control is held by the user"
+                : "Control is held by another agent", session);
+        }
+
+        return Json(new JsonObject
+        {
+            ["controller"] = ControllerNode(session.Controller.CurrentInfo),
+            ["state"] = session.Controller.State,
+            ["turn"] = ParseTurn(result.Turn),
+            ["turnsAdvanced"] = result.TurnsAdvanced,
+        });
+    }
+
+    public HttpResult ReleaseControl(ControlIdentity identity)
+    {
+        var session = _sessions.CurrentSession;
+        if (session == null)
+            return ErrorResult("NO_ACTIVE_SESSION", "No active session", 404);
+
+        var result = session.Controller.Release(identity);
+        if (result.Status == ControlReleaseStatus.NotOwner)
+            return ControlErrorResult("CONTROL_NOT_OWNER", "Only the current Controller may release", session);
+
+        return Json(new JsonObject
+        {
+            ["released"] = result.Status == ControlReleaseStatus.Released,
+            ["controller"] = ControllerNode(session.Controller.CurrentInfo),
+            ["state"] = session.Controller.State,
+        });
+    }
+
+    public HttpResult GetControl()
+    {
+        var session = _sessions.CurrentSession;
+        return Json(new JsonObject
+        {
+            ["controller"] = ControllerNode(session?.Controller.CurrentInfo),
+            ["state"] = session?.Controller.State ?? Controller.StateIdle,
+        });
+    }
+
+    public async Task<HttpResult> WaitForControlAsync(CancellationToken ct)
+    {
+        var session = _sessions.CurrentSession;
+        if (session == null)
+            return ErrorResult("NO_ACTIVE_SESSION", "No active session", 404);
+
+        var controlEvent = await session.Controller.WaitForEventAsync(TurnWaitTimeoutMs, ct);
+        return controlEvent == null
+            ? HttpResult.NoContent()
+            : Json(ControlEventNode(controlEvent));
+    }
+
+    /// <summary>
+    /// GET /turn —— 长轮询等一个 turn（迁移自原 HandleGetTurnAsync，见其注释）。
+    /// </summary>
+    public async Task<HttpResult> GetTurnAsync(ControlIdentity identity, CancellationToken ct)
+    {
+        var session = _sessions.CurrentSession;
+
+        if (session == null)
+            return Json(new JsonObject { ["error"] = "No active session" }, 404);
+
+        if (session.IsFinalTurnDelivered)
+            return Json(new JsonObject { ["error"] = "Session ended" }, 404);
+
+        var result = await session.WaitForTurnAsync(TurnWaitTimeoutMs, identity, ct);
+        switch (result.Status)
+        {
+            case TurnWaitStatus.Turn:
+                return HttpResult.Text(result.Turn!.Wire, "application/json", 200);
+            case TurnWaitStatus.Timeout:
+                return HttpResult.NoContent();
+            case TurnWaitStatus.Closed:
+                return Json(new JsonObject { ["error"] = "Session ended" }, 404);
+            case TurnWaitStatus.ControlLost:
+                return ControlLostResult(result.Reason ?? "control_changed", result.At ?? DateTimeOffset.UtcNow, session);
+            default:
+                return ErrorResult("UNEXPECTED_TURN_STATUS", "unexpected turn wait status", 500);
+        }
+    }
+
+    /// <summary>POST /input —— 只提交 value 的便捷形态；与带状态字段的形态走同一个门面。</summary>
+    public HttpResult PostInput(string value, ControlIdentity identity)
+        => PostInputFrame(new InputFrame(Value: value), identity);
+
+    /// <summary>
+    /// POST /input（spec-v3 §5.1 扩展形态）—— 把一帧输入交给会话的输入门面。
+    /// <para>
+    /// issue-002：状态字段由 <see cref="InputPort.Submit"/> 同步写入输入宿主；value 由门面的
+    /// 派发通道编码成 value-only 的 input 帧入队，交给游戏循环线程推进——HTTP 线程不直接跑引擎。
+    /// </para>
+    /// </summary>
+    public HttpResult PostInputFrame(InputFrame frame, ControlIdentity identity)
+    {
+        var session = _sessions.CurrentSession;
+
+        if (session == null)
+            return Json(new JsonObject { ["error"] = "No active session" }, 404);
+
+        var gate = session.Controller.CheckInput(identity, session.HasEnded);
+        if (gate.Status != ControlGateStatus.Allowed)
+            return ControlErrorResult(gate.Reason, "Input is allowed only for the current Controller", session);
+
+        session.Input.Submit(frame);
+        return Json(new JsonObject { ["received"] = true });
+    }
+
+    /// <summary>
+    /// GET /state —— 当前会话状态 + gameDir + 窗口布局元信息（迁移自原 HandleGetStateAsync，见其注释）。
+    /// </summary>
+    public HttpResult GetState()
+    {
+        var session = _sessions.CurrentSession;
+        var m = _config.GetWindowMetrics();
+
+        var payload = new JsonObject();
+        if (session == null)
+        {
+            payload["state"] = "Idle";
+            payload["isRunning"] = false;
+            payload["threadAlive"] = false;
+            payload["gameDir"] = null;
+            // ADR-0049 D6：Retiring 相位（无 Live 会话，但上一轮拆除的旧循环尚未退出）。
+            // 纯增量字段——不新增 Ending 状态值，老客户端忽略即可。
+            if (_sessions.IsRetiring)
+                payload["retiring"] = true;
+        }
+        else
+        {
+            payload["state"] = session.StateString;
+            payload["isRunning"] = session.IsRunning;
+            // 目标 3：threadAlive 显式别名（游戏循环 Task 是否存活），替代 agent 侧脆弱推导；
+            // lastError 仅在非空时透出（正常 Quit 无未料异常该键缺失）。
+            payload["threadAlive"] = session.IsRunning;
+            if (session.LastError is not null)
+                payload["lastError"] = session.LastError;
+            payload["sessionId"] = session.Id;
+            payload["createdAt"] = session.CreatedAt;
+            payload["gameDir"] = session.Files.Root;
+        }
+        payload["windowWidth"] = m.WindowWidth;
+        payload["fontSize"] = m.FontSize;
+        payload["lineHeight"] = m.LineHeight;
+        payload["gameColumns"] = m.GameColumns;
+        payload["fontName"] = m.FontName;
+        // 默认文字色——turn 协议只带「非默认色」的 segment 颜色，前端拿它当普通文字色
+        // （否则落回主题默认色，与 CLI/原版 Emuera 的 Config.ForeColor 不一致）。
+        payload["foreColor"] = m.ForeColor;
+        payload["visibleRows"] = m.VisibleRows;
+        return Json(payload);
+    }
+
+    /// <summary>GET /config —— 当前 maxLog（前端履历容量）。</summary>
+    public HttpResult GetConfig()
+    {
+        var maxLog = _config.GetValue<int>(ConfigCode.MaxLog);
+        return Json(new JsonObject { ["maxLog"] = maxLog });
+    }
+
+    /// <summary>
+    /// GET /settings —— 全局设置全量（ADR-0030，13 canonical 键）。无认证，与 /config 同级
+    /// （localhost；Web 前端在 HTTP 模式无 token，必须无认证才能读写设置）。
+    /// </summary>
+    public HttpResult GetSettings()
+    {
+        return Json(SettingsPayload(_config.AppSettings));
+    }
+
+    /// <summary>
+    /// PUT /settings —— 批量设置全局设置（body 为 <c>{"key":"value",...}</c>）。非法 JSON → 400；
+    /// 任一键/值非法 → 400 <c>INVALID_SETTING</c>（原子：前序合法写入不回收，保持简单，调用方重试整个 body）。
+    /// agentLogEnabled 即时应用（Set 内）；displayReportOverride 即时应用到当前 ConfigData
+    /// （与 MAUI 运行时切换一致）；perf/诊断旋钮下次 load-game 生效（ApplyTo）。
+    /// </summary>
+    public HttpResult PutSettings(string? bodyText)
+    {
+        JsonObject? body;
+        try
+        {
+            body = string.IsNullOrWhiteSpace(bodyText) ? null : JsonNode.Parse(bodyText) as JsonObject;
+        }
+        catch (JsonException)
+        {
+            body = null;
+        }
+        if (body == null)
+            return Json(new JsonObject { ["error"] = "Invalid JSON, expected {\"key\":\"value\",...}" }, 400);
+
+        var appSettings = _config.AppSettings;
+        foreach (var kv in body)
+        {
+            // 值必须是 JSON 字符串（数字/布尔/对象/数组一律 400——设置值是词表字符串）
+            if (kv.Value is not JsonValue jsonValue
+                || jsonValue.GetValueKind() != JsonValueKind.String
+                || !appSettings.Set(kv.Key, jsonValue.GetValue<string>()))
+            {
+                return Json(new JsonObject
+                {
+                    ["error"] = new JsonObject
+                    {
+                        ["code"] = "INVALID_SETTING",
+                        ["message"] = $"invalid key or value: {kv.Key}",
+                    },
+                }, 400);
+            }
+        }
+
+        // displayReportOverride 即时应用到当前 ConfigData（与 MAUI HandleSetDisplayReportOverride 同位语义；
+        // auto 置空覆盖标志，游戏自身值不动——真实生效在下次 load-game 的 ApplyTo）。
+        var dr = appSettings.Get(AppSettings.DisplayReportOverrideKey);
+        _config.Current.OverrideDisplayReport = dr switch { "off" => false, "on" => true, _ => null };
+        if (_config.Current.OverrideDisplayReport.HasValue)
+            _config.Current.GetItem(ConfigCode.DisplayReport).SetValue(_config.Current.OverrideDisplayReport.Value);
+
+        return Json(SettingsPayload(appSettings));
+    }
+
+    /// <summary>DELETE /settings —— 恢复默认（ADR-0030，reset 语义 = 出厂默认，与 MAUI 清 Preferences 等价）。</summary>
+    public HttpResult ResetSettings()
+    {
+        _config.AppSettings.Reset();
+        return Json(SettingsPayload(_config.AppSettings));
+    }
+
+    private static JsonObject SettingsPayload(AppSettings appSettings)
+    {
+        var payload = new JsonObject();
+        foreach (var kv in appSettings.GetAll())
+            payload[kv.Key] = kv.Value;
+        return payload;
+    }
+
+    /// <summary>
+    /// GET /snapshot —— 全量显示状态快照（迁移自原 HandleGetSnapshotAsync，见其注释）。
+    /// </summary>
+    public HttpResult GetSnapshot()
+    {
+        var session = _sessions.CurrentSession;
+
+        if (session == null)
+            return Json(new JsonObject { ["error"] = "No active session" }, 404);
+
+        var json = session.GetDisplaySnapshot();
+        if (json == null)
+            return Json(new JsonObject { ["error"] = "Session not yet initialized" }, 503);
+
+        return HttpResult.Text(json, "application/json", 200);
+    }
+
+    public HttpResult DeleteSession(ControlIdentity? identity)
+    {
+        var result = _sessions.DeleteSessionAsync(identity).GetAwaiter().GetResult();
+        return result.Status switch
+        {
+            SessionDeleteStatus.Removed => Json(new JsonObject { ["removed"] = true }, 200),
+            SessionDeleteStatus.ControlDenied => ControlErrorResult(result.Reason ?? "CONTROL_NOT_CONTROLLER", "Only the current Controller may change the session", _sessions.CurrentSession),
+            // issue-001：游戏循环仍在长回合中执行，拆除未完成。回 503 而非挂死——
+            // 调用方待旧循环退出后重试即可（错误文案自带这一指引）。
+            SessionDeleteStatus.TeardownTimeout => ErrorResult("SESSION_STILL_RUNNING",
+                "The game loop is still running a long turn; the session was not torn down. Wait for it to finish, then retry.", 503),
+            _ => Json(new JsonObject { ["removed"] = false }, 404),
+        };
+    }
+
+    /// <summary>POST /load-game —— 原子重载游戏目录（gameDir 已由宿主解析，此处做路径校验/重建，见原注释）。</summary>
+    public HttpResult LoadGame(string gameDir, ControlIdentity identity)
+    {
+        var result = _sessions.ReplaceForLoadGameAsync(gameDir, identity).GetAwaiter().GetResult();
+        return result.Status switch
+        {
+            LoadGameStatus.PathError => Json(
+                new JsonObject { ["error"] = new JsonObject { ["code"] = result.Code, ["message"] = result.Message } },
+                400),
+            LoadGameStatus.LoadFailed => Json(
+                new JsonObject { ["error"] = new JsonObject { ["code"] = "LOAD_FAILED", ["message"] = result.Message } },
+                500),
+            LoadGameStatus.ControlDenied => ControlErrorResult(result.Code ?? "CONTROL_NOT_CONTROLLER", result.Message ?? "Only the current Controller may change the session", _sessions.CurrentSession),
+            // issue-001：旧循环未退出 → 不建新会话（守住全局静态隔离），回 503 + 可操作文案。
+            LoadGameStatus.PreviousSessionStillRunning => Json(
+                new JsonObject { ["error"] = new JsonObject { ["code"] = result.Code, ["message"] = result.Message } },
+                503),
+            _ => Json(new JsonObject
+            {
+                ["sessionId"] = result.SessionId,
+                ["state"] = result.State,
+                ["gameDir"] = result.GameDir,
+            }),
+        };
+    }
+
+    /// <summary>
+    /// POST /native/pick-directory —— 安卓 SAF 目录选择器桩（迁移自原 HandlePickDirectoryAsync）。
+    /// MAUI 阶段由 .NET MAUI 壳替换为真实现；前端拿到 supported=false 时回退到路径输入框。
+    /// </summary>
+    public static HttpResult PickDirectory()
+    {
+        return Json(new JsonObject
+        {
+            ["platform"] = "web",
+            ["supported"] = false,
+            ["message"] = "Not implemented on this platform",
+        });
+    }
+
+    /// <summary>
+    /// POST /game/scan —— 扫描主目录下的有效游戏（Web 模式游戏选择界面）。
+    ///
+    /// 浏览器沙箱不能枚举本地文件系统（GamePicker 因此只能手动输入路径），但 C# server
+    /// 运行在本机可访问文件系统——复用 MAUI 同款 <see cref="GameLibrary.Scan"/>（本地 FS 访问器）。
+    /// rootDir 不存在不视为错误：返回 200 + rootDirExists=false + 空列表，前端据此展示空状态。
+    /// </summary>
+    public static HttpResult ScanGameDir(string? rootDir)
+    {
+        if (string.IsNullOrWhiteSpace(rootDir))
+            return Json(
+                new JsonObject { ["error"] = new JsonObject { ["code"] = "MISSING_ROOT_DIR", ["message"] = "Missing or empty 'rootDir' field" } },
+                400);
+
+        var accessor = new FileSystemGameDirAccessor();
+        var exists = GameLibrary.RootExists(rootDir, accessor);
+        var games = exists ? GameLibrary.Scan(rootDir, accessor) : Array.Empty<GameTree>();
+
+        var arr = new JsonArray();
+        foreach (var g in games)
+        {
+            arr.Add((JsonNode)new JsonObject { ["name"] = g.Name, ["fullPath"] = g.Root });
+        }
+
+        return Json(new JsonObject
+        {
+            ["rootDir"] = rootDir,
+            ["rootDirExists"] = exists,
+            ["games"] = arr,
+        });
+    }
+
+    /// <summary>
+    /// POST /game/dirs —— 列举目录下的子目录名（Web 模式目录浏览）。
+    ///
+    /// 复用 <see cref="DirectoryLister.ListDirectories"/>（本地 FS 访问器），供前端逐层
+    /// 浏览文件系统定位主目录，替代手动输入绝对路径。响应含 currentPath / parentPath / dirs。
+    /// </summary>
+    public static HttpResult ListDirectories(string? dir)
+    {
+        var result = DirectoryLister.ListDirectories(dir, new FileSystemGameDirAccessor());
+        var arr = new JsonArray();
+        foreach (var d in result.SubDirectories)
+        {
+            arr.Add((JsonNode?)JsonValue.Create(d));
+        }
+
+        return Json(new JsonObject
+        {
+            ["currentPath"] = result.CurrentPath,
+            ["parentPath"] = result.ParentPath,
+            ["dirs"] = arr,
+        });
+    }
+
+    /// <summary>
+    /// 把输入值构造成协议循环消费的 input jsonl（与 WS 输入帧同源，保证 HTTP/WS 输入格式对称）。
+    /// <para>
+    /// 2026-10-19：与 <c>HttpRouteDispatcher</c> 那处一同改为序列化 <see cref="JsonlCommand"/> ——
+    /// 上行 input 帧的键名不再有手抄的第二份。
+    /// </para>
+    /// </summary>
+    public static string BuildInputJsonl(string value)
+        => JsonSerializer.Serialize(
+            new JsonlCommand("input", value),
+            EmueraJsonContext.Default.JsonlCommand);
+
+    /// <summary>token → 身份：空 token 视为用户（无 token 调用方），非空视为 agent（token 即身份）。</summary>
+    public static ControlIdentity ToIdentity(string? token)
+    {
+        return string.IsNullOrWhiteSpace(token)
+            ? ControlIdentity.User
+            : ControlIdentity.Agent(token);
+    }
+
+    /// <summary>agent lease 读取（EMUERA_CONTROL_LEASE_SECONDS 环境变量，缺省 5 分钟）——两宿主共用。</summary>
+    public static TimeSpan ReadAgentLease()
+    {
+        var raw = Environment.GetEnvironmentVariable("EMUERA_CONTROL_LEASE_SECONDS");
+        return int.TryParse(raw, out var seconds) && seconds > 0
+            ? TimeSpan.FromSeconds(seconds)
+            : TimeSpan.FromMinutes(5);
+    }
+
+    // ===== 宿主共用的小工具：错误 / 序列化 / 节点构造（Kestrel 与 HttpListener 复用同一 wire）=====
+    // 注：/input、/load-game 的 body 解析 + 校验错误助手已上收 HttpRouteDispatcher（C1）；
+    // 此处仅保留协议层自身的响应构造。
+
+    public static HttpResult NoGameLoaded()
+        => Json(new JsonObject { ["error"] = "No game loaded" }, 503);
+
+    private static JsonObject? ControllerNode(ControllerInfo? info)
+    {
+        if (info == null)
+            return null;
+        return new JsonObject
+        {
+            ["kind"] = info.Kind,
+            ["leaseExpiresAt"] = info.LeaseExpiresAt,
+        };
+    }
+
+    private static JsonObject ControlEventNode(ControlEvent controlEvent)
+    {
+        return new JsonObject
+        {
+            ["event"] = controlEvent.Type,
+            ["type"] = controlEvent.Type,
+            ["reason"] = controlEvent.Reason,
+            ["at"] = controlEvent.At,
+            ["controller"] = ControllerNode(controlEvent.Controller),
+            ["state"] = controlEvent.State,
+        };
+    }
+
+    private static JsonNode ParseTurn(Turn? turn)
+    {
+        if (turn == null)
+            return null!;
+        try
+        {
+            return JsonNode.Parse(turn.Wire) ?? JsonValue.Create(turn.Wire)!;
+        }
+        catch (JsonException)
+        {
+            return JsonValue.Create(turn.Wire)!;
+        }
+    }
+
+    private static HttpResult Json(JsonObject payload, int statusCode = 200)
+    {
+        var body = payload.ToJsonString(JsonOptions);
+        return HttpResult.Text(body, "application/json", statusCode);
+    }
+
+    private static HttpResult ErrorResult(string code, string message, int statusCode)
+    {
+        return Json(new JsonObject
+        {
+            ["error"] = code,
+            ["code"] = code,
+            ["message"] = message,
+        }, statusCode: statusCode);
+    }
+
+    private static HttpResult ControlErrorResult(string code, string message, CoreSession? session)
+    {
+        return Json(new JsonObject
+        {
+            ["error"] = code,
+            ["code"] = code,
+            ["message"] = message,
+            ["reason"] = code,
+            ["hint"] = "重新 acquire 可获取快照",
+            ["controller"] = ControllerNode(session?.Controller.CurrentInfo),
+            ["state"] = session?.Controller.State ?? Controller.StateIdle,
+        }, statusCode: 409);
+    }
+
+    private static HttpResult ControlLostResult(string reason, DateTimeOffset at, CoreSession session)
+    {
+        return Json(new JsonObject
+        {
+            ["error"] = "CONTROL_LOST",
+            ["code"] = "CONTROL_LOST",
+            ["reason"] = reason,
+            ["at"] = at,
+            ["controller"] = ControllerNode(session.Controller.CurrentInfo),
+            ["state"] = session.Controller.State,
+        }, statusCode: 409);
+    }
+
+    // 请求 body POCO（HttpInput/ControlRequest/LoadGameRequest）已上收 HttpRouteDispatcher（C1）。
+}
+
+/// <summary>
+/// 传输无关的响应结果——宿主映射到各自 HTTP 层：
+/// Kestrel 经 <c>Results.Text(body, contentType, Encoding.UTF8, statusCode)</c>（204 走 <c>Results.NoContent</c>），
+/// MAUI HttpListener 写 <c>HttpListenerResponse</c>。
+/// </summary>
+internal readonly record struct HttpResult(int StatusCode, string? Body, string ContentType = "application/json")
+{
+    public static HttpResult Text(string body, string contentType = "application/json", int statusCode = 200)
+        => new(statusCode, body, contentType);
+
+    public static HttpResult NoContent()
+        => new(204, null);
+}

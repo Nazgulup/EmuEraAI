@@ -1,0 +1,102 @@
+using System;
+using System.IO;
+
+namespace MinorShift.Emuera.Files;
+
+internal sealed class GamePaths
+{
+    public string ExeDir { get; }
+    public string CsvDir { get; }
+    public string ErbDir { get; }
+    public string DebugDir { get; }
+    public string DatDir { get; }
+    public string ContentDir { get; }
+    public string SoundDir { get; }
+    public string FontDir { get; }
+    /// <summary>ADR-0019：游戏目录访问抽象。必传——调用方负责注入平台实现。</summary>
+    public IGameDirAccessor DirAccessor { get; set; } = null!;
+
+    private GamePaths(string exeDir, IGameDirAccessor dirAccessor)
+    {
+        bool isContentUri = exeDir.StartsWith("content://", StringComparison.Ordinal);
+
+        if (isContentUri)
+        {
+            ExeDir = exeDir;
+            CsvDir = dirAccessor?.ResolveSubPath(exeDir, "csv") ?? exeDir;
+            ErbDir = dirAccessor?.ResolveSubPath(exeDir, "erb") ?? exeDir;
+            DebugDir = dirAccessor?.ResolveSubPath(exeDir, "debug") ?? exeDir;
+            DatDir = dirAccessor?.ResolveSubPath(exeDir, "dat") ?? exeDir;
+            ContentDir = dirAccessor?.ResolveSubPath(exeDir, "resources") ?? exeDir;
+            SoundDir = dirAccessor?.ResolveSubPath(exeDir, "sound") ?? exeDir;
+            FontDir = dirAccessor?.ResolveSubPath(exeDir, "font") ?? exeDir;
+        }
+        else
+        {
+            ExeDir = Path.GetFullPath(new DirectoryInfo(exeDir).FullName + Path.DirectorySeparatorChar);
+            CsvDir = Path.Combine(ExeDir, "csv") + Path.DirectorySeparatorChar;
+            ErbDir = Path.Combine(ExeDir, "erb") + Path.DirectorySeparatorChar;
+            DebugDir = Path.Combine(ExeDir, "debug") + Path.DirectorySeparatorChar;
+            DatDir = Path.Combine(ExeDir, "dat") + Path.DirectorySeparatorChar;
+            ContentDir = Path.Combine(ExeDir, "resources") + Path.DirectorySeparatorChar;
+            SoundDir = Path.Combine(ExeDir, "sound") + Path.DirectorySeparatorChar;
+            FontDir = Path.Combine(ExeDir, "font") + Path.DirectorySeparatorChar;
+        }
+    }
+
+    /// <summary>
+    /// 构造游戏根（纯函数：不写任何进程级或作用域状态）。
+    /// issue-009 起不再隐式提交给根环境——根的生命周期由持有者负责：
+    /// 会话经 <see cref="GameRootEnvironment.Establish"/> 在自己的循环流内建立，
+    /// 初始化路径把实例显式传给 <c>ConfigData</c> / <c>Lang</c> 等消费者。
+    /// </summary>
+    public static GamePaths Resolve(string? exeDirArg, IGameDirAccessor dirAccessor)
+    {
+        var baseDirectory = exeDirArg ?? DetectDefault();
+        var paths = new GamePaths(baseDirectory, dirAccessor);
+        paths.DirAccessor = dirAccessor;
+        return paths;
+    }
+
+    private static string DetectDefault()
+    {
+        var baseDirectory = AppContext.BaseDirectory;
+        if (Directory.Exists(Path.Combine(baseDirectory, "Data", "erb")))
+            baseDirectory = Path.Combine(baseDirectory, "Data");
+        return baseDirectory;
+    }
+
+    /// <summary>
+    /// 校验游戏目录结构。失败时抛 <see cref="GamePathValidationException"/>（issue 05）——
+    /// 旧实现调 <c>Environment.Exit(1)</c>，会让 /load-game 校验失败时杀死整个 server 进程，
+    /// 故改为抛异常：CLI 启动路径在 Program.Main 捕获后退出，server /load-game 路径捕获后返 400。
+    /// <para>
+    /// <b>不变量 F-1</b>：真实路径分支同样经 <see cref="DirAccessor"/>——过去这里裸调
+    /// <c>Directory.Exists</c>（已收敛），使「 existence 判定走哪套语义」
+    /// 取决于路径形态而非访问器。本地访问器本来就是 <c>Directory.Exists</c> 的超集
+    /// （多一层大小写容错，归约后与原语义一致）。
+    /// </para>
+    /// </summary>
+    public void Validate()
+    {
+        if (!DirAccessor.DirectoryExists(ExeDir))
+            throw new GamePathValidationException("DIR_NOT_FOUND", $"目录不存在: {ExeDir}");
+        if (!DirAccessor.DirectoryExists(CsvDir))
+            throw new GamePathValidationException("MISSING_CSV", $"缺少 csv 目录: {CsvDir}");
+        if (!DirAccessor.DirectoryExists(ErbDir))
+            throw new GamePathValidationException("MISSING_ERB", $"缺少 erb 目录: {ErbDir}");
+    }
+}
+
+/// <summary>
+/// 游戏目录校验失败异常（issue 05）。<see cref="Code"/> 与前端错误契约对称：
+/// <c>DIR_NOT_FOUND</c> / <c>MISSING_CSV</c> / <c>MISSING_ERB</c>。
+/// </summary>
+internal sealed class GamePathValidationException : Exception
+{
+    public string Code { get; }
+    public GamePathValidationException(string code, string message) : base(message)
+    {
+        Code = code;
+    }
+}

@@ -1,0 +1,115 @@
+/* 能力降级层（.legacy-webview）——仅对旧 WebView 生效。
+   由 index.html 的 ES5 探针挂 class（flex gap 或 overflow:clip 不可用）。
+   所有规则都锚定在 html.legacy-webview 选择器下：新机（Windows WebView2 /
+   新 Android Chromium）根本不匹配，设计与动画一字不动。
+
+   本文件 = ID2（动效归零）+ ID3（gap 兜底）+ 未来的 color-mix 等。
+   原声明一律不改，避免污染新机。 */
+
+/* ---------- ID2 · 动效降级 ----------
+   --fx-rise 是全系统"上浮/下沉"位移的唯一来源（12px）。归零后，对话框、
+   弹窗、抽屉逐项、输入栏的所有位移动画自然退化为纯淡入/缩放。
+   不修改 theme.css 的 @keyframes、不修改任何组件动画声明。 */
+html.legacy-webview { --fx-rise: 0px; }
+
+/* ---------- ID3 · flex gap 兜底（旧机 gap 不可用 → 相邻兄弟 margin 模拟） ----------
+   由 scripts/gen-legacy-gap.mjs 从源码自动生成（严禁手改）：扫源码里 flex 容器的
+   `gap:` 声明，row（默认）→ margin-left / column → margin-top，值照抄源码。
+   每次新增/改 gap 后重跑 `npm run check:legacy:gap`。wrap 与 gap:0 跳过。 */
+/* <generated legacy-gap:begin> DO NOT EDIT */
+/* App.vue */
+html.legacy-webview .game-shell-controls > * + * { margin-left: var(--space-1); }
+
+/* components\ChangeDirDialog.vue */
+html.legacy-webview .cd-actions > * + * { margin-left: var(--space-2); }
+html.legacy-webview .cd-browser > * + * { margin-top: var(--space-2); }
+html.legacy-webview .cd-browser-footer > * + * { margin-left: var(--space-2); }
+html.legacy-webview .cd-browser-loading > * + * { margin-left: var(--space-2); }
+html.legacy-webview .cd-dialog > * + * { margin-top: var(--space-3); }
+html.legacy-webview .cd-path-row > * + * { margin-left: var(--space-2); }
+
+/* components\ConfirmDialog.vue */
+html.legacy-webview .confirm-actions > * + * { margin-left: var(--space-2); }
+html.legacy-webview .confirm-dialog > * + * { margin-top: var(--space-2); }
+
+/* components\DrawerMenu.vue */
+html.legacy-webview .drawer-item > * + * { margin-left: var(--space-3); }
+html.legacy-webview .drawer-zoom > * + * { margin-top: var(--space-2); }
+html.legacy-webview .drawer-zoom-actions > * + * { margin-left: var(--space-2); }
+
+/* components\GameLibraryView.vue */
+html.legacy-webview .appbar-actions > * + * { margin-left: var(--space-1); }
+html.legacy-webview .empty-state > * + * { margin-top: var(--space-2); }
+html.legacy-webview .game-list > * + * { margin-top: var(--space-1); }
+html.legacy-webview .path-line > * + * { margin-left: 10px; }
+html.legacy-webview .scanning > * + * { margin-left: var(--space-2); }
+
+/* components\GameRow.vue */
+html.legacy-webview .game-row-main > * + * { margin-left: 6px; }
+
+/* components\InputBar.vue */
+html.legacy-webview .input-bar > * + * { margin-top: var(--space-1); }
+html.legacy-webview .input-row > * + * { margin-left: var(--space-2); }
+html.legacy-webview .key-prompt > * + * { margin-left: var(--space-3); }
+html.legacy-webview .state-quit,
+html.legacy-webview .state-error,
+html.legacy-webview .state-unknown,
+html.legacy-webview .unknown-input-type > * + * { margin-left: var(--space-2); }
+html.legacy-webview .tinput-notice > * + * { margin-left: var(--space-2); }
+
+/* components\MauiGameList.vue */
+html.legacy-webview .empty-act-group > * + * { margin-top: var(--space-1); }
+
+/* components\PopupMenu.vue */
+html.legacy-webview .popup-item > * + * { margin-left: var(--space-3); }
+html.legacy-webview .popup-menu > * + * { margin-top: 2px; }
+html.legacy-webview .popup-zoom > * + * { margin-top: var(--space-2); }
+html.legacy-webview .popup-zoom-actions > * + * { margin-left: var(--space-2); }
+
+/* components\SpectatorBanner.vue */
+html.legacy-webview .spectator-banner > * + * { margin-left: var(--space-3); }
+html.legacy-webview .spectator-copy > * + * { margin-top: 2px; }
+
+/* components\StatusBanner.vue */
+html.legacy-webview .status-banner > * + * { margin-left: var(--space-2); }
+
+/* components\TinputCountdown.vue */
+html.legacy-webview .tinput-countdown > * + * { margin-left: var(--space-2); }
+
+/* views\DebugView.vue */
+html.legacy-webview .debug-view > * + * { margin-left: 1px; }
+html.legacy-webview .input-row > * + * { margin-left: var(--space-1); }
+
+/* views\SettingsView.vue */
+html.legacy-webview .setting-row > * + * { margin-left: var(--space-3); }
+html.legacy-webview .settings-content > * + * { margin-top: var(--space-5); }
+html.legacy-webview .settings-header > * + * { margin-left: var(--space-3); }
+
+/* views\TerminalView.vue */
+html.legacy-webview .overlay-status > * + * { margin-top: var(--space-1); }
+/* <generated legacy-gap:end> */
+
+/* ---------- ID3b · 横屏（短视口）flex 列防挤压 ----------
+   Chromium 61 无 min-height:auto：抽屉内容在横屏高度不够时会把它高度内的
+   无 min-height 子项（.drawer-zoom）压到 padding 高度，而按钮照常绘制 →
+   溢出覆盖下一个菜单项（实测：缩放块与 ">_ Terminal" 重叠）。
+   禁止子项收缩 → 抽屉走 overflow-y:auto 滚动，不互相碾压。
+   新引擎 min-height:auto 天然防压，此规则经 .legacy-webview 门控不影响新机。 */
+html.legacy-webview .drawer > * { flex-shrink: 0; }
+
+/* ---------- ID3c · 游戏行 grid → flex（Chromium 61 模板列坍缩为单列） ----------
+   实测 GameRow 的 grid-template-columns 在 61 上被丢弃 → grid-auto-flow:row 把
+   图标/名称/箭头三个 span 各自换行堆叠（整行占三行）。换成 61 已稳定的 flexbox
+   表达同一横向布局；新机保留 grid（本规则不命中）文案像素级一致。 */
+html.legacy-webview .game-row { display: flex; align-items: center; }
+html.legacy-webview .game-row-btn { display: flex; align-items: center; width: 100%; }
+html.legacy-webview .game-row-icon,
+html.legacy-webview .game-row-arrow { flex: 0 0 48px; justify-content: center; }
+html.legacy-webview .game-row-main { flex: 1 1 auto; min-width: 0; }
+
+/* ---------- ID4 · 指针焦点环抑制（Chromium 61 无 :focus-visible） ----------
+   新机靠 :focus-visible 区分键盘/指针焦点，点击不显示环；61 不支持 :focus-visible，
+   UA 对任何 :focus（含鼠标/触摸点击）画默认橙色焦点框 → 每点一个按钮都有橙框。
+   沿用 main.ts 的 .pointer-interaction（pointerdown 加、键盘导航去）：指针模式下
+   抑制 :focus outline、键盘模式保留，符合 DESIGN.md「控件不做指针聚焦高亮」。 */
+html.legacy-webview.pointer-interaction :focus { outline: none; }

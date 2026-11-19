@@ -1,0 +1,76 @@
+{
+  "temperature": 0.7,
+  "top_p": 1,
+  "frequency_penalty": 0,
+  "presence_penalty": 0,
+  "openai_max_context": 8192,
+  "openai_max_tokens": 400,
+  "stream_openai": false,
+  "prompts": [
+    {
+      "identifier": "main",
+      "name": "ERA 角色口上",
+      "system_prompt": true,
+      "role": "system",
+      "content": "你为 {{char}} 编写与 {{user}} 互动时的角色台词。依据程序提供的当前场景和已经确定的事件结果，用简体中文输出简短台词及神态。保持角色口吻。只输出正文，不输出代码、变量赋值、工具调用或游戏选项。不得替玩家行动，不得虚构属性变化、获得物品或尚未发生的事件。"
+    },
+    {
+      "identifier": "charDescription",
+      "name": "角色描述",
+      "system_prompt": true,
+      "marker": true
+    },
+    {
+      "identifier": "charPersonality",
+      "name": "角色性格",
+      "system_prompt": true,
+      "marker": true
+    },
+    {
+      "identifier": "scenario",
+      "name": "程序提供的场景",
+      "system_prompt": true,
+      "marker": true
+    },
+    {
+      "identifier": "chatHistory",
+      "name": "近期口上记录",
+      "system_prompt": true,
+      "marker": true
+    },
+    {
+      "identifier": "era-output-style",
+      "name": "输出风格",
+      "system_prompt": false,
+      "role": "system",
+      "content": "参考当前游戏的文风和原口上的叙述视角，组织简短段落；可以包含叙述与角色台词，不强制改成日常问候。开场只承接当下，不提前推进后续行动，不增加新的游戏判定。",
+      "injection_position": 0,
+      "injection_depth": 4,
+      "injection_order": 100
+    }
+  ],
+  "prompt_order": [
+    {
+      "character_id": 100000,
+      "order": [
+        { "identifier": "main", "enabled": true },
+        { "identifier": "charDescription", "enabled": true },
+        { "identifier": "charPersonality", "enabled": true },
+        { "identifier": "scenario", "enabled": true },
+        { "identifier": "chatHistory", "enabled": true },
+        { "identifier": "era-output-style", "enabled": true }
+      ]
+    },
+    {
+      "character_id": 100001,
+      "order": [
+        { "identifier": "main", "enabled": true },
+        { "identifier": "charDescription", "enabled": true },
+        { "identifier": "charPersonality", "enabled": true },
+        { "identifier": "scenario", "enabled": true },
+        { "identifier": "chatHistory", "enabled": true },
+        { "identifier": "era-output-style", "enabled": true }
+      ]
+    }
+  ]
+}

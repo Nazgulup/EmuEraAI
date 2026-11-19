@@ -1,0 +1,175 @@
+using MinorShift.Emuera.Runtime.Script.Statements;
+using System.Collections.Generic;
+
+namespace MinorShift.Emuera.GameProc.Function;
+
+internal sealed partial class FunctionIdentifier
+{
+	/// <summary>
+	/// ★ 新增方言指令的唯一声明点：在这里加一条 <see cref="InstructionDescriptor"/> 即可。
+	/// funcDic / methodList / IdentifierDictionary 名称表随之生成，无需改其它文件。
+	///
+	/// 处理体工厂可构造本类私有嵌套的 Instruction 类型；新增非结构化指令保持默认
+	/// <c>Code = FunctionCode.__NULL__</c>（执行经 <c>AInstruction.DoInstruction</c>，不需要改枚举）。
+	/// </summary>
+	internal static IReadOnlyList<InstructionDescriptor> BuiltInInstructionDescriptors { get; } =
+	[
+		// Skia 方言 P0：NF 输入变体（实现票 21）。参数与 TINPUT/TINPUTS 同形，NoFocus 语义接缝见指令类。
+		new InstructionDescriptor
+		{
+			Name = "TINPUTNF",
+			CreateInstruction = () => new TINPUT_Instruction(false, noFocus: true),
+			Dialect = Dialect.Snake,
+			Family = "NF 输入",
+			Note = "无强制滚动步，与普通等待等价（已知差异）",
+		},
+		new InstructionDescriptor
+		{
+			Name = "TINPUTSNF",
+			CreateInstruction = () => new TINPUTS_Instruction(false, noFocus: true),
+			Dialect = Dialect.Snake,
+			Family = "NF 输入",
+			Note = "无强制滚动步，与普通等待等价（已知差异）",
+		},
+		new InstructionDescriptor
+		{
+			Name = "TONEINPUTNF",
+			CreateInstruction = () => new TINPUT_Instruction(true, noFocus: true),
+			Dialect = Dialect.Snake,
+			Family = "NF 输入",
+			Note = "无强制滚动步，与普通等待等价（已知差异）",
+		},
+		new InstructionDescriptor
+		{
+			Name = "TONEINPUTSNF",
+			CreateInstruction = () => new TINPUTS_Instruction(true, noFocus: true),
+			Dialect = Dialect.Snake,
+			Family = "NF 输入",
+			Note = "无强制滚动步，与普通等待等价（已知差异）",
+		},
+		// Skia 方言 P0：动态调用（实现票 20）。CALLS_Instruction 运行时解析字符串调用串。
+		new InstructionDescriptor
+		{
+			Name = "JUMPSTR",
+			CreateInstruction = () => new CALLS_Instruction(true, false, false),
+			Dialect = Dialect.Snake,
+			Family = "动态调用",
+		},
+		new InstructionDescriptor
+		{
+			Name = "CALLSTR",
+			CreateInstruction = () => new CALLS_Instruction(false, false, false),
+			Dialect = Dialect.Snake,
+			Family = "动态调用",
+		},
+		new InstructionDescriptor
+		{
+			Name = "TRYCALLSTR",
+			CreateInstruction = () => new CALLS_Instruction(false, true, false),
+			AdditionalFlag = EXTENDED,
+			Dialect = Dialect.Snake,
+			Family = "动态调用",
+		},
+		new InstructionDescriptor
+		{
+			Name = "TRYCJUMPSTR",
+			CreateInstruction = () => new CALLS_Instruction(true, true, true),
+			AdditionalFlag = EXTENDED,
+			Dialect = Dialect.Snake,
+			Family = "动态调用",
+		},
+		new InstructionDescriptor
+		{
+			Name = "TRYCCALLSTR",
+			CreateInstruction = () => new CALLS_Instruction(false, true, true),
+			AdditionalFlag = EXTENDED,
+			Dialect = Dialect.Snake,
+			Family = "动态调用",
+		},
+		// 试点（自动分档 A 类）：TRYJUMPSTR 与同族五个键结构完全同构，
+		// 上游仅多一条 addFunction 注册；era-core 复用既有 CALLS_Instruction。
+		new InstructionDescriptor
+		{
+			Name = "TRYJUMPSTR",
+			CreateInstruction = () => new CALLS_Instruction(true, true, false),
+			AdditionalFlag = EXTENDED,
+			Dialect = Dialect.Snake,
+			Family = "动态调用",
+		},
+		// Skia 方言 P0：图像层（实现票 22）。参数完整解析 + ColorMatrix 5×5 校验；执行体走 EmueraConsole 语义接缝（no-op，实测 eraTW 引用见 Flan_UI.ERB）。
+		new InstructionDescriptor
+		{
+			Name = "SETIMAGELAYER",
+			CreateInstruction = () => new SETIMAGELAYER_Instruction(false),
+			Dialect = Dialect.Snake,
+			Family = "图像层",
+			Status = PortStatus.AcceptedNoOp,
+			Note = "参数解析 + ColorMatrix 5×5 校验；控制台 no-op",
+		},
+		new InstructionDescriptor
+		{
+			Name = "SETIMAGELAYERL",
+			CreateInstruction = () => new SETIMAGELAYER_Instruction(true),
+			Dialect = Dialect.Snake,
+			Family = "图像层",
+			Status = PortStatus.AcceptedNoOp,
+			Note = "参数解析 + ColorMatrix 5×5 校验；followScroll 恒 true；no-op",
+		},
+		new InstructionDescriptor
+		{
+			Name = "CLEARIMAGELAYER",
+			CreateInstruction = () => new CLEARIMAGELAYER_Instruction(),
+			Dialect = Dialect.Snake,
+			Family = "图像层",
+			Status = PortStatus.AcceptedNoOp,
+			Note = "参数解析；控制台 no-op",
+		},
+		new InstructionDescriptor
+		{
+			Name = "CLEARIMAGELAYER_ALL",
+			CreateInstruction = () => new CLEARIMAGELAYER_ALL_Instruction(),
+			Dialect = Dialect.Snake,
+			Family = "图像层",
+			Status = PortStatus.AcceptedNoOp,
+			Note = "控制台 no-op；不渲染图像层",
+		},
+		// Skia 方言 P0：HTML/文本（实现票 23）。HTML_PRINTC/LC 复用既有 HTML 管线 + 单元格对齐（IS_PRINT，与 Skia 同）；
+		// TEXT_BGC_ON/OFF 为文本背景色开关（era-core 渲染线未消费 → 已知差异，spec §5）。
+		new InstructionDescriptor
+		{
+			Name = "HTML_PRINTC",
+			CreateInstruction = () => new HTML_PRINTC_Instruction(true),
+			AdditionalFlag = IS_PRINT,
+			Dialect = Dialect.Snake,
+			Family = "HTML 文本",
+			Note = "复用 HTML 管线，单元格右对齐（已知差异）",
+		},
+		new InstructionDescriptor
+		{
+			Name = "HTML_PRINTLC",
+			CreateInstruction = () => new HTML_PRINTC_Instruction(false),
+			AdditionalFlag = IS_PRINT,
+			Dialect = Dialect.Snake,
+			Family = "HTML 文本",
+			Note = "复用 HTML 管线，单元格左对齐（已知差异）",
+		},
+		new InstructionDescriptor
+		{
+			Name = "TEXT_BGC_ON",
+			CreateInstruction = () => new TEXT_BGC_ON_Instruction(),
+			Dialect = Dialect.Snake,
+			Family = "HTML 文本",
+			Status = PortStatus.StateOnly,
+			Note = "仅保存 TextBackgroundColor，渲染线未消费",
+		},
+		new InstructionDescriptor
+		{
+			Name = "TEXT_BGC_OFF",
+			CreateInstruction = () => new TEXT_BGC_OFF_Instruction(),
+			Dialect = Dialect.Snake,
+			Family = "HTML 文本",
+			Status = PortStatus.StateOnly,
+			Note = "仅清空 TextBackgroundColor，渲染线未消费",
+		},
+	];
+}
