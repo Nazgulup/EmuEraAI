@@ -82,6 +82,15 @@ internal static class Tests
         var characterSettings=Settings(); characterSettings.CharacterDescription="CHARACTER_DETAIL"; characterSettings.Personality="CHARACTER_VOICE";
         string defaults=Json.Codec().Serialize(new Preset("").Build(Snapshot(),characterSettings,false));
         Check(defaults.Contains("CHARACTER_DETAIL") && defaults.Contains("CHARACTER_VOICE"),"default prompt includes character settings");
+        var speechPreset=new Preset("{\"prompts\":[{\"identifier\":\"custom\",\"role\":\"system\",\"content\":\"CUSTOM_STYLE\"}]}");
+        foreach(string hook in new[]{"CHOICES_WITHOUT_DIALOGUE","EMPTY_KOJO_9"})
+        {
+            var empty=new DialogueSnapshot("speech","Lin","Player","Waiting for input","",hook,new Dictionary<string,string>{{"NAME:TARGET","Lin"}});
+            var speechMessages=(List<Dictionary<string,object>>)speechPreset.Build(empty,settings,true,"Previous narration",2)["messages"];
+            int at=speechMessages.FindIndex(m=>((string)m["content"]).Contains("以当前角色直接说出口的台词为主体"));
+            Check(at>speechMessages.FindIndex(m=>(string)m["content"]=="CUSTOM_STYLE") && at>speechMessages.FindIndex(m=>((string)m["content"]).Contains("Previous narration")) && !Json.Codec().Serialize(speechMessages).Contains("无原文时优先用角色姓名作第三人称叙述"),"Windows empty speech guidance follows preset and regeneration history: "+hook);
+        }
+        Check(!Json.Codec().Serialize(speechPreset.Build(Snapshot(),settings,false)).Contains("无原口上补写要求"),"existing nonempty dialogue retains its original viewpoint without forced speech supplementation");
         using(var autoController=new AiController(new AiSettings { ProtectStory=false, Enabled=true,AutoGenerate=true,Model="test" },new Client()))
         {
             var original=Snapshot(); autoController.SetEvent(original); string reply=autoController.Text;
@@ -405,6 +414,9 @@ internal static class Tests
         File.WriteAllText(addressScript,File.ReadAllText(addressScript).Replace("CASE 9","CASE 8\n    CALL AI_DIALOGUE_ADDRESS\nCASE 9")+"\n@AI_DIALOGUE_ADDRESS\nCALLNAME:TARGET = 琳琳\nMASTERNAME:TARGET = 阁下\nCSTR:TARGET:60 = 本小姐\nPRINTFORML %CALLNAME:TARGET%说：「%SELF_CALL(TARGET)%请%MASTERNAME:TARGET%看地图。」\nRETURN\n\n@SELF_CALL, ARG\n#FUNCTIONS\nFLAG:3 += 1\nRETURNF CSTR:ARG:60\n",Encoding.UTF8);
         File.WriteAllText(addressScript,File.ReadAllText(addressScript).Replace("CASE 9","CASE 6\n    CALL KOJO_DAILY\nCASE 7\n    CALL STORY_GATE\nCASE 9")+"\n@KOJO_DAILY\nPRINTL 旅人安静等待安排。\nRETURN\n@STORY_GATE\nCALL KOJO_DAILY\nRETURN\n",Encoding.UTF8);
         string locator=Path.Combine(game,"original.exe"); File.WriteAllText(locator,"locator-only fixture");
+        File.WriteAllText(addressScript,File.ReadAllText(addressScript).Replace("CASE 9","CASE 60\n    CALL DOG_KOJO_9\nCASE 61\n    CALL KOJO_MESSAGE_COM_EMPTY\nCASE 9"),Encoding.UTF8);
+        File.WriteAllText(Path.Combine(game,"ERB","EVENT_K9_ダイヤ.ERB"),"@DOG_KOJO_9\nIF CFLAG:301 == 0\nPRINTFORMW 旅人打开地图，等待说明。\nCFLAG:301 = 1\nELSE\nPRINTFORMW 旅人再次确认路线。\nCFLAG:301 = 2\nENDIF\nRETURN 0\n",Encoding.UTF8);
+        File.WriteAllText(Path.Combine(game,"ERB","EMPTY.ERB"),"@KOJO_MESSAGE_COM_EMPTY\nCALL EMPTY_KOJO_9\nRETURN 0\n@EMPTY_KOJO_9\nPRINTFORMW\nCFLAG:302 += 1\nRETURN 0\n",Encoding.UTF8);
         Check(GameLocator.Resolve(locator)==game,"selecting original exe resolves sibling game files without executing it");
         GameEncodingPreferences.Save(game,"shift-jis");
         using(var launcher=new GameLauncher())
@@ -509,6 +521,7 @@ internal static class Tests
                 Check(controller.CanGenerate && controller.Log.ReadRecent().Contains("event-deny"),"Windows per-event off expires on the next input and logs the manual reason");
                 DesktopTemplateChecks(root,game,console,controller,fake);
                 controller.SetSettings(Settings());
+                PrefixedHookChecks(console,controller,fake);
                 LauncherCloseChecks(window,console,controller,fake);
             }
             window.Close();
@@ -516,6 +529,33 @@ internal static class Tests
     }
     static async Task WaitStory(AiController controller)
     { var until=DateTime.UtcNow.AddSeconds(10); while(!controller.StoryReady && DateTime.UtcNow<until) await Task.Delay(10); if(!controller.StoryReady) throw new Exception("Story check timed out"); }
+    static void PrefixedHookChecks(EmueraConsole console,AiController controller,Client client)
+    {
+        client.Reply=ct=>Task.FromResult("旅人合起地图，等待说明。");
+        console.PressEnterKey(false,"60",false); Pump(WaitStory(controller));
+        var cflag=GlobalStatic.VariableData.CharacterList[(int)GlobalStatic.VEvaluator.TARGET].DataIntegerArray[(int)(VariableCode.CFLAG&VariableCode.__LOWERCASE__)];
+        Check(controller.Current!=null && controller.Current.Hook=="DOG_KOJO_9" && controller.Current.Original.Contains("打开地图") && cflag[301]==0,"Windows captures the prefixed PRINTFORMW before CFLAG:301 changes");
+        string state=StateHash(); int calls=client.Calls; Pump(controller.GenerateAsync(false)); Pump(controller.GenerateAsync(true));
+        Check(client.Calls==calls+2 && controller.DisplayMode=="ai" && StateHash()==state && cflag[301]==0,"Windows prefixed regeneration preserves the full save and pending PRINTFORMW");
+        client.Reply=ct=>{throw new HttpRequestException("controlled offline");}; Pump(controller.GenerateAsync(true));
+        Check(controller.Text==controller.Current.Original && StateHash()==state,"Windows prefixed failure restores original without advancing the interpreter");
+        console.PressEnterKey(false,"",false); Check(cflag[301]==1,"Windows continuation executes the first original flag assignment once");
+        console.PressEnterKey(false,"60",false); Pump(WaitStory(controller));
+        Check(controller.Current!=null && controller.Current.Hook=="DOG_KOJO_9" && controller.Current.Original.Contains("再次确认") && cflag[301]==1,"Windows captures the second prefixed branch before its assignment");
+        console.PressEnterKey(false,"",false); Check(cflag[301]==2,"Windows continuation executes the second original flag assignment once");
+        client.Reply=ct=>Task.FromResult("旅人整理地图。「接下来有什么安排？」");
+        console.PressEnterKey(false,"61",false); Pump(WaitStory(controller));
+        Check(controller.Current!=null && controller.Current.Hook=="EMPTY_KOJO_9" && controller.Current.Original=="" && console.IsWaitingEnterKey,"Windows captures empty PRINTFORMW under a supported parent");
+        state=StateHash(); calls=client.Calls; string eventId=controller.Current.EventId; Pump(controller.GenerateAsync(false)); Pump(controller.GenerateAsync(true));
+        Check(client.Calls==calls+2 && controller.DisplayMode=="ai" && StateHash()==state && cflag[302]==0 && console.AiDisplayLines().Any(line=>line.ToString().Contains("整理地图")),"Windows empty dialogue renders inline and regeneration leaves the full save unchanged");
+        Check(client.Last.Contains("以当前角色直接说出口的台词为主体") && console.AiDisplayLines().Any(line=>line.ToString().Contains("「接下来有什么安排？」")),"Windows empty dialogue displays spoken lines and logs the supplement style");
+        client.Reply=ct=>{throw new HttpRequestException("controlled offline");}; Pump(controller.GenerateAsync(true));
+        Check(controller.Text=="" && controller.DisplayMode=="original" && StateHash()==state,"Windows empty dialogue failure restores blank output without advancing the game");
+        console.PressEnterKey(false,"",false); Check(cflag[302]==1,"Windows empty wait commits its original assignment only on continuation");
+        console.PressEnterKey(false,"61",false); Pump(WaitStory(controller));
+        Check(controller.Current!=null && controller.Current.EventId!=eventId && cflag[302]==1,"Windows next empty wait receives a fresh event without changing variables early");
+        console.PressEnterKey(false,"",false);
+    }
     static void DesktopTemplateChecks(string root,string game,EmueraConsole console,AiController controller,Client client)
     {
         Check(new AiSettings().Enabled && new AiSettings().AutoGenerate,"Windows new settings enable automatic AI by default");

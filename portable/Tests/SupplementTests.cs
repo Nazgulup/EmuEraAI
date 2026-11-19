@@ -16,7 +16,7 @@ internal static class SupplementTests
     {
         public int Calls;
         public string Last="";
-        public Func<Task<string>> Reply=()=>Task.FromResult("旅人停在路口，等待同行者的决定。");
+        public Func<Task<string>> Reply=()=>Task.FromResult("旅人停在路口。「接下来往哪边走？」");
         public Task<string> GenerateAsync(AiSettings settings,Dictionary<string,object> body,CancellationToken token)
         { Last=Json.Codec().Serialize(body); Interlocked.Increment(ref Calls); return Reply(); }
     }
@@ -71,6 +71,7 @@ RETURN 0
         controller.SetEvent(new DialogueSnapshot(frame.EventId,frame.Character,frame.User,frame.Facts,frame.Original,frame.Hook));
         await controller.GenerateAsync(false); await controller.GenerateAsync(true); await controller.GenerateAsync(true);
         Check(client.Calls==3 && State(h)==before && client.Last.Contains("选项不是已发生的事实"),"supplement and two regenerations preserve every game variable and constrain the prompt to the current choice state");
+        Check(client.Last.Contains("以当前角色直接说出口的台词为主体") && controller.Text.Contains("「接下来往哪边走？」"),"menu supplement and regeneration request direct speech and accept spoken dialogue without changing game choices");
         client.Reply=()=>throw new HttpRequestException("controlled offline"); await controller.GenerateAsync(true);
         Check(controller.Text=="" && controller.DisplayMode=="original" && controller.Status.Contains("无原口上") && State(h)==before,"no-original failure leaves text empty and all game variables unchanged");
         controller.RestoreOriginal(); Check(controller.Text=="" && controller.Status.Contains("保留原游戏画面"),"cancel restores an actually empty original without inventing text");
@@ -100,9 +101,10 @@ RETURN 0
             Check(AiSettings.Parse(await EraCore.Maui.SecureStorage.Default.GetAsync("ignored") ?? "{}").GenerateWithoutOriginal,"opt-in survives the production save/storage/parse path");
             Check(host.Controller.Current?.Hook=="CHOICES_WITHOUT_DIALOGUE" && host.Controller.Current.Original=="" && host.Controller.Busy,"enabling supplement automatically generates for the current no-dialogue menu");
             Check(host.Js.Messages.Select(x=>Json.Object(Json.Codec().DeserializeObject(x))).Any(m=>Json.Text(m,"type")=="aiState" && Json.Int(m,"insertBeforeLine",-1)>=0 && !Json.Bool(m,"hasOriginal",true) && Json.Array(Json.Get(m,"lineIndices")).Length==0),"production bridge supplies insertion anchor without replacement indices");
-            pending.SetResult("旅人停在路口，等待同行者的决定。"); await Until(()=>!host.Controller.Busy);
+            pending.SetResult("旅人停在路口。「接下来往哪边走？」"); await Until(()=>!host.Controller.Busy);
             Check(host.Controller.DisplayMode=="ai" && System.Text.Json.JsonSerializer.Serialize(session.Output.Snapshot)==before,"successful supplement does not insert lines into the interpreter transcript");
-            client.Reply=()=>Task.FromResult("同行者把地图折好，静候下一步安排。"); await host.Command("aiGenerate"); await host.Command("aiGenerate");
+            Check(client.Last.Contains("以当前角色直接说出口的台词为主体") && host.Controller.Text.Contains("「接下来往哪边走？」"),"production menu supplement receives the direct-speech instruction and returns spoken text");
+            client.Reply=()=>Task.FromResult("旅人望向路口。「先看看地图如何？」"); await host.Command("aiGenerate"); await host.Command("aiGenerate");
             Check(client.Calls==3 && System.Text.Json.JsonSerializer.Serialize(session.Output.Snapshot)==before,"two production bridge regenerations send no game input");
             client.Reply=()=>throw new HttpRequestException("controlled offline"); await host.Command("aiGenerate");
             Check(host.Controller.Text=="" && host.Controller.Status.Contains("无原口上"),"production failure clears the insertion rather than inventing fallback dialogue");
@@ -118,7 +120,7 @@ RETURN 0
             settings.GenerateWithoutOriginal=false; await host.SaveSettings(settings);
             Check(host.Controller.Current==null && host.Controller.Text=="","disabling supplement removes the current supplemental event immediately");
             await File.WriteAllTextAsync(Path.Combine(output,"bridge-replay.json"),Json.Codec().Serialize(new Dictionary<string,object> { {"initial",initial}, {"events",host.Js.Events.ToArray()} }));
-            Check(host.Controller.Log.ReadRecent().Contains("capture.supplement") && host.Controller.Log.ReadRecent().Contains("unchanged-game"),"logs distinguish no-original generation and unchanged-game fallback");
+            Check(host.Controller.Log.ReadRecent().Contains("capture.supplement") && host.Controller.Log.ReadRecent().Contains("unchanged-game") && host.Controller.Log.ReadRecent().Contains("dialogue.supplement-style"),"logs distinguish no-original speech generation and unchanged-game fallback");
         }
         finally { await host.Stop(); }
         Console.WriteLine("ALL SUPPLEMENT CHECKS PASSED: "+count);

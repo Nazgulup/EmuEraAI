@@ -49,6 +49,7 @@
 
   <!-- ===== 嵌入资源：语言文件（SDK 默认 glob 不含 .xml，需显式包含） ===== -->
   <ItemGroup>
+    <Compile Include="..\..\..\src\Emuera\AI\DialogueHookNames.cs" Link="UI\Game\DialogueHookNames.cs" />
     <EmbeddedResource Include="Shared\Properties\lang\emuera-eng.xml" LinkBase="Properties\lang" />
     <EmbeddedResource Include="Shared\Properties\lang\emuera-zhs.xml" LinkBase="Properties\lang" />
   </ItemGroup>

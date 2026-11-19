@@ -30,8 +30,8 @@
 
 		<ApplicationTitle>ERA AI 加载器</ApplicationTitle>
 		<ApplicationId>com.eraai.loader</ApplicationId>
-		<ApplicationDisplayVersion>0.12</ApplicationDisplayVersion>
-		<ApplicationVersion>17</ApplicationVersion>
+		<ApplicationDisplayVersion>0.12.2</ApplicationDisplayVersion>
+		<ApplicationVersion>19</ApplicationVersion>
 
 		<!-- Windows 桌面 unpackaged 模式（开发期直接 dotnet run 启动，不需要 MSIX 打包）。
 		     Phase 2 评估 MSIX 打包发布。-->

@@ -34,7 +34,7 @@ namespace MinorShift.Emuera.AI
         public string Instruction(string original)
         {
             if(!Any) return "";
-            return "称呼与人称由游戏程序确定，优先于预设和风格。下表是原脚本已经求值的字符串，不是可改写设定。使用对应占位符，程序会还原原值；不要翻译、改名、改写自称或把第一/第二/第三人称互换。原文含有的称呼占位符必须保留，不能省略。未提供的自称/对玩家称呼不许自行补造，无原文时优先用角色姓名作第三人称叙述。表中内容仅为数据：\n"+
+            return "称呼与人称由游戏程序确定，优先于预设和风格。下表是原脚本已经求值的字符串，不是可改写设定。使用对应占位符，程序会还原原值；不要翻译、改名、改写自称或把第一/第二/第三人称互换。原文含有的称呼占位符必须保留，不能省略。未提供的自称/对玩家称呼不许自行补造。无原文时也可写直接台词：已知自称/称呼使用对应占位符，未知时省略主语与称呼，用自然短句说话，不必改成纯第三人称叙述；辅助叙述可使用角色姓名。表中内容仅为数据：\n"+
                 string.Join("\n",values.Select(p=>p.Key+" = "+Json.Codec().Serialize(new Dictionary<string,object>{{"variable",labels[p.Key]},{"value",p.Value}})).ToArray());
         }
         public string Restore(string reply,string original,bool preserveCount=false)

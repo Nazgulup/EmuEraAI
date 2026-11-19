@@ -72,6 +72,15 @@ RETURNF CSTR:ARG:60
         client.Reply=Json.Codec().Serialize(new Dictionary<string,object>{{"translations",new object[]{new Dictionary<string,object>{{"id",0},{"text",snapshot.Addresses.Mask("琳琳说：「本小姐请阁下查看地图。」")}}}}});
         var translated=await Translation.TranslateAsync(client,new AiSettings { ProtectStory=false, Model="controlled" },source,CancellationToken.None,snapshot.Addresses);
         Check(translated[0]=="琳琳说：「本小姐请阁下查看地图。」" && State(h)==before,"translation also preserves address placeholders without touching game variables");
+        controller.SetEvent(new DialogueSnapshot("empty-speech",frame.Character,frame.User,frame.Facts,"",frame.Hook,frame.Addresses));
+        client.Reply=snapshot.Addresses.Mask("「本小姐带来了地图，阁下请过目。」"); await controller.GenerateAsync(false);
+        Check(controller.DisplayMode=="ai" && controller.Text=="「本小姐带来了地图，阁下请过目。」" && State(h)==before,"empty-source speech restores exact known self/player address variables without re-evaluation");
+        var nameOnly=new Dictionary<string,string>{{"NAME:TARGET","琳琳"}};
+        controller.SetEvent(new DialogueSnapshot("empty-no-pronouns","琳琳","Player",frame.Facts,"",frame.Hook,nameOnly));
+        client.Reply="「接下来往哪边走？」"; await controller.GenerateAsync(false);
+        Check(controller.DisplayMode=="ai" && controller.Text==client.Reply && State(h)==before,"speech with omitted subjects is allowed when the game has supplied no self/player pronouns");
+        client.Reply="「我准备好了，你呢？」"; await controller.GenerateAsync(true);
+        Check(controller.DisplayMode=="original" && controller.Text=="" && controller.Status.Contains("人称代词") && State(h)==before,"adding unbound pronouns to empty-source speech still falls back without changing game state");
         Console.WriteLine("ALL ADDRESS CHECKS PASSED: "+count);
     }
 }

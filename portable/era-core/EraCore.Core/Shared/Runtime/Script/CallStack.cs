@@ -47,12 +47,12 @@ internal sealed class CallStack
 			for (int i = 0; i < functionList.Count; i++)
 			{
 				string name = functionList[i].FunctionName;
-				if (name.StartsWith("PRITRAIN_MESSAGE", System.StringComparison.OrdinalIgnoreCase) || name.StartsWith("PRETRAIN_MESSAGE", System.StringComparison.OrdinalIgnoreCase)) return name;
+				if (MinorShift.Emuera.AI.DialogueHookNames.IsPreparation(name)) return name;
 			}
 			for (int i = functionList.Count - 1; i >= 0; i--)
 			{
 				string name = functionList[i].FunctionName;
-				if (name.StartsWith("TRAIN_MESSAGE_COM", System.StringComparison.OrdinalIgnoreCase) || name.StartsWith("MESSAGE_COM", System.StringComparison.OrdinalIgnoreCase) || name.StartsWith("KOJO_", System.StringComparison.OrdinalIgnoreCase) || name.StartsWith("M_KOJO", System.StringComparison.OrdinalIgnoreCase) || name.StartsWith("AI_DIALOGUE", System.StringComparison.OrdinalIgnoreCase) || name.StartsWith("SELF_KOJO", System.StringComparison.OrdinalIgnoreCase)) return name;
+				if (MinorShift.Emuera.AI.DialogueHookNames.IsDialogue(name)) return name;
 			}
 			return null;
 		}

@@ -112,9 +112,13 @@ namespace MinorShift.Emuera.GameView
                 foreach (var line in _aiLines.Where(visible.Contains))
                 { if (line.IsLogicalLine && text.Length > 0) text.AppendLine(); text.Append(line.ToString()); }
                 string original = text.ToString().Trim();
-                if (original.Length == 0) return null;
+                // A blank PRINTFORMW is a real dialogue placeholder. It must still
+                // have visible output and be waiting inside the same dialogue scope.
+                bool emptyDialogue = original.Length == 0 && IsWaitingEnterKey && inputReq?.Timelimit < 0 &&
+                    _aiLines.Any(visible.Contains) && _state.process?.AiSnapshot(out _)?.Hook == _aiFrame.Hook;
+                if (original.Length == 0 && !emptyDialogue) return null;
                 string bindings=string.Join("\n",_aiFrame.Addresses.OrderBy(p=>p.Key,StringComparer.Ordinal).Select(p=>p.Key+"="+p.Value));
-                string id = Convert.ToBase64String(SHA256.HashData(Encoding.UTF8.GetBytes(_aiSession + _aiFrame.Facts + original + bindings + string.Join("\n",_aiStoryContext.OrderBy(x=>x,StringComparer.Ordinal)))));
+                string id = Convert.ToBase64String(SHA256.HashData(Encoding.UTF8.GetBytes(_aiSession + (emptyDialogue ? "|empty|" + _aiTurnSerial : "") + _aiFrame.Facts + original + bindings + string.Join("\n",_aiStoryContext.OrderBy(x=>x,StringComparer.Ordinal)))));
                 return _aiFrame with { EventId = id, Original = original, StoryContext=_aiStoryContext.ToArray(), StoryTurn=_aiTurnSerial, LineIndices = _aiLines.Where(visible.Contains).Select(line => DisplayLineList.IndexOf(line)).ToArray() };
             }
             catch (Exception ex) { _aiErrors++; _aiErrorType = ex.GetType().Name; return null; }
@@ -149,7 +153,7 @@ namespace MinorShift.Emuera.GameView
         }
         internal DialogueCaptureInfo AiCaptureInfo(DialogueFrame? frame)
         {
-            string reason = frame != null ? "捕获成功" : State is ConsoleState.Error or ConsoleState.Quit ? "游戏已经停止或发生脚本错误" :
+            string reason = frame != null ? (frame.Original.Length == 0 ? "捕获到口上函数内的空文本等待，可自动补写" : "捕获成功") : State is ConsoleState.Error or ConsoleState.Quit ? "游戏已经停止或发生脚本错误" :
                 _aiErrors > 0 ? "口上观察器异常（" + _aiErrorType + "），请导出日志" :
                 _aiInvalidTarget > 0 ? "进入口上函数时 TARGET 无效" :
                 _aiFrame != null ? "口上文本为空或已被脚本清除" :

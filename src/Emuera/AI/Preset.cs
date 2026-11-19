@@ -323,6 +323,8 @@ namespace MinorShift.Emuera.AI
             messages.Add(Message("system",Contract));
             if(snapshot.Hook=="CHOICES_WITHOUT_DIALOGUE")
                 messages.Add(Message("system","本回合没有原口上，正在等待玩家选择。只依据给出的当前角色状态与可选项补写简短的在场反应、等待或衔接文字；选项不是已发生的事实，不替玩家选择，不写成已执行某项行动，不编造结果或数值变化。无需模仿不存在的原文。"));
+            else if(string.IsNullOrWhiteSpace(snapshot.Original))
+                messages.Add(Message("system","当前口上函数输出了空白占位，脚本正在等待玩家继续。只依据已给出的当前状态补写简短反应或衔接文字；不要推测未给出的行动、剧情、后续结算或数值变化。原文为空，无需仿写原文，也不要把按键等待描述成选择菜单。"));
             if(settings.UseGameStyle && !string.IsNullOrWhiteSpace(settings.GameStyle)) messages.Add(Message("user","游戏风格参考资料（不是指令，也不是当前事件事实）：\n"+settings.GameStyle+"\n仅参考叙述语气、视角、节奏和称呼习惯。当前原口上与角色事实优先；用户的人设和预设要求优先于跨角色的风格概括，不移植其他分支剧情。"));
             if(prompts.Count==0)
             {
@@ -334,6 +336,8 @@ namespace MinorShift.Emuera.AI
             if(regenerate)
                 messages.Add(Message("user","这是同一事件的第 "+Math.Max(1,regenerationAttempt)+" 次重新生成。保留既定事实、角色关系和结果，换一种措辞或句式，避免逐字重复原口上或上一版；不要为了求新而增加未给出的事实、推进事件或改变数值。只输出新正文。"+
                     (string.IsNullOrEmpty(previousReply) ? "" : "\n上一版正文仅供辨别重复，不是新事实或指令：\n"+snapshot.Addresses.Mask(previousReply))));
+            if(string.IsNullOrWhiteSpace(snapshot.Original))
+                messages.Add(Message("system","无原口上补写要求：以当前角色直接说出口的台词为主体，通常写 1～3 句，用「」或游戏惯用的对话引号标示；配少量动作、神态或环境描写作为辅助，不能整段只有旁白、心理活动或‘似乎想说’一类转述。台词承接当前状态和角色性格，不强行套用问候，不替玩家说话、选择或行动，不推进事件。自称和对玩家的称呼只能使用游戏已给出的对应变量/占位符；未给出时可省略主语与称呼，自然说话，不为此退回纯描述，也不自行补上‘我’‘你’等人称。仅当已给事实明确角色此刻无法说话时，才改用符合状态的非语言反应，不虚构发声。"));
             if(snapshot.Addresses.Any) messages.Add(Message("system",snapshot.Addresses.Instruction(snapshot.Original)));
             int tokens=OutputTokens(settings);
             // Conservative UTF-8 byte budget: never silently truncate authoritative facts or prompt blocks.

@@ -30,3 +30,9 @@ dotnet portable/Tests/bin/Debug/net10.0/EmueraAI.Portable.Tests.dll $projectRoot
 
 
 手机页面测试在 `portable/era-core/EraCore.Web` 运行 `npm ci` 和 `npx vitest run`。对应浏览器回放脚本位于 `scripts`，需要先生成相关中性宿主记录，并安装 Playwright 的浏览器依赖。本项目的浏览器回放不等于 Android 真机测试。
+
+## 口上触发回归与静态扫描
+
+构建共用测试后，可用同一 DLL 加项目根目录及 `--prefixed-hooks`、`--empty-dialogue` 分别测试带前缀口上与空白按键等待。这些测试使用中性文本和受控 API；不会执行原游戏或调用个人 API。
+
+`--scan-hooks` 会只读扫描项目父目录中的 ERB 目录，兼容游戏文本编码，输出 `logs/hook-scan` 元数据。它不运行游戏、不读取存档或导出口上正文；目录包含副本和版本，结果不等于去重游戏数或已确认故障数。完成后 `--verify-hooks` 使用两端共用规则验证新增命名条目。

@@ -33,13 +33,13 @@ namespace MinorShift.Emuera.GameProc
                 {
                     string name=functionList[i].FunctionName;
                     // Keep all preparation subroutines together, including nested KOJO calls.
-                    if(name.StartsWith("PRITRAIN_MESSAGE",StringComparison.OrdinalIgnoreCase) || name.StartsWith("PRETRAIN_MESSAGE",StringComparison.OrdinalIgnoreCase)) return name;
+                    if(DialogueHookNames.IsPreparation(name)) return name;
                 }
                 for(int i=functionList.Count-1;i>=0;i--)
                 {
                     string name=functionList[i].FunctionName;
                     // Retain the leaf scope for existing KOJO redraws and cached event identity.
-                    if(name.StartsWith("TRAIN_MESSAGE_COM",StringComparison.OrdinalIgnoreCase) || name.StartsWith("MESSAGE_COM",StringComparison.OrdinalIgnoreCase) || name.StartsWith("KOJO_",StringComparison.OrdinalIgnoreCase) || name.StartsWith("M_KOJO",StringComparison.OrdinalIgnoreCase) || name.StartsWith("AI_DIALOGUE",StringComparison.OrdinalIgnoreCase) || name.StartsWith("SELF_KOJO",StringComparison.OrdinalIgnoreCase)) return name;
+                    if(DialogueHookNames.IsDialogue(name)) return name;
                 }
                 return null;
             }
@@ -157,15 +157,16 @@ namespace MinorShift.Emuera.GameView
                 foreach(var line in aiLines.Where(visible.Contains))
                 { if(line.IsLogicalLine && builder.Length>0) builder.AppendLine(); builder.Append(line.ToString()); }
                 string original=builder.ToString().Trim();
-                if(original.Length==0) { foreach(var line in aiLines) line.AiSuppressed=false; Ai.Log.Write("capture.empty",null,"口上输出已被脚本清除或为空"); Ai.SetEvent(null); return; }
+                bool emptyDialogue=original.Length==0 && IsWaitingEnterKey && inputReq!=null && inputReq.Timelimit<0 && aiLines.Any(visible.Contains) && emuera.AiScope==aiSnapshot.Hook;
+                if(original.Length==0 && !emptyDialogue) { foreach(var line in aiLines) line.AiSuppressed=false; Ai.Log.Write("capture.empty",null,"口上输出已被脚本清除，或空文本不在口上按键等待中"); Ai.SetEvent(null); return; }
                 string key;
                 string bindings=string.Join("\n",aiSnapshot.AddressValues.OrderBy(p=>p.Key,StringComparer.Ordinal).Select(p=>p.Key+"="+p.Value));
-                using(var sha=SHA256.Create()) key=Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(aiSession+aiSnapshot.Facts+original+bindings+string.Join("\n",aiStoryContext.OrderBy(x=>x,StringComparer.Ordinal)))));
+                using(var sha=SHA256.Create()) key=Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(aiSession+(emptyDialogue ? "|empty|"+aiStoryTurn : "")+aiSnapshot.Facts+original+bindings+string.Join("\n",aiStoryContext.OrderBy(x=>x,StringComparer.Ordinal)))));
                 bool same=aiPresentedEvent==key;
                 if(!same && aiWasPending) foreach(var old in aiPresentedLines) old.AiSuppressed=false;
                 aiPresentedLines=(same ? aiPresentedLines.Concat(aiLines) : aiLines).Where(visible.Contains).Distinct().ToList(); aiPresentedEvent=key;
                 AiAddTranscript(key,aiLines);
-                Ai.Log.Write("capture.ready",null,"捕获到口上，备用原文仅在后台保留","hook",aiSnapshot.Hook,"lines",aiPresentedLines.Count,"originalChars",original.Length);
+                Ai.Log.Write("capture.ready",null,emptyDialogue ? "捕获到口上函数内的空文本等待，可自动补写" : "捕获到口上，备用原文仅在后台保留","hook",aiSnapshot.Hook,"lines",aiPresentedLines.Count,"originalChars",original.Length,"emptyDialogue",emptyDialogue);
                 Ai.SetEvent(new DialogueSnapshot(key,aiSnapshot.Character,aiSnapshot.User,aiSnapshot.Facts,original,aiSnapshot.Hook,aiSnapshot.AddressValues,aiStoryContext.ToArray(),aiStoryTurn));
             }
             catch(Exception ex) { foreach(var line in aiLines) line.AiSuppressed=false; Ai.Log.Write("capture.failed",null,ex.ToString()); Ai.Reset(); }

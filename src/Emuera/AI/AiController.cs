@@ -146,6 +146,7 @@ namespace MinorShift.Emuera.AI
                 source.CancelAfter(TimeSpan.FromSeconds(Math.Max(2,Math.Min(180,settings.TimeoutSeconds))));
                 var preset=new Preset(settings.PresetJson);
                 var body=preset.Build(snapshot,settings,regenerate,regenerate ? previous : null,attempt);
+                if(string.IsNullOrWhiteSpace(snapshot.Original)) Log.Write("dialogue.supplement-style",settings.TraceId,"无原口上补写：角色直接台词为主，描写为辅；游戏称呼不变，未知人称省略","hook",snapshot.Hook,"hasAddressBindings",snapshot.Addresses.Any);
                 lastRequestHash=DialogueDiagnostics.Request(Log,settings.TraceId,body,lastRequestHash,regenerate,attempt,regenerate && previous!=null);
                 Log.Write("preset.ready",settings.TraceId,"预设组装成功","messages",((List<Dictionary<string,object>>)body["messages"]).Count,"settingsOutputTokens",settings.OutputTokens,"outputTokenSource",preset.OutputTokenSource(settings),"effectiveOutputTokens",Json.Int(body,"max_tokens"),"gameStyleChars",(settings.GameStyle ?? "").Length);
                 string result=await client.GenerateAsync(settings,body,source.Token);

@@ -25,6 +25,10 @@ static class Tests
     static async Task Main(string[] args)
     {
         string root=Path.GetFullPath(args[0]);
+        if(args.Length > 1 && args[1] == "--scan-hooks") { HookCoverageScan.Run(root); return; }
+        if(args.Length > 1 && args[1] == "--verify-hooks") { HookCoverageScan.Verify(root); return; }
+        if(args.Length > 1 && args[1].StartsWith("--prefixed-hooks")) { await PrefixedHookTests.Run(root,args[1]=="--prefixed-hooks-before"); return; }
+        if(args.Length > 1 && args[1].StartsWith("--empty-dialogue")) { await PrefixedHookTests.Empty(root,args[1]=="--empty-dialogue-before"); return; }
         EraCore.Maui.FileSystem.PackageDirectory=Path.GetDirectoryName(StoryBundle.BundlePath(root))!;
         if(args.Length > 1 && args[1] == "--bundle-story") { StoryBundle.Build(root); return; }
         if(args.Length > 1 && args[1] == "--match-story") { StoryBundle.VerifyMatches(root); return; }

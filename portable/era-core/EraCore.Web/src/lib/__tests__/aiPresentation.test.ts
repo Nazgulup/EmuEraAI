@@ -32,6 +32,19 @@ describe('inline AI transcript', () => {
   const plain = (text: string): DisplayLine => ({ entries: [{ segments: [{ text }] }], isLineEnd: true });
   const text = (lines: DisplayLine[]) => lines.flatMap(line => line.entries.flatMap(entry => entry.segments.map(segment => segment.text))).join('');
   const state = { enabled: true, eventId: 'a', lineIndices: [0], displayRevision: 1, mode: 'ai', text: '新的开场白。' };
+  it('replaces a blank dialogue wait even with menu supplementation off and restores its empty original', () => {
+    const view = new AiPresentation(), lines = [plain('')], before = JSON.stringify(lines);
+    const emptyState = { ...state, supplementEnabled: false, mode: 'pending' };
+    view.apply(emptyState, lines);
+    expect(text(view.project(lines))).toContain('AI 口上生成中');
+    view.apply({ ...emptyState, mode: 'ai', text: '旅人整理地图。' }, lines);
+    expect(text(view.project(lines))).toBe('旅人整理地图。');
+    view.apply({ ...emptyState, mode: 'ai', text: '旅人再次核对路线。' }, lines);
+    expect(text(view.project(lines))).toBe('旅人再次核对路线。');
+    expect(JSON.stringify(lines)).toBe(before);
+    view.apply({ ...emptyState, mode: 'original', text: '' }, lines);
+    expect(view.project(lines)).toBe(lines);
+  });
   it('replaces the captured block, preserves menus, updates regeneration and retains history', () => {
     const view = new AiPresentation(), original = plain('original'), menu = plain('menu'), lines = [original, menu];
     menu.entries[0]!.button = { value: 7, isInteger: true, generation: 19 };
